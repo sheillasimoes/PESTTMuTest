@@ -5,8 +5,6 @@ import java.util.LinkedList;
 import org.eclipse.swt.SWT;
 
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.ui.part.ViewPart;
@@ -49,14 +47,6 @@ public class ViewMutationOperator extends ViewPart {
 				treeItemNode.setText(setOperator.get(j));
 			}
 		}
-		tree.addListener(SWT.CHECK, new Listener() {
-
-			@Override
-			public void handleEvent(Event event) {
-				// TODO Auto-generated method stub
-
-			}
-		});
 
 	}
 }
