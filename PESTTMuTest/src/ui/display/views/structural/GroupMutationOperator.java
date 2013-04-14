@@ -5,15 +5,16 @@ package ui.display.views.structural;
 
 import java.util.LinkedList;
 
-
 /**
  * @author Sheila Simoes
  * 
  */
 public enum GroupMutationOperator {
 
-	ACCESS_CONTROL("Acess Control", SetMutationOperation.INSTANCE
-			.SetOperation("AC")), INHERITANCE("Inheritance",
+	TRADITIONAL_OPERATOR("Traditional Operator",
+			SetMutationOperation.INSTANCE.SetOperation("TO")), ACCESS_CONTROL(
+			"Access Control", SetMutationOperation.INSTANCE
+					.SetOperation("AC")), INHERITANCE("Inheritance",
 			SetMutationOperation.INSTANCE.SetOperation("I")), POLYMORPHISM(
 			"Polymorphism", SetMutationOperation.INSTANCE.SetOperation("P")), OVERLOADING(
 			"Overloading", SetMutationOperation.INSTANCE.SetOperation("O")), JAVA_SPECIFIC_FEATURES(

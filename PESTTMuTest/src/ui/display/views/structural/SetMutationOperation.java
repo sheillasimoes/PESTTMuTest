@@ -13,6 +13,17 @@ public enum SetMutationOperation {
 	public LinkedList<String> SetOperation(String groupMutOperator) {
 		LinkedList<String> operator = new LinkedList<String>();
 		switch (groupMutOperator) {
+		case "TO":
+			operator.add("ABS");
+			operator.add("AOR");
+			operator.add("ROR");
+			operator.add("COR");
+			operator.add("ASR");
+			operator.add("UOI");
+			operator.add("UOD");
+			operator.add("SVR");
+			operator.add("BSR");
+			return operator;
 		case "AC":
 			operator.add("AMC");
 			return operator;

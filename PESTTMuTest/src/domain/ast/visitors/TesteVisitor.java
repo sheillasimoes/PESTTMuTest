@@ -5,9 +5,11 @@ import java.util.List;
 
 import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
+import org.eclipse.jdt.core.dom.PrefixExpression;
 
 public class TesteVisitor extends ASTVisitor {
-	List<MethodDeclaration> methods = new ArrayList<MethodDeclaration>();
+	private List<MethodDeclaration> methods = new ArrayList<MethodDeclaration>();
+	private String operand;
 
 	@Override
 	public boolean visit(MethodDeclaration node) {
@@ -18,4 +20,15 @@ public class TesteVisitor extends ASTVisitor {
 	public List<MethodDeclaration> getMethods() {
 		return methods;
 	}
+
+	@Override
+	public boolean visit(PrefixExpression node) {
+		operand = node.getOperand().toString();
+		return super.visit(node);
+	}
+
+	public String getOperand() {
+		return operand;
+	}
+	
 }

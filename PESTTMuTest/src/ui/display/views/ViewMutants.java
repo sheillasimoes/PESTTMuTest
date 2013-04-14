@@ -18,7 +18,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.part.ViewPart;
 
-import domain.ast.visitors.Messages;
+import ui.constants.Messages;
+
 import domain.ast.visitors.TesteVisitor;
 
 public class ViewMutants extends ViewPart {
@@ -33,7 +34,7 @@ public class ViewMutants extends ViewPart {
 		IWorkspace workspace = ResourcesPlugin.getWorkspace();
 		IWorkspaceRoot root = workspace.getRoot();
 
-		Label l = new Label(parent, SWT.HORIZONTAL | SWT.H_SCROLL);
+		Label l = new Label(parent, SWT.HORIZONTAL);
 		IProject[] setProj = root.getProjects();
 		if (setProj.length == 0)
 			l.setText(Messages.NOT_FIND_PROJECTS); // caso ñ haja projetos
