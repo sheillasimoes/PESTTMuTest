@@ -13,4 +13,5 @@ import org.eclipse.jdt.core.dom.ASTNode;
  */
 public interface IMutationOperators {
 	public List<ASTNode> getMutation(ASTNode node);
+	public boolean isOperatorApplicable(ASTNode node);
 }

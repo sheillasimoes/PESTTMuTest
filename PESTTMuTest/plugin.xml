@@ -20,6 +20,7 @@
             allowMultiple="true"
             category="PESTTMuTest.Category"
             class="ui.display.views.ViewMutationOperator"
+            icon="icons/tree_mode.gif"
             id="PESTTMuTest.MutationOperator"
             name="Mutation Operator"
             restorable="true">
@@ -32,20 +33,6 @@
             name="Mutants"
             restorable="true">
       </view>
-   </extension>
-   <extension
-         point="org.eclipse.core.runtime.preferences">
-      <initializer
-            class="ui.preferences.PreferenceInitializer">
-      </initializer>
-   </extension>
-   <extension
-         point="org.eclipse.ui.preferencePages">
-      <page
-            class="ui.preferences.PreferencePage"
-            id="PESTTMuTest.PreferencesPages"
-            name="PESTTMuTest">
-      </page>
    </extension>
 
 

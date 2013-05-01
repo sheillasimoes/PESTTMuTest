@@ -28,12 +28,6 @@ public class Perspective implements IPerspectiveFactory {
 	private void addViews() {
 		// Get the editor area.
 		String editorArea = layout.getEditorArea();
-
-		// Top right:
-		IFolderLayout topRight = layout.createFolder("topRight",
-				IPageLayout.RIGHT, 0.70f, editorArea);
-		topRight.addView(Description.VIEW_MUTATION_OPERATOR);
-
 		// Botton:
 		IFolderLayout bottom = layout.createFolder("bottom",
 				IPageLayout.BOTTOM, 0.70f, editorArea);
@@ -41,6 +35,11 @@ public class Perspective implements IPerspectiveFactory {
 		bottom.addView(IConsoleConstants.ID_CONSOLE_VIEW);
 		bottom.addView(IPageLayout.ID_PROBLEM_VIEW);
 		bottom.addView(IPageLayout.ID_TASK_LIST);
+		
+		// Top right:
+		IFolderLayout topRight = layout.createFolder("topRight",
+				IPageLayout.RIGHT, 0.70f, editorArea);
+		topRight.addView(Description.VIEW_MUTATION_OPERATOR);
 
 		// Top left:
 		IFolderLayout topLeft = layout.createFolder("topLeft",

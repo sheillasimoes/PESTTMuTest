@@ -8,7 +8,7 @@ import org.eclipse.jdt.core.dom.Assignment;
 
 import domain.constants.EnumAssignmentOperator;
 
-public class TesteASR extends MutationOperators {
+public class AssignmentOperatorReplacement implements IMutationOperators {
 
 	@Override
 	public List<ASTNode> getMutation(ASTNode node) {
@@ -32,6 +32,11 @@ public class TesteASR extends MutationOperators {
 		}
 
 		return listMutant;
+	}
+
+	@Override
+	public boolean isOperatorApplicable(ASTNode node) {
+		return node instanceof Assignment; // node.getNodeType() == ASTNode.ASSIGNMENT;
 	}
 
 }
