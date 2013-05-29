@@ -11,32 +11,37 @@ import domain.constants.EnumAssignmentOperator;
 public class AssignmentOperatorReplacement implements IMutationOperators {
 
 	@Override
-	public List<ASTNode> getMutation(ASTNode node) {
+	public List<Mutation> getMutations(ASTNode node) {
 		/* No (AST) original */
 		Assignment assignmentNode = (Assignment) node;
 
-		/* No (AST) onde serao aplicadas as mutacoes */
-		Assignment nodeMutant = assignmentNode;
-
 		/* List com todas as mutacoes geradas */
-		List<ASTNode> listMutant = new LinkedList<ASTNode>();
+		List<Mutation> listMutants = new LinkedList<Mutation>();
 
 		for (EnumAssignmentOperator opr : EnumAssignmentOperator.values()) {
 			if (!opr.getStrAssignmentOper().equals(
 					assignmentNode.getOperator().toString())) {
-				nodeMutant.setOperator(Assignment.Operator.toOperator(opr
-						.getStrAssignmentOper()));
-				listMutant.add(nodeMutant);
+				Mutation mutation = new Mutation(node, this,
+						opr.getStrAssignmentOper());
+				listMutants.add(mutation);
 			}
 
 		}
 
-		return listMutant;
+		return listMutants;
+	}
+
+	@Override
+	public void applyMutation(Mutation mutation) {
+		Assignment assignmentNode = (Assignment) mutation.getASTNode();
+		assignmentNode.setOperator(Assignment.Operator
+				.toOperator((String) mutation.getData()));
 	}
 
 	@Override
 	public boolean isOperatorApplicable(ASTNode node) {
-		return node instanceof Assignment; // node.getNodeType() == ASTNode.ASSIGNMENT;
+		return node instanceof Assignment; // node.getNodeType() ==
+											// ASTNode.ASSIGNMENT;
 	}
 
 }

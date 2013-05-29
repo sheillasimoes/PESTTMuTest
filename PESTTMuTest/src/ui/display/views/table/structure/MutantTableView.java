@@ -1,4 +1,4 @@
-package ui.display.views.structural;
+package ui.display.views.table.structure;
 
 import java.util.Observable;
 import java.util.Observer;
@@ -46,7 +46,7 @@ public class MutantTableView extends AbstractTableViewer implements
 		String columnNames = TableViewers.COLUMN_MUTANT_TABLE; // the names of column.
 		int columnWidths = 700; // the width of column.
 		TableViewerColumn col = createColumnsHeaders(mutantTableViewer,
-				columnNames, columnWidths, 0);
+				columnNames, columnWidths);
 		col.setLabelProvider(new StyledCellLabelProvider() {
 
 			@Override

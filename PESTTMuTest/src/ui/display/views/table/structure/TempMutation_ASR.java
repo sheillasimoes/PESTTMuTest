@@ -1,4 +1,4 @@
-package ui.display.views.structural;
+package ui.display.views.table.structure;
 
 import java.util.List;
 
@@ -29,15 +29,15 @@ public class TempMutation_ASR {
 	public void apresentarMutASR(Composite parent) {
 		// get workspace
 		IWorkspace workspace = ResourcesPlugin.getWorkspace();
+		System.out.print(workspace.toString());
 		IWorkspaceRoot root = workspace.getRoot();
 
-		Label l = new Label(parent, SWT.HORIZONTAL | SWT.H_SCROLL);
 		IProject[] setProj = root.getProjects();
 		if (setProj.length == 0)
-			l.setText(Messages.NOT_FIND_PROJECTS); // caso n haja projetos
+			System.out.println(Messages.NOT_FIND_PROJECTS); // caso n haja projetos
 													// refinar esta parte
 		else {
-			l.setText(setProj[0].getName());
+			System.out.println(setProj[0].getName());
 			IProject proj = setProj[0];
 
 			// obter as packages do projeto
@@ -59,16 +59,17 @@ public class TempMutation_ASR {
 							InputProgramVisitor testeVisitor = new InputProgramVisitor();
 							parse.accept(testeVisitor);
 
-							for (Assignment node : testeVisitor.getMethods()) {
+							/*for (Assignment node : testeVisitor.getMethods()) {
 								AssignmentOperatorReplacement assignmentOperatorReplacement = new AssignmentOperatorReplacement();
-								List<ASTNode> aux = assignmentOperatorReplacement.getMutation(node);
+								List<ASTNode> aux = assignmentOperatorReplacement
+										.getMutation(node);
 
 								l = new Label(parent, SWT.VERTICAL
 										| SWT.H_SCROLL);
 								// Assignment auxNode = (Assignment) aux.get(0);
 								l.setText("Operador: " + aux.size());
 
-							}
+							}*/
 						}
 					}
 				}

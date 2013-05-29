@@ -1,7 +1,7 @@
 /**
  * 
  */
-package ui.display.views.structural;
+package ui.display.views.table.structure;
 
 import java.util.Observable;
 import java.util.Observer;
@@ -56,7 +56,7 @@ public class OpMutationApplicable extends AbstractTableViewer implements
 																			// column.
 		int columnWidths = 700; // the width of column.
 		TableViewerColumn col = createColumnsHeaders(OpMutationApplTableViewer,
-				columnNames, columnWidths, 0);
+				columnNames, columnWidths);
 		col.setLabelProvider(new StyledCellLabelProvider() {
 
 			@Override

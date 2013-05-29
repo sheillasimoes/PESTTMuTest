@@ -1,4 +1,4 @@
-package ui.display.views.structural;
+package ui.display.views.table.structure;
 
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.widgets.Composite;

@@ -4,7 +4,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.part.ViewPart;
 
 import ui.constants.TableViewers;
-import ui.display.views.structural.TableViewerFactory;
+import ui.display.views.table.structure.TableViewerFactory;
 
 /**
  * Apresenta informação relacionada com os mutantes gerados

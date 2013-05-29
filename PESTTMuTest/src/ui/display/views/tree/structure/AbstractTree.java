@@ -5,13 +5,11 @@ package ui.display.views.tree.structure;
 
 import java.util.LinkedList;
 
-import org.eclipse.core.runtime.IAdaptable;
-
 /**
- * @author Sheila Simoes
+ * @author Sheilla Simoes
  * 
  */
-public class AbstractTree implements IAdaptable {
+public class AbstractTree {
 	private String acronym;
 	private String description;
 	private AbstractTree parent;
@@ -32,8 +30,8 @@ public class AbstractTree implements IAdaptable {
 	public String getAcronym() {
 		return acronym;
 	}
-	
-	public String getDescription(){
+
+	public String getDescription() {
 		return description;
 	}
 
@@ -73,11 +71,6 @@ public class AbstractTree implements IAdaptable {
 
 	public String toString() {
 		return description;
-	}
-
-	@Override
-	public Object getAdapter(Class adapter) {
-		return null;
 	}
 
 }

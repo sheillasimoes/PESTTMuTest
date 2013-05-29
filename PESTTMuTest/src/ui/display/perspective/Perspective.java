@@ -9,7 +9,7 @@ import ui.constants.Description;
 
 public class Perspective implements IPerspectiveFactory {
 
-	IPageLayout layout;
+	private IPageLayout layout;
 
 	public Perspective() {
 		super();
@@ -35,16 +35,17 @@ public class Perspective implements IPerspectiveFactory {
 		bottom.addView(IConsoleConstants.ID_CONSOLE_VIEW);
 		bottom.addView(IPageLayout.ID_PROBLEM_VIEW);
 		bottom.addView(IPageLayout.ID_TASK_LIST);
-		
+
 		// Top right:
 		IFolderLayout topRight = layout.createFolder("topRight",
 				IPageLayout.RIGHT, 0.70f, editorArea);
-		topRight.addView(Description.VIEW_MUTATION_OPERATOR);
+		topRight.addView(Description.VIEW_MUTATION_OPERATORS);
 
 		// Top left:
 		IFolderLayout topLeft = layout.createFolder("topLeft",
 				IPageLayout.LEFT, 0.30f, editorArea);
 		topLeft.addView(IPageLayout.ID_PROJECT_EXPLORER);
+
 	}
 
 }
