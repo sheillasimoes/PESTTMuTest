@@ -1,6 +1,8 @@
 package main.activator;
 
 import domain.controller.ControllerMain;
+import ui.constants.Messages;
+import ui.dialog.ProcessMessage;
 import ui.display.views.tree.structure.TreeMutationOperators;
 
 public class PESTTMuTest {
@@ -22,6 +24,12 @@ public class PESTTMuTest {
 	}
 
 	public void runMutationOperators() {
-		 controllerMain.runMutationOperators(treeViewer.getCheckedElements());
+		Object[] elements = treeViewer.getCheckedElements();
+		if (elements.length == 0) {
+			ProcessMessage.INSTANCE.showInformationMessage("Info",
+					Messages.NOT_SELECT_ELEMENTS_TREE);
+		} else {
+			controllerMain.runMutationOperators(elements);
+		}
 	}
 }

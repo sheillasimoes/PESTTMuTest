@@ -4,35 +4,27 @@
 package ui.display.views.tree.structure;
 
 import java.util.LinkedList;
+import java.util.List;
 
 /**
  * @author Sheilla Simoes
  * 
  */
 public class AbstractTree {
-	private String acronym;
-	private String description;
+	private Object data;
 	private AbstractTree parent;
-	private LinkedList<AbstractTree> children;
+	private List<AbstractTree> children;
 
 	/**
 	 * 
 	 */
-	public AbstractTree(String description, String acronym) {
-		this.acronym = acronym;
-		this.description = description;
+	public AbstractTree(Object data) {
+		this.data = data;
 		children = new LinkedList<AbstractTree>();
 	}
 
-	/**
-	 * @return the name
-	 */
-	public String getAcronym() {
-		return acronym;
-	}
-
-	public String getDescription() {
-		return description;
+	public Object getData() {
+		return data;
 	}
 
 	/**
@@ -65,12 +57,19 @@ public class AbstractTree {
 				.size()]);
 	}
 
+	public void addChildren(List<AbstractTree> children) {
+		for (AbstractTree child : children) {
+			addChild(child);
+		}
+	}
+
 	public boolean hasChildren() {
 		return children.size() > 0;
 	}
 
+	@Override
 	public String toString() {
-		return description;
+		return data.toString();
 	}
 
 }

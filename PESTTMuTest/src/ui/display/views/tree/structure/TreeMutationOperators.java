@@ -38,11 +38,9 @@ public class TreeMutationOperators {
 				AbstractTree element = (AbstractTree) event.getElement();
 				if (event.getChecked() && element.hasChildren()) {
 					treeViewer.setSubtreeChecked(element, true);
-					System.out.println(event.getChecked());
 				} else if (!event.getChecked() && element.hasChildren()) {
 					treeViewer.setSubtreeChecked(element, false);
 				}
-				System.out.println(event.getChecked());
 
 			}
 		});
@@ -69,7 +67,6 @@ public class TreeMutationOperators {
 		// uncheck the children of categories of mutations operators
 		for (AbstractTree node : childrenRoot) {
 			treeViewer.setSubtreeChecked(node, false);
-
 		}
 
 	}
