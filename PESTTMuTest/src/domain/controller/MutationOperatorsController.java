@@ -1,28 +1,70 @@
 package domain.controller;
 
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
-import domain.manage.ManageMutationOperators;
+import org.eclipse.jdt.core.dom.ASTNode;
+
+import domain.management.ManagerMutationOperators;
 import domain.mutation.IMutationOperators;
+import domain.mutation.Mutation;
 
-public class MutationOperatorsController {
+public class MutationOperatorsController extends Observable {
 
-	private ManageMutationOperators manageMutationOperators;
+	private ManagerMutationOperators managerMutationOperators;
+	private IMutationOperators selectedIMutOperator;
 
 	public MutationOperatorsController() {
-		manageMutationOperators = new ManageMutationOperators();
+		managerMutationOperators = new ManagerMutationOperators();
+		selectedIMutOperator = null;
 	}
 
-	public void setOperatorsSelected(Object[] elements) {
-		manageMutationOperators.setOperatorsSelected(elements);
+	public void addObserverMutationOperators(Observer o) {
+		managerMutationOperators.addObserver(o);
 	}
 
-	public void createMutationOperators() {
-		manageMutationOperators.createMutationOperators();
+	public void deleteObserverMutationOperators(Observer o) {
+		managerMutationOperators.deleteObserver(o);
 	}
 
-	public List<IMutationOperators> getInstanceOfOperators() {
-		return manageMutationOperators.getInstanceOfOperators();
+	public void createMutationOperators(Object[] elements) {
+		managerMutationOperators.createMutationOperators(elements);
+	}
+
+	public void setManagerMutationOperators(
+			ManagerMutationOperators managerMutationOperators) {
+		this.managerMutationOperators = managerMutationOperators;
+	}
+
+	public List<IMutationOperators> getMutationOperators() {
+		return managerMutationOperators.getMutationOperators();
+	}
+
+	public ManagerMutationOperators getManagerMutationOperators() {
+		return managerMutationOperators;
+	}
+
+	public List<IMutationOperators> getOperatorsApplicable(ASTNode node) {
+		return managerMutationOperators.getOperatorsApplicable(node);
+	}
+
+	public boolean anyOperatorApplied(ASTNode node) {
+		return managerMutationOperators.anyOperatorApplied(node);
+	}
+
+	public IMutationOperators getSelectedIMutOperator() {
+		return selectedIMutOperator;
+	}
+
+	public void setSelectedIMutOperator(IMutationOperators selectedOperator) {
+		this.selectedIMutOperator = selectedOperator;
+		setChanged();
+		notifyObservers();
+	}
+
+	public List<Mutation> getMutations(ASTNode node) {
+		return selectedIMutOperator.getMutations(node);
 	}
 
 }

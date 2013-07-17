@@ -12,11 +12,7 @@ import ui.display.views.table.structure.TableViewerFactory;
  * @author sheilla
  * 
  */
-public class ViewMutants extends ViewPart {
-
-	public ViewMutants() {
-		// TODO Auto-generated constructor stub
-	}
+public class ViewMutations extends ViewPart {
 
 	@Override
 	public void createPartControl(Composite parent) {
@@ -25,7 +21,7 @@ public class ViewMutants extends ViewPart {
 		TableViewerFactory.INSTANCE.createTableViewer(parent, getSite(),
 				TableViewers.OPMUTATIONAPPLTABLE.toString());
 		TableViewerFactory.INSTANCE.createTableViewer(parent, getSite(),
-				TableViewers.MUTANTTABLE.toString());
+				TableViewers.MUTATIONTABLE.toString());
 
 	}
 

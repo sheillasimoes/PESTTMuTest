@@ -1,31 +1,30 @@
 package domain.ast.visitors;
 
-import java.util.LinkedList;
-import java.util.List;
-
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.Assignment;
 
-import domain.mutation.AssignmentOperatorReplacement;
-import domain.mutation.IMutationOperators;
+import domain.controller.GroundStringController;
 
 public class SourceCodeVisitor extends ASTVisitor {
-	private List<ASTNode> listGroundString;
+	private GroundStringController groundStringController;
 
-	public SourceCodeVisitor() {
-		listGroundString = new LinkedList();
+	public SourceCodeVisitor(GroundStringController groundStringController) {
+		this.groundStringController = groundStringController;
 	}
 
 	@Override
 	public boolean visit(Assignment node) {
-		AssignmentOperatorReplacement operatorReplacement = new AssignmentOperatorReplacement();
-		listGroundString.add(node);
+		evaluateASTNode(node);
 		return super.visit(node);
 	}
 
-	public List<ASTNode> getList() {
-		return listGroundString;
+	/**
+	 * 
+	 * @param node
+	 */
+	private void evaluateASTNode(ASTNode node) {
+		groundStringController.evaluateASTNode(node);
 	}
 
 }

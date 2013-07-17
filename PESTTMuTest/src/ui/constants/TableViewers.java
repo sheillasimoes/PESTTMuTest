@@ -7,12 +7,15 @@ package ui.constants;
  * 
  */
 public enum TableViewers {
-	/* id das tabelas */
-	MUTANTTABLE, GROUNDSTRINGTABLE, OPMUTATIONAPPLTABLE;
+	/* id of table */
+	MUTATIONTABLE, GROUNDSTRINGTABLE, OPMUTATIONAPPLTABLE;
 
-	/* Nome das colunas para as tabelas */
-	public static final String COLUMN_MUTANT_TABLE = "Mutant";
+	/* the name of column */
+	public static final String COLUMN_MUTANT_TABLE = "Mutation";
 	public static final String COLUMN_GROUND_STRING_TABLE = "Ground String";
 	public static final String COLUMN_OP_MUTATION_APPL_TABLE = "Operator Mutation Applicable";
+
+	/* the width of columns */
+	public static final int COLUMN_WIDTH = 414;
 
 }

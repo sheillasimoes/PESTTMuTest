@@ -12,6 +12,7 @@ public class AssignmentOperatorReplacement implements IMutationOperators {
 
 	@Override
 	public List<Mutation> getMutations(ASTNode node) {
+
 		/* No (AST) original */
 		Assignment assignmentNode = (Assignment) node;
 
@@ -21,27 +22,40 @@ public class AssignmentOperatorReplacement implements IMutationOperators {
 		for (EnumAssignmentOperator opr : EnumAssignmentOperator.values()) {
 			if (!opr.getStrAssignmentOper().equals(
 					assignmentNode.getOperator().toString())) {
-				Mutation mutation = new Mutation(node, this,
+
+				// copy a ASTNode to apply a mutation
+				Assignment newNode = (Assignment) node.copySubtree(
+						node.getAST(), node);
+
+				// create a mutation
+				Mutation mutation = new Mutation(newNode, this,
 						opr.getStrAssignmentOper());
+
+				// apply the mutation
+				mutation.applyMutation();
+
 				listMutants.add(mutation);
 			}
-
 		}
-
 		return listMutants;
 	}
 
 	@Override
-	public void applyMutation(Mutation mutation) {
+	public ASTNode applyMutation(Mutation mutation) {
 		Assignment assignmentNode = (Assignment) mutation.getASTNode();
 		assignmentNode.setOperator(Assignment.Operator
 				.toOperator((String) mutation.getData()));
+		return assignmentNode;
+
 	}
 
 	@Override
 	public boolean isOperatorApplicable(ASTNode node) {
-		return node instanceof Assignment; // node.getNodeType() ==
-											// ASTNode.ASSIGNMENT;
+		return node instanceof Assignment;
 	}
 
+	@Override
+	public String toString() {
+		return "Assignment Operator Replacement";
+	}
 }

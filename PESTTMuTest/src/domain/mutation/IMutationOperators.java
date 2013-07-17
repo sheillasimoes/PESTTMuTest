@@ -16,5 +16,5 @@ public interface IMutationOperators {
 
 	public boolean isOperatorApplicable(ASTNode node);
 
-	public void applyMutation(Mutation mutation);
+	public ASTNode applyMutation(Mutation mutation);
 }

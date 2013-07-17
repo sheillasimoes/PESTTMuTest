@@ -7,13 +7,13 @@ import org.eclipse.jdt.core.dom.ASTNode;
 
 public class Mutation {
 
-	//
+	// Nó onde será aplicada a mutacao
 	private ASTNode node;
 
-	//
+	// objeto que aplicara a mutacao
 	private IMutationOperators mutationOperator;
 
-	//
+	// Que mutacao deve ser aplicada
 	private Object data;
 
 	public Mutation(ASTNode node, IMutationOperators mutationOperator,
@@ -32,6 +32,11 @@ public class Mutation {
 	}
 
 	public void applyMutation() {
-		mutationOperator.applyMutation(this);
+		node = mutationOperator.applyMutation(this);
+	}
+
+	@Override
+	public String toString() {
+		return node.toString();
 	}
 }

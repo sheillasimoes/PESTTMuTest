@@ -22,9 +22,9 @@ public enum TableViewerFactory {
 		case GROUNDSTRINGTABLE:
 			return new GroundStringTableView(parent, site).create();
 		case OPMUTATIONAPPLTABLE:
-			return new OpMutationApplicable(parent, site).create();
-		case MUTANTTABLE:
-			return new MutantTableView(parent, site).create();
+			return new OpMutationApplicableView(parent, site).create();
+		case MUTATIONTABLE:
+			return new MutationTableView(parent, site).create();
 		default:
 			return null;
 		}

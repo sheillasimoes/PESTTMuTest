@@ -28,9 +28,9 @@
       <view
             allowMultiple="true"
             category="PESTTMuTest.Category"
-            class="ui.display.views.ViewMutants"
-            id="PESTTMuTest.Mutants"
-            name="Mutants"
+            class="ui.display.views.ViewMutations"
+            id="PESTTMuTest.Mutations"
+            name="Mutations"
             restorable="true">
       </view>
    </extension>
@@ -172,7 +172,7 @@
          </view>
          <view
                closeable="true"
-               id="PESTTMuTest.Mutants"
+               id="PESTTMuTest.Mutations"
                minimized="false"
                moveable="true"
                relationship="bottom"

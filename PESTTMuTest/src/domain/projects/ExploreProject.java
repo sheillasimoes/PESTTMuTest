@@ -1,7 +1,5 @@
 package domain.projects;
 
-import java.util.List;
-
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.IWorkspaceRoot;
@@ -13,7 +11,6 @@ import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.dom.AST;
-import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.ASTParser;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 
@@ -22,7 +19,11 @@ import ui.dialog.ProcessMessage;
 import domain.ast.visitors.SourceCodeVisitor;
 
 public class ExploreProject {
-	SourceCodeVisitor sourceCodeVisitor;
+	private SourceCodeVisitor sourceCodeVisitor;
+
+	public ExploreProject(SourceCodeVisitor sourceCodeVisitor) {
+		this.sourceCodeVisitor = sourceCodeVisitor;
+	}
 
 	public void scanProject() {
 		// get workspace
@@ -75,7 +76,7 @@ public class ExploreProject {
 						parser.setResolveBindings(true);
 						CompilationUnit parse = (CompilationUnit) parser
 								.createAST(null);
-						sourceCodeVisitor = new SourceCodeVisitor();
+						// sourceCodeVisitor = new SourceCodeVisitor();
 						parse.accept(sourceCodeVisitor);
 					}
 				}
@@ -87,7 +88,4 @@ public class ExploreProject {
 
 	}
 
-	public List<ASTNode> getList() {
-		return sourceCodeVisitor.getList();
-	}
 }

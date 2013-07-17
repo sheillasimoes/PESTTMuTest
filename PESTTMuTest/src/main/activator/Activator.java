@@ -1,8 +1,15 @@
 package main.activator;
 
+import java.util.List;
+import java.util.Observer;
+
+import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
+
+import domain.mutation.IMutationOperators;
+import domain.mutation.Mutation;
 
 import ui.display.views.tree.structure.TreeMutationOperators;
 
@@ -81,6 +88,66 @@ public class Activator extends AbstractUIPlugin {
 
 	public void runMutationOperators() {
 		pesttMuTest.runMutationOperators();
+	}
+
+	public void addObserverGroundStringController(Observer o) {
+		pesttMuTest.addObserverGroundStringController(o);
+	}
+
+	public void deleteObserverGroundStringController(Observer o) {
+		pesttMuTest.deleteObserverGroundStringController(o);
+	}
+
+	public void addObserverOperatorsController(Observer o) {
+		pesttMuTest.addObserverOperatorsController(o);
+	}
+
+	public void deleteObserverOperatorsController(Observer o) {
+		pesttMuTest.deleteObserverOperatorsController(o);
+	}
+
+	public void addObserverGroundString(Observer o) {
+		pesttMuTest.addObserverGroundString(o);
+	}
+
+	public void deleteObserverGroundString(Observer o) {
+		pesttMuTest.deleteObserverGroundString(o);
+	}
+
+	public void addObserverMutationOperators(Observer o) {
+		pesttMuTest.addObserverMutationOperators(o);
+	}
+
+	public void deleteObserverMutationOperators(Observer o) {
+		pesttMuTest.deleteObserverMutationOperators(o);
+	}
+
+	public List<ASTNode> getListGroundString() {
+		return pesttMuTest.getListGroundString();
+	}
+
+	public List<Mutation> getMutations() {
+		return pesttMuTest.getMutations();
+	}
+
+	public void setSelectedGroundString(ASTNode node) {
+		pesttMuTest.setSelectedGroundString(node);
+	}
+
+	public ASTNode getSelectedGroundString() {
+		return pesttMuTest.getSelectedGroundString();
+	}
+
+	public List<IMutationOperators> getOperatorsApplicable() {
+		return pesttMuTest.getOperatorsApplicable();
+	}
+
+	public void setSelectedIMutOperator(IMutationOperators operator) {
+		pesttMuTest.setSelectedIMutOperator(operator);
+	}
+
+	public IMutationOperators getSelectedIMutOperator() {
+		return pesttMuTest.getSelectedIMutOperator();
 	}
 
 }
