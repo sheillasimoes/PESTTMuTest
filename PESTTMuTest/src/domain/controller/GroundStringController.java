@@ -11,12 +11,10 @@ import domain.management.ManagerMutationOperators;
 
 public class GroundStringController extends Observable {
 	private ManagerGroundString managerGroundString;
-	private ManagerMutationOperators operatorManager;
 	private ASTNode selectedGroundString = null;
 
 	public GroundStringController(ManagerMutationOperators operatorManager) {
-		this.operatorManager = operatorManager;
-		this.managerGroundString = new ManagerGroundString();
+		this.managerGroundString = new ManagerGroundString(operatorManager);
 	}
 
 	public List<ASTNode> getListGroundString() {
@@ -53,12 +51,8 @@ public class GroundStringController extends Observable {
 		managerGroundString.initializeListGroundString();
 	}
 
-	/**
-	 * 
-	 * @param node
-	 */
 	public void evaluateASTNode(ASTNode node) {
-		managerGroundString.evaluateASTNode(node, operatorManager);
+		managerGroundString.evaluateASTNode(node);
 	}
 
 }

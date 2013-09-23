@@ -5,34 +5,30 @@ import java.util.List;
 
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.Assignment;
+import org.eclipse.jdt.core.dom.Assignment.Operator;
+import org.eclipse.jdt.core.dom.rewrite.ASTRewrite;
 
 import domain.constants.EnumAssignmentOperator;
+import domain.util.ASTChangeHelper;
 
 public class AssignmentOperatorReplacement implements IMutationOperators {
 
 	@Override
 	public List<Mutation> getMutations(ASTNode node) {
 
-		/* No (AST) original */
 		Assignment assignmentNode = (Assignment) node;
 
 		/* List com todas as mutacoes geradas */
 		List<Mutation> listMutants = new LinkedList<Mutation>();
 
 		for (EnumAssignmentOperator opr : EnumAssignmentOperator.values()) {
-			if (!opr.getStrAssignmentOper().equals(
-					assignmentNode.getOperator().toString())) {
-
-				// copy a ASTNode to apply a mutation
-				Assignment newNode = (Assignment) node.copySubtree(
-						node.getAST(), node);
+			if (!opr.getAssignmentOperator().equals(
+					assignmentNode.getOperator())) {
 
 				// create a mutation
-				Mutation mutation = new Mutation(newNode, this,
-						opr.getStrAssignmentOper());
-
-				// apply the mutation
-				mutation.applyMutation();
+				Mutation mutation = new Mutation(assignmentNode, this,
+						opr.getAssignmentOperator(),
+						assignmentNode.getOperator());
 
 				listMutants.add(mutation);
 			}
@@ -41,11 +37,20 @@ public class AssignmentOperatorReplacement implements IMutationOperators {
 	}
 
 	@Override
-	public ASTNode applyMutation(Mutation mutation) {
+	public void applyOperator(Mutation mutation, ASTRewrite rewrite) {
 		Assignment assignmentNode = (Assignment) mutation.getASTNode();
-		assignmentNode.setOperator(Assignment.Operator
-				.toOperator((String) mutation.getData()));
-		return assignmentNode;
+		Operator operator = (Operator) mutation.getData();
+		ASTChangeHelper.alterAssignmentOperator(assignmentNode, operator,
+				rewrite);
+
+	}
+
+	@Override
+	public void undoActionOperator(Mutation mutation, ASTRewrite rewrite) {
+		Assignment assignmentNode = (Assignment) mutation.getASTNode();
+		Operator operator = (Operator) mutation.getoriginalData();
+		ASTChangeHelper.alterAssignmentOperator(assignmentNode, operator,
+				rewrite);
 
 	}
 
@@ -58,4 +63,5 @@ public class AssignmentOperatorReplacement implements IMutationOperators {
 	public String toString() {
 		return "Assignment Operator Replacement";
 	}
+
 }

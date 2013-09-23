@@ -7,10 +7,11 @@ import java.util.Observable;
 import org.eclipse.jdt.core.dom.ASTNode;
 
 public class ManagerGroundString extends Observable {
+	private ManagerMutationOperators operatorManager = null;
+	private List<ASTNode> listGroundString = null;
 
-	private List<ASTNode> listGroundString;
-
-	public ManagerGroundString() {
+	public ManagerGroundString(ManagerMutationOperators operatorManager) {
+		this.operatorManager = operatorManager;
 		listGroundString = new LinkedList<>();
 	}
 
@@ -29,7 +30,7 @@ public class ManagerGroundString extends Observable {
 	 * 
 	 * @param node
 	 */
-	public void addGroundString(ASTNode node) {
+	private void addGroundString(ASTNode node) {
 		listGroundString.add(node);
 		setChanged();
 		notifyObservers();
@@ -48,14 +49,13 @@ public class ManagerGroundString extends Observable {
 	 * 
 	 * @param node
 	 */
-	public void evaluateASTNode(ASTNode node, ManagerMutationOperators manager) {
-		if (isGroundString(node, manager)) {
+	public void evaluateASTNode(ASTNode node) {
+		if (isGroundString(node)) {
 			addGroundString(node);
 		}
 	}
 
-	private boolean isGroundString(ASTNode node,
-			ManagerMutationOperators manager) {
-		return manager.anyOperatorApplied(node);
+	private boolean isGroundString(ASTNode node) {
+		return operatorManager.anyOperatorApplied(node);
 	}
 }

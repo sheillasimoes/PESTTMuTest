@@ -24,7 +24,7 @@ public enum TableViewerFactory {
 		case OPMUTATIONAPPLTABLE:
 			return new OpMutationApplicableView(parent, site).create();
 		case MUTATIONTABLE:
-			return new MutationTableView(parent, site).create();
+			return new MutantsTableView(parent, site).create();
 		default:
 			return null;
 		}

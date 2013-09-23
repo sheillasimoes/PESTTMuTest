@@ -150,4 +150,16 @@ public class Activator extends AbstractUIPlugin {
 		return pesttMuTest.getSelectedIMutOperator();
 	}
 
+	public Object[] getSelectedOperators() {
+		return pesttMuTest.getSelectedOperators();
+	}
+
+	public void verifyChangesOperators() {
+		pesttMuTest.verifyChangesOperators();
+	}
+
+	public List<Mutation> getMutantsToDisplay() {
+		return pesttMuTest.getMutantsToDisplay();
+	}
+
 }

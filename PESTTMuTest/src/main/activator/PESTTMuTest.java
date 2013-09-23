@@ -5,12 +5,12 @@ import java.util.Observer;
 
 import org.eclipse.jdt.core.dom.ASTNode;
 
-import domain.ast.visitors.SourceCodeVisitor;
 import domain.controller.GroundStringController;
 import domain.controller.MutationOperatorsController;
+import domain.controller.MutationsController;
+import domain.controller.ProjectController;
 import domain.mutation.IMutationOperators;
 import domain.mutation.Mutation;
-import domain.projects.ExploreProject;
 import ui.constants.Messages;
 import ui.dialog.ProcessMessage;
 import ui.display.views.tree.structure.TreeMutationOperators;
@@ -19,16 +19,16 @@ public class PESTTMuTest {
 
 	private TreeMutationOperators treeViewer;
 	private MutationOperatorsController operatorsController;
-	private ExploreProject exploreProject;
+	private MutationsController mutationsController;
 	private GroundStringController groundStringController;
+	private ProjectController projectController;
 
 	public PESTTMuTest() {
 		operatorsController = new MutationOperatorsController();
 		groundStringController = new GroundStringController(
 				operatorsController.getManagerMutationOperators());
-		SourceCodeVisitor sourceCodeVisitor = new SourceCodeVisitor(
-				groundStringController);
-		exploreProject = new ExploreProject(sourceCodeVisitor);
+		projectController = new ProjectController(groundStringController);
+		mutationsController = new MutationsController();
 	}
 
 	public TreeMutationOperators getTreeViewer() {
@@ -41,6 +41,7 @@ public class PESTTMuTest {
 
 	public void runMutationOperators() {
 		Object[] elements = treeViewer.getCheckedElements();
+
 		if (elements.length == 0) {
 			ProcessMessage.INSTANCE.showInformationMessage("Info",
 					Messages.NOT_SELECT_ELEMENTS_TREE);
@@ -54,8 +55,16 @@ public class PESTTMuTest {
 			}
 			operatorsController.createMutationOperators(elements);
 			groundStringController.initializeListGroundString();
-			exploreProject.scanProject();
+			projectController.analyseProject();
+
 		}
+	}
+
+	public List<Mutation> getMutantsToDisplay() {
+		ASTNode groundString = groundStringController.getSelectedGroundString();
+		List<Mutation> mutations = operatorsController
+				.getMutations(groundString);
+		return mutationsController.getMutantsToDisplay(groundString, mutations);
 	}
 
 	public void addObserverGroundStringController(Observer o) {
@@ -120,6 +129,19 @@ public class PESTTMuTest {
 		ASTNode selectedGroundString = groundStringController
 				.getSelectedGroundString();
 		return operatorsController.getMutations(selectedGroundString);
+	}
+
+	public void verifyChangesOperators() {
+		boolean result = operatorsController.verifyChangesOperators(treeViewer
+				.getCheckedElements());
+		if (!result) {
+			ProcessMessage.INSTANCE.showInformationMessage("Info",
+					Messages.NOT_SELECT_ELEMENTS_TREE);
+		}
+	}
+
+	public Object[] getSelectedOperators() {
+		return operatorsController.getSelectedOperators();
 	}
 
 }

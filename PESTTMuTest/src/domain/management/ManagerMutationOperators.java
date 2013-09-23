@@ -6,16 +6,22 @@ import java.util.Observable;
 
 import org.eclipse.jdt.core.dom.ASTNode;
 
+import ui.constants.DesignationMutationOperators;
+import ui.constants.GroupDesignationMutationOperators;
+import ui.display.views.tree.structure.AbstractTree;
+
 import domain.factories.MutationOperatorsFactory;
 import domain.mutation.IMutationOperators;
 
 public class ManagerMutationOperators extends Observable {
-	private Object[] operatorSelected;
+	private Object[] selectedOperator;
 	private List<IMutationOperators> listOperators;
+	private Object[] checkedElements;
 
 	public ManagerMutationOperators() {
 		this.listOperators = null;
-		this.operatorSelected = null;
+		this.selectedOperator = null;
+		this.checkedElements = null;
 	}
 
 	/**
@@ -24,9 +30,9 @@ public class ManagerMutationOperators extends Observable {
 	 * @param elements
 	 */
 	public void createMutationOperators(Object[] elements) {
-		setOperatorsSelected(elements);
+		setSelectedOperators(elements);
 		MutationOperatorsFactory factory = new MutationOperatorsFactory();
-		listOperators = factory.getInstanceOfOperators(operatorSelected);
+		listOperators = factory.getInstanceOfOperators(selectedOperator);
 	}
 
 	/**
@@ -43,8 +49,8 @@ public class ManagerMutationOperators extends Observable {
 	 * 
 	 * @param operatorSelected
 	 */
-	public void setOperatorsSelected(Object[] operatorSelected) {
-		this.operatorSelected = operatorSelected;
+	public void setSelectedOperators(Object[] operatorSelected) {
+		this.selectedOperator = operatorSelected;
 		setChanged();
 		notifyObservers();
 	}
@@ -54,8 +60,16 @@ public class ManagerMutationOperators extends Observable {
 	 * 
 	 * @return
 	 */
-	public Object[] getOperatorsSelected() {
-		return operatorSelected;
+	public Object[] getSelectedOperators() {
+		return selectedOperator;
+	}
+
+	public Object[] getCheckedElements() {
+		return checkedElements;
+	}
+
+	public void setCheckedElements(Object[] checkedElements) {
+		this.checkedElements = checkedElements;
 	}
 
 	/**
@@ -91,6 +105,49 @@ public class ManagerMutationOperators extends Observable {
 			}
 		}
 		return list;
+	}
+
+	public boolean verifyChangesOperators(Object[] checkedElements) {
+		setCheckedElements(checkedElements);
+		return compare();
+	}
+
+	private boolean compare() {
+		boolean flag = false;
+
+		int i = 0, j = 0;
+		while (i < selectedOperator.length && j < checkedElements.length) {
+			AbstractTree tree1 = (AbstractTree) selectedOperator[i];
+			AbstractTree tree2 = (AbstractTree) checkedElements[j];
+
+			if (tree1.getData() instanceof GroupDesignationMutationOperators) {
+				i++;
+				tree1 = (AbstractTree) selectedOperator[i];
+
+			}
+
+			if (tree2.getData() instanceof GroupDesignationMutationOperators) {
+				j++;
+				tree2 = (AbstractTree) checkedElements[j];
+
+			}
+
+			if (tree1.getData() instanceof DesignationMutationOperators
+					&& tree2.getData() instanceof DesignationMutationOperators
+					&& !tree1.getData().equals(tree2.getData())) {
+				return false;
+			} else if (tree1.getData() instanceof DesignationMutationOperators
+					&& tree2.getData() instanceof DesignationMutationOperators
+					&& tree1.getData().equals(tree2.getData())) {
+				flag = true;
+			}
+			i++;
+			j++;
+		}
+
+		return i == selectedOperator.length && j == checkedElements.length
+				&& flag;
+
 	}
 
 }

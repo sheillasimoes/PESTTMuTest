@@ -67,4 +67,18 @@ public class MutationOperatorsController extends Observable {
 		return selectedIMutOperator.getMutations(node);
 	}
 
+	public Object[] getSelectedOperators() {
+		return managerMutationOperators.getSelectedOperators();
+	}
+
+	/**
+	 * Verifica se houve alguma alteracao dos operadores de mutacao selecionados
+	 * 
+	 * @param checkedElements
+	 * @return
+	 */
+	public boolean verifyChangesOperators(Object[] checkedElements) {
+		return managerMutationOperators.verifyChangesOperators(checkedElements);
+	}
+
 }

@@ -43,7 +43,6 @@ public class GroundStringTableView extends AbstractTableViewer implements
 		this.parent = parent;
 		this.site = site;
 		Activator.getDefault().addObserverGroundString(this);
-		Activator.getDefault().addObserverOperatorsController(this);
 
 	}
 
@@ -53,7 +52,7 @@ public class GroundStringTableView extends AbstractTableViewer implements
 				TableViewers.GROUNDSTRINGTABLE);
 		createColumnsToGroundString();
 
-		// apresenta a linha n ficheiro onde a ground string
+		// apresenta a linha no ficheiro onde a ground string
 		groundStringTableViewer
 				.addDoubleClickListener(new IDoubleClickListener() {
 
@@ -68,6 +67,7 @@ public class GroundStringTableView extends AbstractTableViewer implements
 
 					@Override
 					public void selectionChanged(SelectionChangedEvent event) {
+						Activator.getDefault().verifyChangesOperators();
 						IStructuredSelection selection = (IStructuredSelection) groundStringTableViewer
 								.getSelection();
 
@@ -112,4 +112,7 @@ public class GroundStringTableView extends AbstractTableViewer implements
 
 	}
 
+	public void dispose() {
+		Activator.getDefault().deleteObserverGroundString(this);
+	}
 }

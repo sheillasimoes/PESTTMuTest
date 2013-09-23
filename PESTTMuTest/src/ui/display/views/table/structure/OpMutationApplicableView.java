@@ -37,7 +37,6 @@ public class OpMutationApplicableView extends AbstractTableViewer implements
 		this.parent = parent;
 		this.site = site;
 		Activator.getDefault().addObserverGroundStringController(this);
-
 	}
 
 	public TableViewer create() {
@@ -49,6 +48,7 @@ public class OpMutationApplicableView extends AbstractTableViewer implements
 
 					@Override
 					public void selectionChanged(SelectionChangedEvent event) {
+						Activator.getDefault().verifyChangesOperators();
 						IStructuredSelection selection = (IStructuredSelection) opMutationApplTableViewer
 								.getSelection();
 						IMutationOperators operator = (IMutationOperators) selection
@@ -81,24 +81,6 @@ public class OpMutationApplicableView extends AbstractTableViewer implements
 			editTableStyle(opMutationApplTableViewer);
 		}
 
-		// if (Activator.getDefault().getSelectedGroundString() == null
-		// && opMutationApplTableViewer.getElementAt(0) != null) {
-		// Object allElements = opMutationApplTableViewer.getInput();
-		// opMutationApplTableViewer.remove(allElements);
-		// System.out.println("if operator selected "
-		// + Activator.getDefault().getSelectedIMutOperator());
-		//
-		// } else if (Activator.getDefault().getSelectedGroundString() != null)
-		// {
-		// if(opMutationApplTableViewer.getElementAt(0) != null)
-		// System.out.println("else operator selected "
-		// + Activator.getDefault().getSelectedIMutOperator());
-		//
-		// List<IMutationOperators> list = Activator.getDefault()
-		// .getOperatorsApplicable();
-		// opMutationApplTableViewer.setInput(list);
-		// editTableStyle(opMutationApplTableViewer);
-		// }
 	}
 
 	public void createColumnsOpMutationApplicableView() {
@@ -112,6 +94,10 @@ public class OpMutationApplicableView extends AbstractTableViewer implements
 				cell.setText(cell.getElement().toString());
 			}
 		});
+	}
+
+	public void dispose() {
+		Activator.getDefault().deleteObserverGroundStringController(this);
 	}
 
 }
