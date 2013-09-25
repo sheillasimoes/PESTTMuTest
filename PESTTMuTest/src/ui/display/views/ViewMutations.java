@@ -6,12 +6,6 @@ import org.eclipse.ui.part.ViewPart;
 import ui.constants.TableViewers;
 import ui.display.views.table.structure.TableViewerFactory;
 
-/**
- * Apresenta informação relacionada com os mutantes gerados
- * 
- * @author sheilla
- * 
- */
 public class ViewMutations extends ViewPart {
 
 	@Override
