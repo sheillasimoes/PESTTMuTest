@@ -9,6 +9,7 @@ import domain.controller.GroundStringController;
 import domain.controller.MutationOperatorsController;
 import domain.controller.MutationsController;
 import domain.controller.ProjectController;
+import domain.controller.TestsController;
 import domain.mutation.IMutationOperators;
 import domain.mutation.Mutation;
 import ui.constants.Messages;
@@ -22,6 +23,7 @@ public class PESTTMuTest {
 	private MutationsController mutationsController;
 	private GroundStringController groundStringController;
 	private ProjectController projectController;
+	private TestsController testsController;
 
 	public PESTTMuTest() {
 		operatorsController = new MutationOperatorsController();
@@ -29,6 +31,8 @@ public class PESTTMuTest {
 				operatorsController.getManagerMutationOperators());
 		projectController = new ProjectController(groundStringController);
 		mutationsController = new MutationsController();
+		testsController = new TestsController();
+		System.out.println("contrutor pestt");
 	}
 
 	public TreeMutationOperators getTreeViewer() {
@@ -40,24 +44,25 @@ public class PESTTMuTest {
 	}
 
 	public void runMutationOperators() {
-		Object[] elements = treeViewer.getCheckedElements();
+		// Object[] elements = treeViewer.getCheckedElements();
+		//
+		// if (elements.length == 0) {
+		// ProcessMessage.INSTANCE.showInformationMessage("Info",
+		// Messages.NOT_SELECT_ELEMENTS_TREE);
+		// } else {
+		//
+		// if (operatorsController.getSelectedIMutOperator() != null
+		// || groundStringController.getSelectedGroundString() != null) {
+		//
+		// operatorsController.setSelectedIMutOperator(null);
+		// groundStringController.setSelectedGroundString(null);
+		// }
+		// operatorsController.createMutationOperators(elements);
+		// groundStringController.initializeListGroundString();
+		// projectController.analyseProject();
 
-		if (elements.length == 0) {
-			ProcessMessage.INSTANCE.showInformationMessage("Info",
-					Messages.NOT_SELECT_ELEMENTS_TREE);
-		} else {
+		// }
 
-			if (operatorsController.getSelectedIMutOperator() != null
-					|| groundStringController.getSelectedGroundString() != null) {
-
-				operatorsController.setSelectedIMutOperator(null);
-				groundStringController.setSelectedGroundString(null);
-			}
-			operatorsController.createMutationOperators(elements);
-			groundStringController.initializeListGroundString();
-			projectController.analyseProject();
-
-		}
 	}
 
 	public List<Mutation> getMutantsToDisplay() {
