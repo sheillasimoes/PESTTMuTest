@@ -12,7 +12,6 @@ public class TestsController implements Observer {
 
 	public TestsController() {
 		addListener();
-		System.out.println("construtor testsController");
 	}
 
 	@Override
@@ -25,7 +24,6 @@ public class TestsController implements Observer {
 		listener = new JUnitTestRunListener();
 		listener.addObserver(this);
 		JUnitCore.addTestRunListener(listener);
-		System.out.println("addListener");
 	}
 
 	public void removeListener() {

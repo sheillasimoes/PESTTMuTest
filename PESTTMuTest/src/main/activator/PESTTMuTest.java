@@ -32,7 +32,6 @@ public class PESTTMuTest {
 		projectController = new ProjectController(groundStringController);
 		mutationsController = new MutationsController();
 		testsController = new TestsController();
-		System.out.println("contrutor pestt");
 	}
 
 	public TreeMutationOperators getTreeViewer() {
@@ -44,24 +43,24 @@ public class PESTTMuTest {
 	}
 
 	public void runMutationOperators() {
-		// Object[] elements = treeViewer.getCheckedElements();
-		//
-		// if (elements.length == 0) {
-		// ProcessMessage.INSTANCE.showInformationMessage("Info",
-		// Messages.NOT_SELECT_ELEMENTS_TREE);
-		// } else {
-		//
-		// if (operatorsController.getSelectedIMutOperator() != null
-		// || groundStringController.getSelectedGroundString() != null) {
-		//
-		// operatorsController.setSelectedIMutOperator(null);
-		// groundStringController.setSelectedGroundString(null);
-		// }
-		// operatorsController.createMutationOperators(elements);
-		// groundStringController.initializeListGroundString();
-		// projectController.analyseProject();
+		Object[] elements = treeViewer.getCheckedElements();
 
-		// }
+		if (elements.length == 0) {
+			ProcessMessage.INSTANCE.showInformationMessage("Info",
+					Messages.NOT_SELECT_ELEMENTS_TREE);
+		} else {
+
+			if (operatorsController.getSelectedIMutOperator() != null
+					|| groundStringController.getSelectedGroundString() != null) {
+
+				operatorsController.setSelectedIMutOperator(null);
+				groundStringController.setSelectedGroundString(null);
+			}
+			operatorsController.createMutationOperators(elements);
+			groundStringController.initializeListGroundString();
+			projectController.analyseProject();
+
+		}
 
 	}
 

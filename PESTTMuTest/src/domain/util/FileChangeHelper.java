@@ -10,9 +10,9 @@ import org.eclipse.jdt.core.dom.rewrite.ASTRewrite;
 import org.eclipse.text.edits.MalformedTreeException;
 
 public class FileChangeHelper {
-	
-	public void changeFile(ICompilationUnit workingCopy,
-			ASTRewrite rewrite, CompilationUnit cUnit){
+
+	public void changeFile(ICompilationUnit workingCopy, ASTRewrite rewrite,
+			CompilationUnit cUnit) {
 		changeICompilationUnit(workingCopy, rewrite, cUnit);
 	}
 
@@ -39,9 +39,24 @@ public class FileChangeHelper {
 
 	public static boolean changeIsValid(ICompilationUnit workingCopy) {
 		CompilationUnit parse = ASTUtil.parse(workingCopy);
+		boolean flag = false;
 		IProblem[] problems = parse.getProblems();
-		System.out.println("problem length array" + problems.length);
-		return problems.length == 0 ? true : false;
+
+		if (problems.length == 0) {
+			flag = true;
+		} else {
+			for (IProblem problem : problems) {
+				System.out.println("message problem " + problem.getMessage()
+						+ " id problem" + problem.getID());
+				if (problem.isError()) {
+					return flag;
+				} else {
+					flag = true;
+				}
+
+			}
+		}
+		return flag;
 	}
 
 	public static void saveChange(ICompilationUnit workingCopy) {

@@ -3,11 +3,13 @@ package domain.management;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.jdt.core.dom.ASTNode;
 
 import domain.ast.visitors.SourceCodeVisitor;
 import domain.controller.GroundStringController;
 import domain.projects.ExploreProject;
 import domain.projects.ManagerCopyProjects;
+import domain.projects.TestClassesProjects;
 import domain.projects.listener.MyResourceChangeReporter;
 
 public class ManagerProjects {
@@ -15,11 +17,14 @@ public class ManagerProjects {
 	private ExploreProject exploreProject = null;
 	private ManagerCopyProjects copyProjects = null;
 	private SourceCodeVisitor sourceCodeVisitor = null;
+	private TestClassesProjects testClassesProjects = null;
 	private boolean projectsChanged = false;
 
 	public ManagerProjects(GroundStringController groundStringController) {
 		sourceCodeVisitor = new SourceCodeVisitor(groundStringController);
-		exploreProject = new ExploreProject(sourceCodeVisitor);
+		testClassesProjects = new TestClassesProjects();
+		exploreProject = new ExploreProject(sourceCodeVisitor,
+				testClassesProjects);
 		copyProjects = new ManagerCopyProjects();
 		projectsChanged = false;
 
@@ -33,6 +38,7 @@ public class ManagerProjects {
 		if (copyProjects.getListNameCopies().size() > 0 && isProjectsChanged()) {
 			copyProjects.deleteAllCopiesProjects();
 			createCopiesProjects();
+			testClassesProjects.initializes();
 		} else if (copyProjects.getListNameCopies().size() == 0) {
 			createCopiesProjects();
 		}
@@ -42,7 +48,7 @@ public class ManagerProjects {
 		for (IProject copy : copiesProjects) {
 			exploreProject.analyseProject(copy);
 		}
-
+		System.out.println();
 	}
 
 	/**
@@ -104,4 +110,7 @@ public class ManagerProjects {
 		copyProjects.deleteAllCopiesProjects();
 	}
 
+	public IProject getProject(ASTNode node) {
+		return exploreProject.getProject(node);
+	}
 }

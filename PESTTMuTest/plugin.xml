@@ -65,6 +65,17 @@
             id="PESTTMuTest.DeselectAllMutationOperators"
             name="Deselect All Mutation Operators">
       </command>
+      <category
+            description="Commands related to the PESTTMuTest ViewMutations"
+            id="PESTTMuTest.CategoryViewMutations"
+            name="PESTTMuTest.ViewMutations">
+      </category>
+       <command
+            categoryId="PESTTMuTest.CategoryViewMutations"
+            description="Run All Mutations"
+            id="PESTTMuTest.RunAllMutations"
+            name="Run All Mutations">
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.menus">
@@ -136,6 +147,26 @@
             </visibleWhen>
          </command>
       </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="toolbar:PESTTMuTest.Mutations">
+         <command
+               commandId="PESTTMuTest.RunAllMutations"
+               icon="icons/RunAs.gif"
+               label="Run all Mutations "
+               style="push"
+               tooltip="Run All Mutations">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="activeWorkbenchWindow.activePerspective">
+                  <equals
+                        value="PESTTMuTest.Perspective">
+                  </equals>
+               </with>
+            </visibleWhen>
+         </command>
+      </menuContribution>
    </extension>
    <extension
          point="org.eclipse.ui.handlers">
@@ -154,6 +185,10 @@
       <handler
             class="ui.handler.DeselectAllMutationOperatorsHandler"
             commandId="PESTTMuTest.DeselectAllMutationOperators">
+      </handler>
+      <handler
+            class="ui.handler.RunAllMutationsHandler"
+            commandId="PESTTMuTest.RunAllMutations">
       </handler>
    </extension>
    <extension

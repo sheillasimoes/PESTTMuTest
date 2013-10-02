@@ -14,7 +14,6 @@ public class JUnitTestRunListener extends Observable implements
 	@Override
 	public void testEnded(String arg0, String arg1) {
 		// TODO Auto-generated method stub
-		System.out.println("testEnded " + arg0 + " " + arg1);
 
 	}
 
@@ -41,8 +40,6 @@ public class JUnitTestRunListener extends Observable implements
 	@Override
 	public void testRunStarted(int arg0) {
 		// TODO Auto-generated method stub
-		System.out.println("test started");
-
 	}
 
 	@Override
@@ -60,7 +57,6 @@ public class JUnitTestRunListener extends Observable implements
 	@Override
 	public void testStarted(String arg0, String arg1) {
 		// TODO Auto-generated method stub
-		System.out.println("test started");
 
 	}
 

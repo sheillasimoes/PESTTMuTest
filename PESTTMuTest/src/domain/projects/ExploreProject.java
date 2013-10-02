@@ -5,10 +5,12 @@ import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.jdt.core.ICompilationUnit;
+import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 
 import domain.ast.visitors.SourceCodeVisitor;
@@ -16,9 +18,12 @@ import domain.util.ASTUtil;
 
 public class ExploreProject {
 	private SourceCodeVisitor sourceCodeVisitor;
+	private TestClassesProjects testClassesProjects;
 
-	public ExploreProject(SourceCodeVisitor sourceCodeVisitor) {
+	public ExploreProject(SourceCodeVisitor sourceCodeVisitor,
+			TestClassesProjects testClassesProjects) {
 		this.sourceCodeVisitor = sourceCodeVisitor;
+		this.testClassesProjects = testClassesProjects;
 	}
 
 	/**
@@ -46,7 +51,8 @@ public class ExploreProject {
 				// get source file
 				if (mypackage.getKind() == IPackageFragmentRoot.K_SOURCE) {
 					// get .java source file
-					createAST(mypackage);
+					createAST(mypackage, project.getName());
+
 				}
 			}
 		} catch (JavaModelException e) {
@@ -56,17 +62,29 @@ public class ExploreProject {
 
 	}
 
+	public IProject getProject(ASTNode node) {
+		CompilationUnit cUnit = (CompilationUnit) node.getRoot();
+		ICompilationUnit unit = (ICompilationUnit) cUnit.getJavaElement();
+		IJavaProject javaProject = unit.getJavaProject();
+		return javaProject.getProject();
+	}
+
 	/**
 	 * Create the AST for the ICompilationUnits
 	 * 
 	 * @param mypackage
 	 */
-	private void createAST(IPackageFragment mypackage) {
+	private void createAST(IPackageFragment mypackage, String nameProject) {
 		try {
 			for (ICompilationUnit unit : mypackage.getCompilationUnits()) {
 				// create the AST for the ICompilationUnits
 				CompilationUnit parse = ASTUtil.parse(unit);
-				parse.accept(sourceCodeVisitor);
+
+				if (!testClassesProjects.isTestClass(parse, nameProject,
+						unit.getElementName())) {
+					parse.accept(sourceCodeVisitor);
+				}
+
 			}
 		} catch (JavaModelException e) {
 			// TODO Auto-generated catch block

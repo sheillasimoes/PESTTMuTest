@@ -9,7 +9,9 @@ import java.util.Observer;
 
 import main.activator.Activator;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.jdt.core.dom.ASTNode;
+import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -19,10 +21,10 @@ import org.eclipse.jface.viewers.StyledCellLabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.viewers.ViewerCell;
-
 import org.eclipse.swt.widgets.Composite;
-
+import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPartSite;
+import org.eclipse.ui.PlatformUI;
 
 import ui.constants.TableViewers;
 
@@ -58,6 +60,21 @@ public class GroundStringTableView extends AbstractTableViewer implements
 
 					@Override
 					public void doubleClick(DoubleClickEvent event) {
+						IStructuredSelection selection = (IStructuredSelection) groundStringTableViewer
+								.getSelection();
+
+						ASTNode node = (ASTNode) selection.getFirstElement();
+
+						CompilationUnit cUnit = (CompilationUnit) node
+								.getRoot();
+						IFile file = (IFile) cUnit.getJavaElement()
+								.getResource();
+						IWorkbenchPage page = PlatformUI.getWorkbench()
+								.getActiveWorkbenchWindow().getActivePage();
+						// ITextEditor editor = (ITextEditor)
+						// IDE.openEditor(page,
+						// file);
+						// editor.selectAndReveal(offset, length);
 					}
 				});
 

@@ -26,10 +26,10 @@ public class ManagerMutations {
 	 * @param mutation
 	 * @return
 	 */
-	public Mutation generatingMutant(Mutation mutation) {
+	public boolean generatingMutant(Mutation mutation) {
 		mutation.applyMutationOperator(rewrite);
 		boolean flag = validateMutant();
-		return flag ? mutation : null;
+		return flag;
 	}
 
 	private boolean validateMutant() {
@@ -59,8 +59,9 @@ public class ManagerMutations {
 		initialize(node);
 
 		for (Mutation mutation : mutations) {
-			Mutation auxMutantion = generatingMutant(mutation);
-			if (auxMutantion != null) {
+			// generating mutant
+			// verifies that the mutation generating errors
+			if (generatingMutant(mutation)) {
 				this.mutations.add(mutation);
 			}
 			// Destroy working copy
@@ -98,8 +99,9 @@ public class ManagerMutations {
 		}
 		System.out.println("cUnit antes de aplicar o mutant \n"
 				+ cUnit.toString());
-		Mutation auxMutation = generatingMutant(mutation);
-		if (auxMutation != null) {
+		// generating mutant
+		// verifies that the mutation generating errors
+		if (generatingMutant(mutation)) {
 			FileChangeHelper.saveChange(workingCopy);
 		} else {
 			mutation.undoActionMutationOperator(rewrite);
