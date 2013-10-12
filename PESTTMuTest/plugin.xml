@@ -33,6 +33,15 @@
             name="Mutations"
             restorable="true">
       </view>
+      <view
+            allowMultiple="true"
+            category="PESTTMuTest.Category"
+            class="ui.display.views.ViewMutationAnalysis"
+            icon="icons/results.gif"
+            id="PESTTMuTest.MutationAnalysis"
+            name="Mutation Analysis"
+            restorable="true">
+      </view>
    </extension>
    <extension
          point="org.eclipse.ui.commands">
@@ -213,6 +222,12 @@
                relationship="bottom"
                showTitle="true"
                standalone="false"
+               visible="true">
+         </view>
+         <view
+               id="PESTTMuTest.MutationAnalysis"
+               minimized="false"
+               relationship="bottom"
                visible="true">
          </view>
       </perspectiveExtension>

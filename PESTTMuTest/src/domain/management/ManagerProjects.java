@@ -1,8 +1,11 @@
 package domain.management;
 
+import java.util.List;
+
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.dom.ASTNode;
 
 import domain.ast.visitors.SourceCodeVisitor;
@@ -11,6 +14,7 @@ import domain.projects.ExploreProject;
 import domain.projects.ManagerCopyProjects;
 import domain.projects.TestClassesProjects;
 import domain.projects.listener.MyResourceChangeReporter;
+import domain.util.InfoProjectHelper;
 
 public class ManagerProjects {
 
@@ -38,9 +42,10 @@ public class ManagerProjects {
 		if (copyProjects.getListNameCopies().size() > 0 && isProjectsChanged()) {
 			copyProjects.deleteAllCopiesProjects();
 			createCopiesProjects();
-			testClassesProjects.initializes();
+			testClassesProjects.clearData();
 		} else if (copyProjects.getListNameCopies().size() == 0) {
 			createCopiesProjects();
+			testClassesProjects.clearData();
 		}
 
 		// get copies projects to scan
@@ -48,7 +53,6 @@ public class ManagerProjects {
 		for (IProject copy : copiesProjects) {
 			exploreProject.analyseProject(copy);
 		}
-		System.out.println();
 	}
 
 	/**
@@ -110,7 +114,14 @@ public class ManagerProjects {
 		copyProjects.deleteAllCopiesProjects();
 	}
 
-	public IProject getProject(ASTNode node) {
-		return exploreProject.getProject(node);
+	public boolean hasTestClasses(String nameProject) {
+		return testClassesProjects.hasTestClasses(nameProject);
 	}
+
+	public List<Class<?>> getTestClasses(ASTNode node) {
+		IJavaProject project = InfoProjectHelper.getProject(node);
+		List<Class<?>> f = testClassesProjects.getTestClasses(project);
+		return f;
+	}
+
 }

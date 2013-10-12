@@ -15,15 +15,12 @@ public class TestClassesVisitor extends ASTVisitor {
 	@Override
 	public boolean visit(MarkerAnnotation node) {
 		if (node.toString().equals(Description.MARKER_ANNOTATION_TEST) && !flag) {
-			System.out.println("if " + node.toString() + " " + flag);
 			flag = true;
 			return false;
 		} else if (flag) {
-			System.out.println("else if " + node.toString() + " " + flag);
 			return false;
 		}
 
-		System.out.println("vazio" + node.toString() + " " + flag);
 		return super.visit(node);
 	}
 

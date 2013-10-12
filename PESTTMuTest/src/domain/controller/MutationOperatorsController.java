@@ -7,8 +7,8 @@ import java.util.Observer;
 import org.eclipse.jdt.core.dom.ASTNode;
 
 import domain.management.ManagerMutationOperators;
-import domain.mutation.IMutationOperators;
 import domain.mutation.Mutation;
+import domain.mutation.operators.IMutationOperators;
 
 public class MutationOperatorsController extends Observable {
 
@@ -20,16 +20,12 @@ public class MutationOperatorsController extends Observable {
 		selectedIMutOperator = null;
 	}
 
-	public void addObserverMutationOperators(Observer o) {
-		managerMutationOperators.addObserver(o);
-	}
-
-	public void deleteObserverMutationOperators(Observer o) {
-		managerMutationOperators.deleteObserver(o);
-	}
-
 	public void createMutationOperators(Object[] elements) {
 		managerMutationOperators.createMutationOperators(elements);
+	}
+
+	public boolean anyOperatorApplied(ASTNode node) {
+		return managerMutationOperators.anyOperatorApplied(node);
 	}
 
 	public void setManagerMutationOperators(
@@ -37,20 +33,8 @@ public class MutationOperatorsController extends Observable {
 		this.managerMutationOperators = managerMutationOperators;
 	}
 
-	public List<IMutationOperators> getMutationOperators() {
-		return managerMutationOperators.getMutationOperators();
-	}
-
 	public ManagerMutationOperators getManagerMutationOperators() {
 		return managerMutationOperators;
-	}
-
-	public List<IMutationOperators> getOperatorsApplicable(ASTNode node) {
-		return managerMutationOperators.getOperatorsApplicable(node);
-	}
-
-	public boolean anyOperatorApplied(ASTNode node) {
-		return managerMutationOperators.anyOperatorApplied(node);
 	}
 
 	public IMutationOperators getSelectedIMutOperator() {
@@ -61,10 +45,6 @@ public class MutationOperatorsController extends Observable {
 		this.selectedIMutOperator = selectedOperator;
 		setChanged();
 		notifyObservers();
-	}
-
-	public List<Mutation> getMutations(ASTNode node) {
-		return selectedIMutOperator.getMutations(node);
 	}
 
 	public Object[] getSelectedOperators() {
@@ -81,4 +61,15 @@ public class MutationOperatorsController extends Observable {
 		return managerMutationOperators.verifyChangesOperators(checkedElements);
 	}
 
+	public void addObserverMutationOperators(Observer o) {
+		managerMutationOperators.addObserver(o);
+	}
+
+	public void deleteObserverMutationOperators(Observer o) {
+		managerMutationOperators.deleteObserver(o);
+	}
+
+	public List<Mutation> getMutations(ASTNode node) {
+		return selectedIMutOperator.getMutations(node);
+	}
 }

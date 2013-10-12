@@ -5,12 +5,10 @@ import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.jdt.core.ICompilationUnit;
-import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 
 import domain.ast.visitors.SourceCodeVisitor;
@@ -62,13 +60,6 @@ public class ExploreProject {
 
 	}
 
-	public IProject getProject(ASTNode node) {
-		CompilationUnit cUnit = (CompilationUnit) node.getRoot();
-		ICompilationUnit unit = (ICompilationUnit) cUnit.getJavaElement();
-		IJavaProject javaProject = unit.getJavaProject();
-		return javaProject.getProject();
-	}
-
 	/**
 	 * Create the AST for the ICompilationUnits
 	 * 
@@ -80,8 +71,7 @@ public class ExploreProject {
 				// create the AST for the ICompilationUnits
 				CompilationUnit parse = ASTUtil.parse(unit);
 
-				if (!testClassesProjects.isTestClass(parse, nameProject,
-						unit.getElementName())) {
+				if (!testClassesProjects.isTestClass(parse, unit, nameProject)) {
 					parse.accept(sourceCodeVisitor);
 				}
 

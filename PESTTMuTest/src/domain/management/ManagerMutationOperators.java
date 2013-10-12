@@ -9,9 +9,9 @@ import org.eclipse.jdt.core.dom.ASTNode;
 import ui.constants.DesignationMutationOperators;
 import ui.constants.GroupDesignationMutationOperators;
 import ui.display.views.tree.structure.AbstractTree;
-
 import domain.factories.MutationOperatorsFactory;
-import domain.mutation.IMutationOperators;
+import domain.mutation.Mutation;
+import domain.mutation.operators.IMutationOperators;
 
 public class ManagerMutationOperators extends Observable {
 	private Object[] selectedOperator;
@@ -33,6 +33,29 @@ public class ManagerMutationOperators extends Observable {
 		setSelectedOperators(elements);
 		MutationOperatorsFactory factory = new MutationOperatorsFactory();
 		listOperators = factory.getInstanceOfOperators(selectedOperator);
+	}
+
+	/**
+	 * Dado uma node verifica se existe algum operador de mutação que pode ser
+	 * aplicado
+	 * 
+	 * @param node
+	 * @return true se pode ser aplicado e false caso contrario
+	 */
+	public boolean anyOperatorApplied(ASTNode node) {
+		boolean flag = false;
+		for (IMutationOperators operator : listOperators) {
+			if (operator.isOperatorApplicable(node)) {
+				flag = true;
+				return flag;
+			}
+		}
+		return flag;
+	}
+
+	public boolean verifyChangesOperators(Object[] checkedElements) {
+		setCheckedElements(checkedElements);
+		return compare();
 	}
 
 	/**
@@ -73,21 +96,13 @@ public class ManagerMutationOperators extends Observable {
 	}
 
 	/**
-	 * Dado uma node verifica se existe algum operador de mutação que pode ser
-	 * aplicado
 	 * 
+	 * @param operator
 	 * @param node
-	 * @return true se pode ser aplicado e false caso contrario
+	 * @return
 	 */
-	public boolean anyOperatorApplied(ASTNode node) {
-		boolean flag = false;
-		for (IMutationOperators operator : listOperators) {
-			if (operator.isOperatorApplicable(node)) {
-				flag = true;
-				return flag;
-			}
-		}
-		return flag;
+	public List<Mutation> getMutations(IMutationOperators operator, ASTNode node) {
+		return operator.getMutations(node);
 	}
 
 	/**
@@ -105,11 +120,6 @@ public class ManagerMutationOperators extends Observable {
 			}
 		}
 		return list;
-	}
-
-	public boolean verifyChangesOperators(Object[] checkedElements) {
-		setCheckedElements(checkedElements);
-		return compare();
 	}
 
 	private boolean compare() {

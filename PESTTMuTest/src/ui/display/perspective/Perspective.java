@@ -32,7 +32,9 @@ public class Perspective implements IPerspectiveFactory {
 		IFolderLayout bottom = layout.createFolder("bottom",
 				IPageLayout.BOTTOM, 0.70f, editorArea);
 		bottom.addView(Description.VIEW_MUTATIONS);
+		bottom.addView(Description.VIEW_MUTATION_ANALYSIS);
 		bottom.addView(IConsoleConstants.ID_CONSOLE_VIEW);
+		bottom.addView("org.eclipse.jdt.junit.ResultView");
 		bottom.addView(IPageLayout.ID_PROBLEM_VIEW);
 		bottom.addView(IPageLayout.ID_TASK_LIST);
 

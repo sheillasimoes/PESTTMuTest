@@ -1,8 +1,8 @@
 package domain.factories;
 
 import ui.constants.DesignationMutationOperators;
-import domain.mutation.AssignmentOperatorReplacement;
-import domain.mutation.IMutationOperators;
+import domain.mutation.operators.AssignmentOperatorReplacement;
+import domain.mutation.operators.IMutationOperators;
 
 public class TraditionalOperatorFactory extends
 		AbstractFactoryMutationOperators {

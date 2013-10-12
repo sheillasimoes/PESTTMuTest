@@ -1,63 +1,28 @@
 package domain.tests.instrument;
 
-import java.util.Observable;
+import org.junit.runner.Description;
+import org.junit.runner.notification.Failure;
+import org.junit.runner.notification.RunListener;
 
-import org.eclipse.jdt.junit.ITestRunListener;
-
-import domain.events.EndTestsExecutionEvent;
-import domain.events.FailedTestsExecutionEvent;
-
-@SuppressWarnings("deprecation")
-public class JUnitTestRunListener extends Observable implements
-		ITestRunListener {
-
+public class JUnitTestRunListener extends RunListener {
 	@Override
-	public void testEnded(String arg0, String arg1) {
+	public void testStarted(Description description) throws Exception {
 		// TODO Auto-generated method stub
+		super.testStarted(description);
 
 	}
 
 	@Override
-	public void testFailed(int arg0, String arg1, String arg2, String arg3) {
-		setChanged();
-		notifyObservers(new FailedTestsExecutionEvent());
-	}
-
-	@Override
-	public void testReran(String arg0, String arg1, String arg2, int arg3,
-			String arg4) {
+	public void testFailure(Failure failure) throws Exception {
 		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void testRunEnded(long arg0) {
-		setChanged();
-		notifyObservers(new EndTestsExecutionEvent());
-
-	}
-
-	@Override
-	public void testRunStarted(int arg0) {
-		// TODO Auto-generated method stub
-	}
-
-	@Override
-	public void testRunStopped(long arg0) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void testRunTerminated() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void testStarted(String arg0, String arg1) {
-		// TODO Auto-generated method stub
-
+		System.out.println("message " + failure.getMessage());
+		/*+ " header "
+				+ failure.getTestHeader() + " trace " + failure.getTrace()
+				+ " methodname " + failure.getDescription().getMethodName()
+				+ " DisplayName " + failure.getDescription().getDisplayName()
+				+ " TestClass " + failure.getDescription().getTestClass());
+				*/
+		super.testFailure(failure);
 	}
 
 }

@@ -1,7 +1,7 @@
 package domain.factories;
 
 import ui.constants.DesignationMutationOperators;
-import domain.mutation.IMutationOperators;
+import domain.mutation.operators.IMutationOperators;
 
 public class InformationHidingFactory extends AbstractFactoryMutationOperators {
 

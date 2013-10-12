@@ -1,6 +1,6 @@
 package domain.factories;
 
-import domain.mutation.IMutationOperators;
+import domain.mutation.operators.IMutationOperators;
 
 /**
  * 

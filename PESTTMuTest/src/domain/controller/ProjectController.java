@@ -1,5 +1,9 @@
 package domain.controller;
 
+import java.util.List;
+
+import org.eclipse.jdt.core.dom.ASTNode;
+
 import domain.management.ManagerProjects;
 
 public class ProjectController {
@@ -16,5 +20,10 @@ public class ProjectController {
 	public void deleteAllCopiesProjects() {
 		managerProjects.deleteAllCopiesProjects();
 	}
-
+	public boolean hasTestClasses(String nameProject) {
+		return managerProjects.hasTestClasses(nameProject);
+	}
+	public List<Class<?>> getTestClasses(ASTNode node) {
+		return managerProjects.getTestClasses(node);
+	}
 }

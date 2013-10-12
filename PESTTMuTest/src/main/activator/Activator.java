@@ -8,9 +8,8 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
-import domain.mutation.IMutationOperators;
 import domain.mutation.Mutation;
-
+import domain.mutation.operators.IMutationOperators;
 import ui.display.views.tree.structure.TreeMutationOperators;
 
 /**
@@ -90,6 +89,10 @@ public class Activator extends AbstractUIPlugin {
 		pesttMuTest.runMutationOperators();
 	}
 
+	public void runAllMutations() {
+		pesttMuTest.runAllMutations();
+	}
+
 	public void addObserverGroundStringController(Observer o) {
 		pesttMuTest.addObserverGroundStringController(o);
 	}
@@ -126,10 +129,6 @@ public class Activator extends AbstractUIPlugin {
 		return pesttMuTest.getListGroundString();
 	}
 
-	public List<Mutation> getMutations() {
-		return pesttMuTest.getMutations();
-	}
-
 	public void setSelectedGroundString(ASTNode node) {
 		pesttMuTest.setSelectedGroundString(node);
 	}
@@ -148,10 +147,6 @@ public class Activator extends AbstractUIPlugin {
 
 	public IMutationOperators getSelectedIMutOperator() {
 		return pesttMuTest.getSelectedIMutOperator();
-	}
-
-	public Object[] getSelectedOperators() {
-		return pesttMuTest.getSelectedOperators();
 	}
 
 	public void verifyChangesOperators() {

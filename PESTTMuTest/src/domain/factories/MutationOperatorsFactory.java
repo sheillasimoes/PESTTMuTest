@@ -3,8 +3,7 @@ package domain.factories;
 import java.util.ArrayList;
 import java.util.List;
 
-import domain.mutation.IMutationOperators;
-
+import domain.mutation.operators.IMutationOperators;
 import ui.constants.DesignationMutationOperators;
 import ui.constants.GroupDesignationMutationOperators;
 import ui.display.views.tree.structure.AbstractTree;

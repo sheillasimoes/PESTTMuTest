@@ -19,8 +19,7 @@ import org.eclipse.jface.viewers.ViewerCell;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IWorkbenchPartSite;
 
-import domain.mutation.IMutationOperators;
-
+import domain.mutation.operators.IMutationOperators;
 import ui.constants.TableViewers;
 
 /**

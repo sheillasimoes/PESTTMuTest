@@ -21,6 +21,10 @@ public class ManagerMutations {
 	private ASTRewrite rewrite = null;
 	private List<Mutation> mutations = null;
 
+	public ManagerMutations() {
+
+	}
+
 	/**
 	 * 
 	 * @param mutation
@@ -88,35 +92,23 @@ public class ManagerMutations {
 
 	}
 
-	public void applyMutant(Mutation mutation) {
+	public boolean applyMutant(Mutation mutation) {
 		initialize(mutation.getASTNode());
-		try {
-			System.out.println("unit antes de aplicar mutant \n"
-					+ unit.getSource());
-		} catch (JavaModelException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		System.out.println("cUnit antes de aplicar o mutant \n"
-				+ cUnit.toString());
+		boolean flag = false;
+
 		// generating mutant
 		// verifies that the mutation generating errors
 		if (generatingMutant(mutation)) {
 			FileChangeHelper.saveChange(workingCopy);
+			flag = true;
 		} else {
+			// undo change in CompilationUnit
 			mutation.undoActionMutationOperator(rewrite);
 		}
 
 		FileChangeHelper.discardWorkingCopy(workingCopy);
-		try {
-			System.out.println("unit dps de aplicar mutant \n"
-					+ unit.getSource());
-		} catch (JavaModelException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		System.out.println("cUnit dps de aplicar o mutant \n"
-				+ cUnit.toString());
+
+		return flag;
 	}
 
 	public void undoMutant(Mutation mutation) {
@@ -129,12 +121,6 @@ public class ManagerMutations {
 		}
 		FileChangeHelper
 				.undoChangeICompilationUnit(workingCopy, rewrite, cUnit);
-		try {
-			System.out.println("unit dps de undo mutant \n" + unit.getSource());
-		} catch (JavaModelException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		System.out.println("cUnit dps de undo o mutant \n" + cUnit.toString());
+
 	}
 }

@@ -6,6 +6,8 @@ package domain.mutation;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.rewrite.ASTRewrite;
 
+import domain.mutation.operators.IMutationOperators;
+
 public class Mutation {
 
 	// Nó onde será aplicada a mutacao
@@ -29,7 +31,7 @@ public class Mutation {
 		this.mutationOperator = mutationOperator;
 		this.data = data;
 		this.originalData = originalData;
-		mutant = null;
+		mutant = "";
 	}
 
 	public Object getData() {

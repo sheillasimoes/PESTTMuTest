@@ -8,6 +8,7 @@ import org.eclipse.jdt.core.dom.ASTNode;
 
 import domain.management.ManagerGroundString;
 import domain.management.ManagerMutationOperators;
+import domain.mutation.operators.IMutationOperators;
 
 public class GroundStringController extends Observable {
 	private ManagerGroundString managerGroundString;
@@ -15,6 +16,10 @@ public class GroundStringController extends Observable {
 
 	public GroundStringController(ManagerMutationOperators operatorManager) {
 		this.managerGroundString = new ManagerGroundString(operatorManager);
+	}
+
+	public void initializeListGroundString() {
+		managerGroundString.initializeListGroundString();
 	}
 
 	public List<ASTNode> getListGroundString() {
@@ -39,20 +44,15 @@ public class GroundStringController extends Observable {
 		return selectedGroundString;
 	}
 
-	public void setManagerGroundString(ManagerGroundString managerGroundString) {
-		this.managerGroundString = managerGroundString;
-	}
-
-	public ManagerGroundString getManagerGroundString() {
-		return managerGroundString;
-	}
-
-	public void initializeListGroundString() {
-		managerGroundString.initializeListGroundString();
-	}
-
 	public void evaluateASTNode(ASTNode node) {
 		managerGroundString.evaluateASTNode(node);
 	}
 
+	public List<IMutationOperators> getOperatorsApplicable() {
+		return managerGroundString.getOperatorsApplicable(selectedGroundString);
+	}
+
+	public List<IMutationOperators> getOperatorsApplicable(ASTNode node) {
+		return managerGroundString.getOperatorsApplicable(node);
+	}
 }
