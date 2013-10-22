@@ -34,6 +34,8 @@ public class TraditionalOperatorFactory extends
 			return null;
 		case BSR:
 			return null;
+		default:
+			break;
 		}
 		return null;
 	}

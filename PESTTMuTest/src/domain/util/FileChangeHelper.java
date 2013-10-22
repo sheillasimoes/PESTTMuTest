@@ -21,10 +21,6 @@ public class FileChangeHelper {
 
 		try {
 
-			// cálculo das edições de texto
-			// TextEdit edits = rewrite.rewriteAST(document, null);
-			// edits.apply(document);
-
 			// Modificar o buffer
 			IBuffer buffer = ((IOpenable) workingCopy).getBuffer();
 			buffer.setContents(cUnit.toString());

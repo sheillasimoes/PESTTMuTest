@@ -18,6 +18,8 @@ public class PolymorphismFactory extends AbstractFactoryMutationOperators {
 			return null;
 		case PRV:
 			return null;
+		default:
+			break;
 		}
 		return null;
 	}

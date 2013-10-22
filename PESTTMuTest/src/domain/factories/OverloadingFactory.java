@@ -18,6 +18,8 @@ public class OverloadingFactory extends AbstractFactoryMutationOperators {
 			return null;
 		case OAN:
 			return null;
+		default:
+			break;
 		}
 		return null;
 	}

@@ -19,6 +19,8 @@ public class JavaSpecificFeaturesFactory extends
 			return null;
 		case JDC:
 			return null;
+		default:
+			break;
 		}
 		return null;
 	}

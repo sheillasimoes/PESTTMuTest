@@ -24,6 +24,8 @@ public class InheritanceFactory extends AbstractFactoryMutationOperators {
 			return null;
 		case IPC:
 			return null;
+		default:
+			break;
 		}
 		return null;
 	}

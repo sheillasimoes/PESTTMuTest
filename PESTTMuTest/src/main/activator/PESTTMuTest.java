@@ -1,5 +1,6 @@
 package main.activator;
 
+import java.net.URLClassLoader;
 import java.util.List;
 import java.util.Observer;
 import java.util.Set;
@@ -32,7 +33,6 @@ public class PESTTMuTest {
 				operatorsController.getManagerMutationOperators());
 		projectController = new ProjectController(groundStringController);
 		mutationsController = new MutationsController(groundStringController);
-		controllerRunningTest = new ControllerRunningTest();
 	}
 
 	public TreeMutationOperators getTreeViewer() {
@@ -78,22 +78,25 @@ public class PESTTMuTest {
 				// list test classes
 				List<Class<?>> testClasses = projectController
 						.getTestClasses(projectGS.get(0));
-				for (ASTNode node : projectGS) {
-					// mutation operators
-					List<IMutationOperators> mutationOperators = groundStringController
-							.getOperatorsApplicable(node);
-					for (IMutationOperators operator : mutationOperators) {
-						// mutations
-						List<Mutation> mutations = operator.getMutations(node);
-						for (Mutation mutation : mutations) {
-							if (mutationsController.applyMutant(mutation)) {
-								for (Class<?> testClass : testClasses) {
-									controllerRunningTest.runTest(testClass);
-								}
-							}
-						}
-					}
-				}
+				if (controllerRunningTest == null)
+					controllerRunningTest = new ControllerRunningTest();
+				 for (ASTNode node : projectGS) {
+				 // mutation operators
+				 List<IMutationOperators> mutationOperators =
+				 groundStringController
+				 .getOperatorsApplicable(node);
+				 for (IMutationOperators operator : mutationOperators) {
+				 // mutations
+				 List<Mutation> mutations = operator.getMutations(node);
+				 for (Mutation mutation : mutations) {
+				 if (mutationsController.applyMutant(mutation)) {
+				 for (Class<?> testClass : testClasses) {
+				 controllerRunningTest.runTest(testClass);
+				 }
+				 }
+				 }
+				 }
+				 }
 			}
 		}
 	}

@@ -9,7 +9,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import junit.framework.Test;
+import main.activator.Activator;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
@@ -19,6 +19,7 @@ import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.junit.JUnitCore;
 import org.eclipse.jdt.launching.JavaRuntime;
+import org.junit.Test;
 
 import domain.ast.visitors.TestClassesVisitor;
 
@@ -55,19 +56,12 @@ public class TestClassesProjects {
 	private URLClassLoader getClassLoader(IJavaProject project) {
 		String[] classPathEntries;
 		try {
-			classPathEntries = JavaRuntime
-					.computeDefaultRuntimeClassPath(project);
+			classPathEntries = JavaRuntime.computeDefaultRuntimeClassPath(project);
 			List<URL> urlList = new ArrayList<URL>();
-			for (int i = 0; i < classPathEntries.length; i++) {
-				String entry = classPathEntries[i];
-				IPath path = new Path(entry);
-				URL url = path.toFile().toURI().toURL();
-				urlList.add(url);
-			}
-			ClassLoader parentClassLoader = project.getClass().getClassLoader();
+			for (String path : classPathEntries) 
+				urlList.add(new Path(path).toFile().toURI().toURL());
 			URL[] urls = (URL[]) urlList.toArray(new URL[urlList.size()]);
-			return new URLClassLoader(urls, JUnitCore.class.getClassLoader());
-//			return new URLClassLoader(urls, parentClassLoader);
+			return new URLClassLoader(urls, this.getClass().getClassLoader());
 		} catch (CoreException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -88,12 +82,7 @@ public class TestClassesProjects {
 		if (hasTestClasses(nameProject)) {
 			List<String> listQualifiedNames = listTestClasses.get(nameProject);
 			URLClassLoader classLoader = getClassLoader(project);
-			try {
-				System.out.println("ceninha: " + classLoader.loadClass("org.JUnit.Test"));//.equals(Test.class));
-			} catch (ClassNotFoundException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
+			Activator.getDefault().classLoader = classLoader;
 			for (String name : listQualifiedNames) {
 				Class<?> classFile = null;
 				try {

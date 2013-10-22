@@ -19,6 +19,8 @@ public class CommonProgrammingMistakesFactory extends
 			return null;
 		case EMM:
 			return null;
+		default:
+			break;
 		}
 		return null;
 	}

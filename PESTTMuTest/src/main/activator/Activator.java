@@ -1,5 +1,6 @@
 package main.activator;
 
+import java.net.URLClassLoader;
 import java.util.List;
 import java.util.Observer;
 
@@ -25,6 +26,9 @@ public class Activator extends AbstractUIPlugin {
 
 	private PESTTMuTest pesttMuTest;
 
+	public URLClassLoader classLoader;
+
+	
 	/**
 	 * The constructor
 	 */

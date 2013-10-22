@@ -1,6 +1,7 @@
 package domain.factories;
 
 import ui.constants.DesignationMutationOperators;
+import domain.mutation.operators.AccessModifierChange;
 import domain.mutation.operators.IMutationOperators;
 
 public class InformationHidingFactory extends AbstractFactoryMutationOperators {
@@ -11,7 +12,9 @@ public class InformationHidingFactory extends AbstractFactoryMutationOperators {
 
 		switch (desigOperator) {
 		case AMC:
-			return null;
+			return new AccessModifierChange();
+		default:
+			break;
 		}
 		return null;
 	}
