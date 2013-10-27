@@ -14,12 +14,12 @@ import domain.mutation.Mutation;
 import domain.util.FileChangeHelper;
 
 public class ManagerMutations {
-	private AST ast = null;
-	private CompilationUnit cUnit = null;
-	private ICompilationUnit unit = null;
-	private ICompilationUnit workingCopy = null;
-	private ASTRewrite rewrite = null;
-	private List<Mutation> mutations = null;
+	private AST ast;
+	private CompilationUnit cUnit;
+	private ICompilationUnit unit;
+	private ICompilationUnit workingCopy;
+	private ASTRewrite rewrite;
+	private List<Mutation> mutations;
 
 	public ManagerMutations() {
 
@@ -31,7 +31,7 @@ public class ManagerMutations {
 	 * @return
 	 */
 	public boolean generatingMutant(Mutation mutation) {
-		mutation.applyMutationOperator(rewrite);
+		mutation.applyMutationOperator();
 		boolean flag = validateMutant();
 		return flag;
 	}
@@ -72,7 +72,7 @@ public class ManagerMutations {
 			FileChangeHelper.discardWorkingCopy(workingCopy);
 
 			// undo change in CompilationUnit
-			mutation.undoActionMutationOperator(rewrite);
+			mutation.undoActionMutationOperator();
 		}
 
 		return this.mutations;
@@ -103,7 +103,7 @@ public class ManagerMutations {
 			flag = true;
 		} else {
 			// undo change in CompilationUnit
-			mutation.undoActionMutationOperator(rewrite);
+			mutation.undoActionMutationOperator();
 		}
 
 		FileChangeHelper.discardWorkingCopy(workingCopy);
@@ -112,7 +112,7 @@ public class ManagerMutations {
 	}
 
 	public void undoMutant(Mutation mutation) {
-		mutation.undoActionMutationOperator(rewrite);
+		mutation.undoActionMutationOperator();
 		try {
 			workingCopy = unit.getWorkingCopy(null);
 		} catch (JavaModelException e) {

@@ -1,14 +1,86 @@
 package domain.util;
 
 import org.eclipse.jdt.core.dom.Assignment;
-import org.eclipse.jdt.core.dom.rewrite.ASTRewrite;
+import org.eclipse.jdt.core.dom.BodyDeclaration;
+import org.eclipse.jdt.core.dom.Expression;
+import org.eclipse.jdt.core.dom.FieldDeclaration;
+import org.eclipse.jdt.core.dom.Modifier;
+import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
 
 public class ASTChangeHelper {
 
 	public static void alterAssignmentOperator(Assignment node,
-			Assignment.Operator operator, ASTRewrite rewrite) {
+			Assignment.Operator operator) {
 		node.setOperator(operator);
-		rewrite.set(node, Assignment.OPERATOR_PROPERTY, operator, null);
+	}
+
+	public static void alterThisKeywordDeletion(Assignment node,
+			Expression expression) {
+		node.setLeftHandSide(expression);
+	}
+
+	public static void alterVariableInitializationDeletion(
+			VariableDeclarationFragment fragment) {
+		fragment.setInitializer(null);
+	}
+
+	public static void undoVariableInitializationDeletion(
+			VariableDeclarationFragment fragemnet, Expression expression) {
+		fragemnet.setInitializer(expression);
+	}
+
+	@SuppressWarnings("unchecked")
+	public static void alterStaticModifier(FieldDeclaration node,
+			Modifier.ModifierKeyword modifierKeyword) {
+		int position = 0;
+		if (modifierKeyword == null) {
+			for (Object obj : node.modifiers()) {
+				if (((Modifier) obj).getKeyword().equals(
+						Modifier.ModifierKeyword.STATIC_KEYWORD)) {
+					node.modifiers().remove(position);
+					break;
+				}
+				position++;
+			}
+
+		} else {
+			int i = node.modifiers().size() - 1;
+			if (node.modifiers().size() == 1
+					&& node.modifiers().get(i)
+							.equals(Modifier.ModifierKeyword.FINAL_KEYWORD)) {
+				position = 0;
+			} else if ((node.modifiers().size() == 1 && !node.modifiers()
+					.get(i).equals(Modifier.ModifierKeyword.FINAL_KEYWORD))
+					|| (node.modifiers().size() > 1 && node.modifiers().get(i)
+							.equals(Modifier.ModifierKeyword.FINAL_KEYWORD))) {
+				position = 1;
+			} else if (node.modifiers().size() > 1
+					&& !node.modifiers().get(i)
+							.equals(Modifier.ModifierKeyword.FINAL_KEYWORD)) {
+				position = 2;
+			}
+			node.modifiers().add(position,
+					node.getAST().newModifier(modifierKeyword));
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	public static void alterModifierKeyword(BodyDeclaration node,
+			Modifier.ModifierKeyword modifierKeyword,
+			Modifier.ModifierKeyword originalModifierKeyword) {
+
+		if (originalModifierKeyword == null) {
+			node.modifiers().add(0, node.getAST().newModifier(modifierKeyword));
+
+		} else if (modifierKeyword == null) {
+			node.modifiers().remove(0);
+
+		} else {
+
+			Modifier m = (Modifier) node.modifiers().get(0);
+			m.setKeyword(modifierKeyword);
+		}
+
 	}
 
 }

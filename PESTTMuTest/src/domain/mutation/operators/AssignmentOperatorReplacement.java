@@ -6,7 +6,6 @@ import java.util.List;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.Assignment;
 import org.eclipse.jdt.core.dom.Assignment.Operator;
-import org.eclipse.jdt.core.dom.rewrite.ASTRewrite;
 
 import domain.constants.EnumAssignmentOperator;
 import domain.mutation.Mutation;
@@ -36,20 +35,18 @@ public class AssignmentOperatorReplacement implements IMutationOperators {
 	}
 
 	@Override
-	public void applyOperator(Mutation mutation, ASTRewrite rewrite) {
+	public void applyOperator(Mutation mutation) {
 		Assignment assignmentNode = (Assignment) mutation.getASTNode();
 		Operator operator = (Operator) mutation.getData();
-		ASTChangeHelper.alterAssignmentOperator(assignmentNode, operator,
-				rewrite);
+		ASTChangeHelper.alterAssignmentOperator(assignmentNode, operator);
 
 	}
 
 	@Override
-	public void undoActionOperator(Mutation mutation, ASTRewrite rewrite) {
+	public void undoActionOperator(Mutation mutation) {
 		Assignment assignmentNode = (Assignment) mutation.getASTNode();
-		Operator operator = (Operator) mutation.getoriginalData();
-		ASTChangeHelper.alterAssignmentOperator(assignmentNode, operator,
-				rewrite);
+		Operator operator = (Operator) mutation.getOriginalData();
+		ASTChangeHelper.alterAssignmentOperator(assignmentNode, operator);
 
 	}
 

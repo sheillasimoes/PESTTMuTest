@@ -80,23 +80,22 @@ public class PESTTMuTest {
 						.getTestClasses(projectGS.get(0));
 				if (controllerRunningTest == null)
 					controllerRunningTest = new ControllerRunningTest();
-				 for (ASTNode node : projectGS) {
-				 // mutation operators
-				 List<IMutationOperators> mutationOperators =
-				 groundStringController
-				 .getOperatorsApplicable(node);
-				 for (IMutationOperators operator : mutationOperators) {
-				 // mutations
-				 List<Mutation> mutations = operator.getMutations(node);
-				 for (Mutation mutation : mutations) {
-				 if (mutationsController.applyMutant(mutation)) {
-				 for (Class<?> testClass : testClasses) {
-				 controllerRunningTest.runTest(testClass);
-				 }
-				 }
-				 }
-				 }
-				 }
+				for (ASTNode node : projectGS) {
+					// mutation operators
+					List<IMutationOperators> mutationOperators = groundStringController
+							.getOperatorsApplicable(node);
+					for (IMutationOperators operator : mutationOperators) {
+						// mutations
+						List<Mutation> mutations = operator.getMutations(node);
+						for (Mutation mutation : mutations) {
+							if (mutationsController.applyMutant(mutation)) {
+								for (Class<?> testClass : testClasses) {
+									controllerRunningTest.runTest(testClass);
+								}
+							}
+						}
+					}
+				}
 			}
 		}
 	}

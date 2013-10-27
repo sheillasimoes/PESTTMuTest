@@ -4,7 +4,6 @@
 package domain.mutation;
 
 import org.eclipse.jdt.core.dom.ASTNode;
-import org.eclipse.jdt.core.dom.rewrite.ASTRewrite;
 
 import domain.mutation.operators.IMutationOperators;
 
@@ -42,17 +41,17 @@ public class Mutation {
 		return node;
 	}
 
-	public Object getoriginalData() {
+	public Object getOriginalData() {
 		return originalData;
 	}
 
-	public void applyMutationOperator(ASTRewrite rewrite) {
-		mutationOperator.applyOperator(this, rewrite);
+	public void applyMutationOperator() {
+		mutationOperator.applyOperator(this);
 		mutant = node.toString();
 	}
 
-	public void undoActionMutationOperator(ASTRewrite rewrite) {
-		mutationOperator.undoActionOperator(this, rewrite);
+	public void undoActionMutationOperator() {
+		mutationOperator.undoActionOperator(this);
 	}
 
 	@Override

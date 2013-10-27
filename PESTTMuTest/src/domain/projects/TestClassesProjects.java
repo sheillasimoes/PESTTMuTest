@@ -12,14 +12,11 @@ import java.util.Map;
 import main.activator.Activator;
 
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jdt.junit.JUnitCore;
 import org.eclipse.jdt.launching.JavaRuntime;
-import org.junit.Test;
 
 import domain.ast.visitors.TestClassesVisitor;
 
@@ -56,9 +53,10 @@ public class TestClassesProjects {
 	private URLClassLoader getClassLoader(IJavaProject project) {
 		String[] classPathEntries;
 		try {
-			classPathEntries = JavaRuntime.computeDefaultRuntimeClassPath(project);
+			classPathEntries = JavaRuntime
+					.computeDefaultRuntimeClassPath(project);
 			List<URL> urlList = new ArrayList<URL>();
-			for (String path : classPathEntries) 
+			for (String path : classPathEntries)
 				urlList.add(new Path(path).toFile().toURI().toURL());
 			URL[] urls = (URL[]) urlList.toArray(new URL[urlList.size()]);
 			return new URLClassLoader(urls, this.getClass().getClassLoader());
@@ -75,18 +73,16 @@ public class TestClassesProjects {
 	public List<Class<?>> getTestClasses(IJavaProject project) {
 		// list with files .class
 		List<Class<?>> listClass = new ArrayList<Class<?>>();
-
 		// name project
 		String nameProject = project.getElementName();
 		// checks for test classes in the project
 		if (hasTestClasses(nameProject)) {
-			List<String> listQualifiedNames = listTestClasses.get(nameProject);
-			URLClassLoader classLoader = getClassLoader(project);
-			Activator.getDefault().classLoader = classLoader;
-			for (String name : listQualifiedNames) {
+			Activator.getDefault().classLoader = getClassLoader(project);
+			for (String name : listTestClasses.get(nameProject)) {
 				Class<?> classFile = null;
 				try {
-					classFile = classLoader.loadClass(name);
+					classFile = Activator.getDefault().classLoader
+							.loadClass(name);
 					listClass.add(classFile);
 				} catch (ClassNotFoundException e) {
 					// TODO Auto-generated catch block

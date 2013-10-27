@@ -2,6 +2,9 @@ package domain.factories;
 
 import ui.constants.DesignationMutationOperators;
 import domain.mutation.operators.IMutationOperators;
+import domain.mutation.operators.MemberVariableInitializationDeletion;
+import domain.mutation.operators.StaticModifierChange;
+import domain.mutation.operators.ThisKeywordDeletion;
 
 public class JavaSpecificFeaturesFactory extends
 		AbstractFactoryMutationOperators {
@@ -12,11 +15,11 @@ public class JavaSpecificFeaturesFactory extends
 
 		switch (desigOperator) {
 		case JTD:
-			return null;
+			return new ThisKeywordDeletion();
 		case JSC:
-			return null;
+			return new StaticModifierChange();
 		case JID:
-			return null;
+			return new MemberVariableInitializationDeletion();
 		case JDC:
 			return null;
 		default:
