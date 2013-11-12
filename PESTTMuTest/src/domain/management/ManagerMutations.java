@@ -21,10 +21,6 @@ public class ManagerMutations {
 	private ASTRewrite rewrite;
 	private List<Mutation> mutations;
 
-	public ManagerMutations() {
-
-	}
-
 	/**
 	 * 
 	 * @param mutation

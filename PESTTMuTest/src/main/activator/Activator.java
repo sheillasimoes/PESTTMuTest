@@ -11,6 +11,7 @@ import org.osgi.framework.BundleContext;
 
 import domain.mutation.Mutation;
 import domain.mutation.operators.IMutationOperators;
+import domain.util.InfoProjectHelper;
 import ui.display.views.tree.structure.TreeMutationOperators;
 
 /**
@@ -28,7 +29,6 @@ public class Activator extends AbstractUIPlugin {
 
 	public URLClassLoader classLoader;
 
-	
 	/**
 	 * The constructor
 	 */
@@ -89,12 +89,24 @@ public class Activator extends AbstractUIPlugin {
 		pesttMuTest.setTreeViewer(treeViewer);
 	}
 
-	public void runMutationOperators() {
-		pesttMuTest.runMutationOperators();
+	public void startProcessTest() {
+		pesttMuTest.startProcessTest();
 	}
 
 	public void runAllMutations() {
 		pesttMuTest.runAllMutations();
+	}
+
+	public void runRandomMutations() {
+		pesttMuTest.runRandomMutations();
+	}
+
+	public String getProjectName(ASTNode node) {
+		return pesttMuTest.getProjectName(node);
+	}
+
+	public String getFullyQualifiedName(ASTNode node) {
+		return InfoProjectHelper.getFullyQualifiedName(node);
 	}
 
 	public void addObserverGroundStringController(Observer o) {

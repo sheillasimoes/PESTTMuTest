@@ -1,5 +1,7 @@
 package domain.controller;
 
+import java.util.List;
+
 import domain.management.ManagerRunningTests;
 
 public class ControllerRunningTest {
@@ -11,5 +13,17 @@ public class ControllerRunningTest {
 
 	public void runTest(Class<?> classes) {
 		managerRunningTests.runTest(classes);
+	}
+
+	public int getCount() {
+		return managerRunningTests.getCount();
+	}
+
+	public void clearData() {
+		managerRunningTests.clearData();
+	}
+
+	public List<String> getNamesTestFailure() {
+		return managerRunningTests.getNamesTestFailure();
 	}
 }

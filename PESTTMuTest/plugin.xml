@@ -29,6 +29,7 @@
             allowMultiple="true"
             category="PESTTMuTest.Category"
             class="ui.display.views.ViewMutations"
+            icon="icons/results.gif"
             id="PESTTMuTest.Mutations"
             name="Mutations"
             restorable="true">
@@ -52,15 +53,9 @@
       </category>
       <command
             categoryId="PESTTMuTest.CategoryViewMutationOpr"
-            description="Refresh"
-            id="PESTTMuTest.Refresh"
-            name="Refresh">
-      </command>
-      <command
-            categoryId="PESTTMuTest.CategoryViewMutationOpr"
-            description="Run the mutation operators selected"
-            id="PESTTMuTest.RunMutationOperators"
-            name="RunMutationOperators">
+            description="Start Process Test Mutation"
+            id="PESTTMuTest.StartProcessTest"
+            name="Start Process Test Mutation">
       </command>
       <command
             categoryId="PESTTMuTest.CategoryViewMutationOpr"
@@ -85,6 +80,29 @@
             id="PESTTMuTest.RunAllMutations"
             name="Run All Mutations">
       </command>
+       <command
+             categoryId="PESTTMuTest.CategoryViewMutations"
+             description="Run Random Mutations"
+             id="PESTTMuTest.RunRandomMutations"
+             name="Run Random Mutations">
+       </command>
+       <category
+             description="Commands related to the PESTTMuTest ViewMutationAnalysis"
+             id="PESTTMuTest.CategoryViewMutationAnalysis"
+             name="PESTTMuTest.ViewMutationAnalysis">
+       </category>
+       <command
+             categoryId="PESTTMuTest.CategoryViewMutationAnalysis"
+             description="All Mutants"
+             id="PESTTMuTest.AllMutants"
+             name="All Mutants">
+       </command>
+       <command
+             categoryId="PESTTMuTest.CategoryViewMutationAnalysis"
+             description="mutants not killed"
+             id="PESTTMuTest.mutantsNotKilled"
+             name="mutants not killed">
+       </command>
    </extension>
    <extension
          point="org.eclipse.ui.menus">
@@ -92,9 +110,9 @@
             allPopups="false"
             locationURI="toolbar:PESTTMuTest.MutationOperators">
          <command
-               commandId="PESTTMuTest.RunMutationOperators"
+               commandId="PESTTMuTest.StartProcessTest"
                icon="icons/RunAs.gif"
-               label="Run the Mutation Operators selected"
+               label="start of process mutation testing"
                style="push"
                tooltip="Run Mutation Operators">
             <visibleWhen
@@ -139,12 +157,32 @@
                </with>
             </visibleWhen>
          </command>
+      </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="toolbar:PESTTMuTest.Mutations">
          <command
-               commandId="PESTTMuTest.Refresh"
-               icon="icons/refresh.gif"
-               label="Refresh"
+               commandId="PESTTMuTest.RunAllMutations"
+               icon="icons/run_allMutants.gif"
+               label="Run all Mutations "
                style="push"
-               tooltip="Refresh">
+               tooltip="Run All Mutations">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="activeWorkbenchWindow.activePerspective">
+                  <equals
+                        value="PESTTMuTest.Perspective">
+                  </equals>
+               </with>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="PESTTMuTest.RunRandomMutations"
+               icon="icons/run_randomMutants.gif"
+               label="Run Random Mutations "
+               style="push"
+               tooltip="Run Random Mutations ">
             <visibleWhen
                   checkEnabled="false">
                <with
@@ -158,13 +196,29 @@
       </menuContribution>
       <menuContribution
             allPopups="false"
-            locationURI="toolbar:PESTTMuTest.Mutations">
+            locationURI="toolbar:PESTTMuTest.MutationAnalysis">
          <command
-               commandId="PESTTMuTest.RunAllMutations"
-               icon="icons/RunAs.gif"
-               label="Run all Mutations "
+               commandId="PESTTMuTest.AllMutants"
+               icon="icons/allMutants.gif"
+               label="All Mutants"
                style="push"
-               tooltip="Run All Mutations">
+               tooltip="All Mutants">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="activeWorkbenchWindow.activePerspective">
+                  <equals
+                        value="PESTTMuTest.Perspective">
+                  </equals>
+               </with>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="PESTTMuTest.mutantsNotKilled"
+               icon="icons/mutantsNotKilled.gif"
+               label="mutants not killed"
+               style="push"
+               tooltip="mutants not killed">
             <visibleWhen
                   checkEnabled="false">
                <with
@@ -180,12 +234,8 @@
    <extension
          point="org.eclipse.ui.handlers">
       <handler
-            class="ui.handler.RefreshHandler"
-            commandId="PESTTMuTest.Refresh">
-      </handler>
-      <handler
-            class="ui.handler.RunMutationOperatorsHandler"
-            commandId="PESTTMuTest.RunMutationOperators">
+            class="ui.handler.StartProcessTest"
+            commandId="PESTTMuTest.StartProcessTest">
       </handler>
       <handler
             class="ui.handler.SelectAllMutationOperatorsHandler"
@@ -198,6 +248,10 @@
       <handler
             class="ui.handler.RunAllMutationsHandler"
             commandId="PESTTMuTest.RunAllMutations">
+      </handler>
+      <handler
+            class="ui.handler.RunRandomMutationsHandler"
+            commandId="PESTTMuTest.RunRandomMutations">
       </handler>
    </extension>
    <extension

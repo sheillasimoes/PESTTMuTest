@@ -28,7 +28,7 @@ public class DataRunningProcessMutation implements Observer {
 		// TODO Auto-generated method stub
 		if (arg != null) {
 			ASTNode groundString = (ASTNode) arg;
-			String nameProject = InfoProjectHelper.getNameProject(groundString);
+			String nameProject = InfoProjectHelper.getProjectName(groundString);
 			addData(nameProject, groundString);
 		} else {
 			clearData();

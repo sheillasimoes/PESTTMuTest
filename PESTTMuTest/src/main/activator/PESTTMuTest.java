@@ -1,9 +1,7 @@
 package main.activator;
 
-import java.net.URLClassLoader;
 import java.util.List;
 import java.util.Observer;
-import java.util.Set;
 
 import org.eclipse.jdt.core.dom.ASTNode;
 
@@ -11,9 +9,10 @@ import domain.controller.GroundStringController;
 import domain.controller.MutationOperatorsController;
 import domain.controller.MutationsController;
 import domain.controller.ProjectController;
-import domain.controller.ControllerRunningTest;
+import domain.events.RunTestsMutation;
 import domain.mutation.Mutation;
 import domain.mutation.operators.IMutationOperators;
+import domain.util.InfoProjectHelper;
 import ui.constants.Messages;
 import ui.dialog.ProcessMessage;
 import ui.display.views.tree.structure.TreeMutationOperators;
@@ -25,7 +24,7 @@ public class PESTTMuTest {
 	private MutationsController mutationsController;
 	private GroundStringController groundStringController;
 	private ProjectController projectController;
-	private ControllerRunningTest controllerRunningTest;
+	private RunTestsMutation runTestsMutation;
 
 	public PESTTMuTest() {
 		operatorsController = new MutationOperatorsController();
@@ -33,6 +32,8 @@ public class PESTTMuTest {
 				operatorsController.getManagerMutationOperators());
 		projectController = new ProjectController(groundStringController);
 		mutationsController = new MutationsController(groundStringController);
+		runTestsMutation = new RunTestsMutation(operatorsController,
+				groundStringController, projectController, mutationsController);
 	}
 
 	public TreeMutationOperators getTreeViewer() {
@@ -43,61 +44,17 @@ public class PESTTMuTest {
 		this.treeViewer = treeViewer;
 	}
 
-	public void runMutationOperators() {
+	public void startProcessTest() {
+		runTestsMutation.startProcessTest(treeViewer.getCheckedElements());
+	}
 
-		Object[] elements = treeViewer.getCheckedElements();
-		// checks if any was selected mutation operator
-		if (elements.length == 0) {
-			ProcessMessage.INSTANCE.showInformationMessage("Info",
-					Messages.NOT_SELECT_ELEMENTS_TREE);
-		} else {
-
-			if (operatorsController.getSelectedIMutOperator() != null
-					|| groundStringController.getSelectedGroundString() != null) {
-
-				operatorsController.setSelectedIMutOperator(null);
-				groundStringController.setSelectedGroundString(null);
-			}
-			operatorsController.createMutationOperators(elements);
-			groundStringController.initializeListGroundString();
-			projectController.analyseProject();
-
-		}
+	public void runRandomMutations() {
+		runTestsMutation.runRandomMutations();
 
 	}
 
 	public void runAllMutations() {
-		// names projects
-		Set<String> setNamesProjects = mutationsController
-				.getSetNamesProjects();
-		for (String nameProject : setNamesProjects) {
-			if (projectController.hasTestClasses(nameProject)) {
-				// ground string
-				List<ASTNode> projectGS = mutationsController
-						.getGroundStringFromProject(nameProject);
-				// list test classes
-				List<Class<?>> testClasses = projectController
-						.getTestClasses(projectGS.get(0));
-				if (controllerRunningTest == null)
-					controllerRunningTest = new ControllerRunningTest();
-				for (ASTNode node : projectGS) {
-					// mutation operators
-					List<IMutationOperators> mutationOperators = groundStringController
-							.getOperatorsApplicable(node);
-					for (IMutationOperators operator : mutationOperators) {
-						// mutations
-						List<Mutation> mutations = operator.getMutations(node);
-						for (Mutation mutation : mutations) {
-							if (mutationsController.applyMutant(mutation)) {
-								for (Class<?> testClass : testClasses) {
-									controllerRunningTest.runTest(testClass);
-								}
-							}
-						}
-					}
-				}
-			}
-		}
+		runTestsMutation.runAllMutations();
 	}
 
 	public List<Mutation> getMutantsToDisplay() {
@@ -138,6 +95,14 @@ public class PESTTMuTest {
 			ProcessMessage.INSTANCE.showInformationMessage("Info",
 					Messages.NOT_SELECT_ELEMENTS_TREE);
 		}
+	}
+
+	public String getProjectName(ASTNode node) {
+		return InfoProjectHelper.getProjectName(node);
+	}
+
+	public String getFullyQualifiedName(ASTNode node) {
+		return InfoProjectHelper.getFullyQualifiedName(node);
 	}
 
 	public void addObserverGroundStringController(Observer o) {

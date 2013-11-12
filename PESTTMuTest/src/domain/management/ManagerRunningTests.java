@@ -1,65 +1,34 @@
 package domain.management;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
+import java.util.List;
 
-import main.activator.Activator;
+import org.junit.runner.JUnitCore;
+
+import domain.projects.listener.JUnitTestRunListener;
 
 public class ManagerRunningTests {
-	private Class<?> jUnitCore;
-	private Object jUnitCoreObj;
-	
-	public ManagerRunningTests() {
-		try {
-			jUnitCore = Activator.getDefault().classLoader.loadClass("org.junit.runner.JUnitCore");
-			jUnitCoreObj = jUnitCore.newInstance();
-			Class<?> parm = Activator.getDefault().classLoader.loadClass("org.junit.runner.notification.RunListener");
-			Method m = jUnitCore.getDeclaredMethod("addListener", new Class[] {parm});
-			Class<?> parm1 = Activator.getDefault().classLoader.loadClass("domain.tests.instrument.JUnitTestRunListener");
-			m.invoke(jUnitCoreObj,parm1.newInstance());
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (NoSuchMethodException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SecurityException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalArgumentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InvocationTargetException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InstantiationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} 
+	private JUnitCore junit;
+	private JUnitTestRunListener listener;
 
+	public ManagerRunningTests() {
+		junit = new JUnitCore();
+		listener = new JUnitTestRunListener();
+		junit.addListener(listener);
 	}
 
 	public void runTest(Class<?> clazz) {
-		Method m;
-		try {
-			m = jUnitCore.getDeclaredMethod("run", new Class[] {Class[].class});
-			m.invoke(jUnitCoreObj, (Object) new Class[] {clazz});
-		} catch (NoSuchMethodException | SecurityException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalArgumentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InvocationTargetException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		junit.run(clazz);
+	}
+
+	public int getCount() {
+		return listener.getCount();
+	}
+
+	public void clearData() {
+		listener.clearData();
+	}
+
+	public List<String> getNamesTestFailure() {
+		return listener.getNamesTestFailure();
 	}
 }

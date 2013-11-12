@@ -8,6 +8,8 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.dom.ASTNode;
 
+import ui.constants.Messages;
+import ui.dialog.ProcessMessage;
 import domain.ast.visitors.SourceCodeVisitor;
 import domain.controller.GroundStringController;
 import domain.projects.ExploreProject;
@@ -50,8 +52,13 @@ public class ManagerProjects {
 
 		// get copies projects to scan
 		IProject[] copiesProjects = copyProjects.getCopiesProjects();
-		for (IProject copy : copiesProjects) {
-			exploreProject.analyseProject(copy);
+		if (copiesProjects.length == 0) {
+			ProcessMessage.INSTANCE.showInformationMessage("Info",
+					Messages.NOT_FIND_PROJECTS);
+		} else {
+			for (IProject copy : copiesProjects) {
+				exploreProject.analyseProject(copy);
+			}
 		}
 	}
 
@@ -60,11 +67,13 @@ public class ManagerProjects {
 	 */
 	private void createCopiesProjects() {
 		IProject[] allProjects = exploreProject.getProjects();
+
 		for (IProject project : allProjects) {
 			if (validateProject(project)) {
 				copyProjects.createCopyProject(project);
 			}
 		}
+		// }
 	}
 
 	/**
@@ -120,8 +129,8 @@ public class ManagerProjects {
 
 	public List<Class<?>> getTestClasses(ASTNode node) {
 		IJavaProject project = InfoProjectHelper.getProject(node);
-		List<Class<?>> f = testClassesProjects.getTestClasses(project);
-		return f;
+		List<Class<?>> files = testClassesProjects.getTestClasses(project);
+		return files;
 	}
 
 }

@@ -42,8 +42,8 @@ public class FileChangeHelper {
 			flag = true;
 		} else {
 			for (IProblem problem : problems) {
-				System.out.println("message problem " + problem.getMessage()
-						+ " id problem" + problem.getID());
+				// System.out.println("message problem " + problem.getMessage()
+				// + " id problem" + problem.getID());
 				if (problem.isError()) {
 					return flag;
 				} else {

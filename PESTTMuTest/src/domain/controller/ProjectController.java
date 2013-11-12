@@ -17,12 +17,10 @@ public class ProjectController {
 		managerProjects.analyseProjects();
 	}
 
-	public void deleteAllCopiesProjects() {
-		managerProjects.deleteAllCopiesProjects();
-	}
 	public boolean hasTestClasses(String nameProject) {
 		return managerProjects.hasTestClasses(nameProject);
 	}
+
 	public List<Class<?>> getTestClasses(ASTNode node) {
 		return managerProjects.getTestClasses(node);
 	}

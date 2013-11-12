@@ -21,11 +21,18 @@ import org.eclipse.jface.viewers.StyledCellLabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.viewers.ViewerCell;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Listener;
+import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPartSite;
 import org.eclipse.ui.PlatformUI;
 
+import domain.mutation.Mutation;
 import ui.constants.TableViewers;
 
 /**
@@ -60,17 +67,18 @@ public class GroundStringTableView extends AbstractTableViewer implements
 
 					@Override
 					public void doubleClick(DoubleClickEvent event) {
-						IStructuredSelection selection = (IStructuredSelection) groundStringTableViewer
-								.getSelection();
-
-						ASTNode node = (ASTNode) selection.getFirstElement();
-
-						CompilationUnit cUnit = (CompilationUnit) node
-								.getRoot();
-						IFile file = (IFile) cUnit.getJavaElement()
-								.getResource();
-						IWorkbenchPage page = PlatformUI.getWorkbench()
-								.getActiveWorkbenchWindow().getActivePage();
+						// IStructuredSelection selection =
+						// (IStructuredSelection) groundStringTableViewer
+						// .getSelection();
+						//
+						// ASTNode node = (ASTNode) selection.getFirstElement();
+						//
+						// CompilationUnit cUnit = (CompilationUnit) node
+						// .getRoot();
+						// IFile file = (IFile) cUnit.getJavaElement()
+						// .getResource();
+						// IWorkbenchPage page = PlatformUI.getWorkbench()
+						// .getActiveWorkbenchWindow().getActivePage();
 						// ITextEditor editor = (ITextEditor)
 						// IDE.openEditor(page,
 						// file);
@@ -114,9 +122,17 @@ public class GroundStringTableView extends AbstractTableViewer implements
 	}
 
 	private void createColumnsToGroundString() {
+		String[] columnNames = new String[] {
+				TableViewers.COLUMN_GROUND_STRING,
+				TableViewers.COLUMN_FULLY_QUALIFIED_NAME,
+				TableViewers.COLUMN_PROJECT_NAME }; // the names of
+													// columns.
+		int[] columnWidths = new int[] { 200, 200, 150 }; // the width of
+															// columns.
+
+		// first column is for the ground string.
 		TableViewerColumn col = createColumnsHeaders(groundStringTableViewer,
-				TableViewers.COLUMN_GROUND_STRING_TABLE,
-				TableViewers.COLUMN_WIDTH);
+				columnNames[0], columnWidths[0]);
 
 		col.setLabelProvider(new StyledCellLabelProvider() {
 			@Override
@@ -127,9 +143,38 @@ public class GroundStringTableView extends AbstractTableViewer implements
 
 		});
 
+		// second column is for the fully qualified name
+		col = createColumnsHeaders(groundStringTableViewer, columnNames[1],
+				columnWidths[1]);
+
+		col.setLabelProvider(new StyledCellLabelProvider() {
+			@Override
+			public void update(ViewerCell cell) {
+				ASTNode node = (ASTNode) cell.getElement();
+				cell.setText(Activator.getDefault().getFullyQualifiedName(node));
+				super.update(cell);
+			}
+
+		});
+
+		// third column is for the projet name
+		col = createColumnsHeaders(groundStringTableViewer, columnNames[2],
+				columnWidths[2]);
+
+		col.setLabelProvider(new StyledCellLabelProvider() {
+			@Override
+			public void update(ViewerCell cell) {
+				ASTNode node = (ASTNode) cell.getElement();
+				cell.setText(Activator.getDefault().getProjectName(node));
+				super.update(cell);
+			}
+
+		});
+
 	}
 
 	public void dispose() {
 		Activator.getDefault().deleteObserverGroundString(this);
+		groundStringTableViewer.getControl().dispose();
 	}
 }

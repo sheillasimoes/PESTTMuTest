@@ -34,7 +34,7 @@ public abstract class AbstractTableViewer {
 		switch (id) {
 		case GROUNDSTRINGTABLE:
 			tableViewer = new TableViewer(parent, SWT.NONE | SWT.H_SCROLL
-					| SWT.V_SCROLL | SWT.BORDER);
+					| SWT.V_SCROLL | SWT.BORDER | SWT.FULL_SELECTION);
 			break;
 		case OPMUTATIONAPPLTABLE:
 			tableViewer = new TableViewer(parent, SWT.NONE | SWT.H_SCROLL
@@ -56,6 +56,7 @@ public abstract class AbstractTableViewer {
 																	// provider.
 		site.setSelectionProvider(tableViewer); // Make the selection available
 												// to other views.
+
 		return tableViewer;
 	}
 
