@@ -1,6 +1,5 @@
 package main.activator;
 
-import java.net.URLClassLoader;
 import java.util.List;
 import java.util.Observer;
 
@@ -26,8 +25,6 @@ public class Activator extends AbstractUIPlugin {
 	private static Activator plugin;
 
 	private PESTTMuTest pesttMuTest;
-
-	public URLClassLoader classLoader;
 
 	/**
 	 * The constructor
@@ -93,12 +90,28 @@ public class Activator extends AbstractUIPlugin {
 		pesttMuTest.startProcessTest();
 	}
 
+	public List<String> getProjectNames() {
+		return pesttMuTest.getProjectNames();
+	}
+
 	public void runAllMutations() {
 		pesttMuTest.runAllMutations();
 	}
 
+	public void analyseProject() {
+		pesttMuTest.analyseProject();
+	}
+
+	public void setProjectSelected(String projectName) {
+		pesttMuTest.setProjectSelected(projectName);
+	}
+
 	public void runRandomMutations() {
 		pesttMuTest.runRandomMutations();
+	}
+
+	public String getProjectNameSelected() {
+		return pesttMuTest.getProjectNameSelected();
 	}
 
 	public String getProjectName(ASTNode node) {
@@ -171,6 +184,22 @@ public class Activator extends AbstractUIPlugin {
 
 	public List<Mutation> getMutantsToDisplay() {
 		return pesttMuTest.getMutantsToDisplay();
+	}
+
+	public void addObserverManagerProjects(Observer o) {
+		pesttMuTest.addObserverManagerProjects(o);
+	}
+
+	public void deleteObserverManagerProjects(Observer o) {
+		pesttMuTest.deleteObserverManagerProjects(o);
+	}
+
+	public void addObserverCopyProject(Observer o) {
+		pesttMuTest.addObserverCopyProject(o);
+	}
+
+	public void deleteObserverCopyProject(Observer o) {
+		pesttMuTest.deleteObserverCopyProject(o);
 	}
 
 }

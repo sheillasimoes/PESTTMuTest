@@ -9,10 +9,10 @@ import org.junit.runner.notification.RunListener;
 
 public class JUnitTestRunListener extends RunListener {
 	private int count;
-	private List<String> namesTestFailure;
+	private List<String> testsFailure;
 
 	public JUnitTestRunListener() {
-		namesTestFailure = new LinkedList<String>();
+		testsFailure = new LinkedList<String>();
 	}
 
 	@Override
@@ -24,14 +24,14 @@ public class JUnitTestRunListener extends RunListener {
 
 	@Override
 	public void testFailure(Failure failure) throws Exception {
-		namesTestFailure.add(failure.getDescription().getDisplayName());
+		testsFailure.add(failure.getDescription().getDisplayName());
 		count++;
 		super.testFailure(failure);
 	}
 
 	@Override
 	public void testAssumptionFailure(Failure failure) {
-		namesTestFailure.add(failure.getDescription().getDisplayName());
+		testsFailure.add(failure.getDescription().getDisplayName());
 		count++;
 		super.testAssumptionFailure(failure);
 	}
@@ -41,10 +41,10 @@ public class JUnitTestRunListener extends RunListener {
 	}
 
 	public void clearData() {
-		namesTestFailure.clear();
+		testsFailure.clear();
 	}
 
-	public List<String> getNamesTestFailure() {
-		return namesTestFailure;
+	public List<String> getTestsFailure() {
+		return testsFailure;
 	}
 }

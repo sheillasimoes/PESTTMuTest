@@ -6,13 +6,13 @@ import java.util.Observer;
 
 import org.eclipse.jdt.core.dom.ASTNode;
 
-import domain.management.ManagerGroundString;
-import domain.management.ManagerMutationOperators;
+import domain.groundString.ManagerGroundString;
 import domain.mutation.operators.IMutationOperators;
+import domain.mutation.operators.ManagerMutationOperators;
 
 public class GroundStringController extends Observable {
 	private ManagerGroundString managerGroundString;
-	private ASTNode selectedGroundString = null;
+	private ASTNode selectedGroundString;
 
 	public GroundStringController(ManagerMutationOperators operatorManager) {
 		this.managerGroundString = new ManagerGroundString(operatorManager);

@@ -1,0 +1,34 @@
+package domain.projects.test;
+
+import java.util.List;
+
+import org.junit.runner.JUnitCore;
+
+import domain.projects.listener.JUnitTestRunListener;
+
+public class ManagerRunningTests {
+	private JUnitCore junit;
+	private JUnitTestRunListener listener;
+
+	public ManagerRunningTests() {
+		junit = new JUnitCore();
+		listener = new JUnitTestRunListener();
+		junit.addListener(listener);
+	}
+
+	public void runTest(Class<?> clazz) {
+		junit.run(clazz);
+	}
+
+	public int getCount() {
+		return listener.getCount();
+	}
+
+	public void clearData() {
+		listener.clearData();
+	}
+
+	public List<String> getTestsFailure() {
+		return listener.getTestsFailure();
+	}
+}

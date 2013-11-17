@@ -4,7 +4,7 @@ import org.eclipse.core.resources.IResourceChangeEvent;
 import org.eclipse.core.resources.IResourceChangeListener;
 import org.eclipse.core.runtime.CoreException;
 
-import domain.management.ManagerProjects;
+import domain.projects.ManagerProjects;
 
 public class MyResourceChangeReporter implements IResourceChangeListener {
 	private ManagerProjects managerProjects;

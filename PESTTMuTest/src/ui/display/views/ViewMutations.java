@@ -11,11 +11,13 @@ public class ViewMutations extends ViewPart {
 	@Override
 	public void createPartControl(Composite parent) {
 		TableViewerFactory.INSTANCE.createTableViewer(parent, getSite(),
+				TableViewers.PROJECTTABLE.toString());
+		TableViewerFactory.INSTANCE.createTableViewer(parent, getSite(),
 				TableViewers.GROUNDSTRINGTABLE.toString());
 		TableViewerFactory.INSTANCE.createTableViewer(parent, getSite(),
-				TableViewers.OPMUTATIONAPPLTABLE.toString());
+				TableViewers.MUTATIONOPAPPLTABLE.toString());
 		TableViewerFactory.INSTANCE.createTableViewer(parent, getSite(),
-				TableViewers.MUTATIONTABLE.toString());
+				TableViewers.MUTANTSTABLE.toString());
 
 	}
 

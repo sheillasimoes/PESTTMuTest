@@ -6,9 +6,9 @@ import java.util.Observer;
 
 import org.eclipse.jdt.core.dom.ASTNode;
 
-import domain.management.ManagerMutationOperators;
 import domain.mutation.Mutation;
 import domain.mutation.operators.IMutationOperators;
+import domain.mutation.operators.ManagerMutationOperators;
 
 public class MutationOperatorsController extends Observable {
 

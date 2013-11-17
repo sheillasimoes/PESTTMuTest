@@ -12,6 +12,7 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 
 import domain.ast.visitors.SourceCodeVisitor;
+import domain.projects.test.TestClassesProjects;
 import domain.util.ASTUtil;
 
 public class ExploreProject {
@@ -49,7 +50,7 @@ public class ExploreProject {
 				// get source file
 				if (mypackage.getKind() == IPackageFragmentRoot.K_SOURCE) {
 					// get .java source file
-					createAST(mypackage, project.getName());
+					createAST(mypackage);
 
 				}
 			}
@@ -65,16 +66,17 @@ public class ExploreProject {
 	 * 
 	 * @param mypackage
 	 */
-	private void createAST(IPackageFragment mypackage, String nameProject) {
+	private void createAST(IPackageFragment mypackage) {
 		try {
 			for (ICompilationUnit unit : mypackage.getCompilationUnits()) {
 				// create the AST for the ICompilationUnits
 				CompilationUnit parse = ASTUtil.parse(unit);
-
-				if (!testClassesProjects.isTestClass(parse, unit, nameProject)) {
+				// validate if unit is a test class
+				if (!testClassesProjects.isTestClass(parse)) {
 					parse.accept(sourceCodeVisitor);
+				} else {
+					testClassesProjects.addTestClass(unit);
 				}
-
 			}
 		} catch (JavaModelException e) {
 			// TODO Auto-generated catch block

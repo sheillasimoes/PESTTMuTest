@@ -36,13 +36,23 @@ public abstract class AbstractTableViewer {
 			tableViewer = new TableViewer(parent, SWT.NONE | SWT.H_SCROLL
 					| SWT.V_SCROLL | SWT.BORDER | SWT.FULL_SELECTION);
 			break;
-		case OPMUTATIONAPPLTABLE:
+		case MUTATIONOPAPPLTABLE:
 			tableViewer = new TableViewer(parent, SWT.NONE | SWT.H_SCROLL
 					| SWT.V_SCROLL | SWT.BORDER);
 			break;
-		case MUTATIONTABLE:
+		case MUTANTSTABLE:
 			tableViewer = new TableViewer(parent, SWT.NONE | SWT.H_SCROLL
 					| SWT.V_SCROLL | SWT.BORDER);
+			break;
+		case ANALYSEMUTANTS:
+			tableViewer = new TableViewer(parent, SWT.NONE | SWT.H_SCROLL
+					| SWT.V_SCROLL | SWT.BORDER | SWT.FULL_SELECTION);
+			break;
+		case PROJECTTABLE:
+			tableViewer = new TableViewer(parent, SWT.NONE | SWT.H_SCROLL
+					| SWT.V_SCROLL | SWT.BORDER | SWT.FULL_SELECTION);
+			break;
+		default:
 			break;
 
 		}

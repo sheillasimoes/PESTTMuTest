@@ -21,10 +21,13 @@ public enum TableViewerFactory {
 		switch (TableViewers.valueOf(name)) {
 		case GROUNDSTRINGTABLE:
 			return new GroundStringTableView(parent, site).create();
-		case OPMUTATIONAPPLTABLE:
-			return new OpMutationApplicableView(parent, site).create();
-		case MUTATIONTABLE:
+		case MUTATIONOPAPPLTABLE:
+			return new MutationOpApplicableView(parent, site).create();
+		case MUTANTSTABLE:
 			return new MutantsTableView(parent, site).create();
+		case ANALYSEMUTANTS:
+			return new AnalyseMutantsTableViewer(parent, site).create();
+		case PROJECTTABLE: return new ProjectTableView(parent, site).create();
 		default:
 			return null;
 		}

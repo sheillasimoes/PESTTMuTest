@@ -13,7 +13,6 @@ import org.eclipse.jface.viewers.ViewerCell;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IWorkbenchPartSite;
 
-import domain.controller.GroundStringController;
 import domain.controller.MutationOperatorsController;
 import domain.mutation.Mutation;
 import ui.constants.TableViewers;
@@ -33,12 +32,11 @@ public class MutantsTableView extends AbstractTableViewer implements Observer {
 		this.parent = parent;
 		this.site = site;
 		Activator.getDefault().addObserverOperatorsController(this);
-		Activator.getDefault().addObserverGroundStringController(this);
 	}
 
 	public TableViewer create() {
 		mutantTableViewer = createViewTable(parent, site,
-				TableViewers.MUTATIONTABLE);
+				TableViewers.MUTANTSTABLE);
 		createColumnsToMutantViewer();
 
 		return mutantTableViewer;
@@ -47,7 +45,7 @@ public class MutantsTableView extends AbstractTableViewer implements Observer {
 	@Override
 	public void update(Observable arg0, Object arg1) {
 
-		if ((arg0 instanceof GroundStringController || arg0 instanceof MutationOperatorsController)
+		if (arg0 instanceof MutationOperatorsController
 				&& mutantTableViewer.getElementAt(0) != null) {
 
 			mutantTableViewer.remove(mutantTableViewer.getInput());
@@ -63,9 +61,9 @@ public class MutantsTableView extends AbstractTableViewer implements Observer {
 
 	}
 
-	public void createColumnsToMutantViewer() {
+	private void createColumnsToMutantViewer() {
 		TableViewerColumn col = createColumnsHeaders(mutantTableViewer,
-				TableViewers.COLUMN_MUTANT_TABLE, TableViewers.COLUMN_WIDTH);
+				TableViewers.COLUMN_MUTANT, TableViewers.COLUMN_WIDTH);
 		col.setLabelProvider(new StyledCellLabelProvider() {
 
 			@Override
@@ -76,12 +74,8 @@ public class MutantsTableView extends AbstractTableViewer implements Observer {
 		});
 	}
 
-	public void removeELement() {
-		mutantTableViewer.remove(mutantTableViewer.getInput());
-	}
-
 	public void dispose() {
 		Activator.getDefault().deleteObserverOperatorsController(this);
-		Activator.getDefault().deleteObserverGroundStringController(this);
+		mutantTableViewer.getControl().dispose();
 	}
 }

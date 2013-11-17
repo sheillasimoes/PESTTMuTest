@@ -2,7 +2,7 @@ package domain.controller;
 
 import java.util.List;
 
-import domain.management.ManagerRunningTests;
+import domain.projects.test.ManagerRunningTests;
 
 public class ControllerRunningTest {
 	private ManagerRunningTests managerRunningTests = null;
@@ -23,7 +23,7 @@ public class ControllerRunningTest {
 		managerRunningTests.clearData();
 	}
 
-	public List<String> getNamesTestFailure() {
-		return managerRunningTests.getNamesTestFailure();
+	public List<String> getTestsFailure() {
+		return managerRunningTests.getTestsFailure();
 	}
 }

@@ -1,6 +1,7 @@
 package domain.projects;
 
 import java.util.LinkedList;
+import java.util.Observable;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
@@ -14,7 +15,7 @@ import org.eclipse.core.runtime.Path;
 
 import domain.constants.Description;
 
-public class ManagerCopyProjects {
+public class ManagerCopyProjects extends Observable {
 	private LinkedList<String> listNameCopies;
 	private IWorkspaceRoot root;
 
@@ -62,34 +63,25 @@ public class ManagerCopyProjects {
 			}
 
 			// add to list the name of the copy
-			listNameCopies.add(copyName);
+			setListNameCopies(copyName);
 		}
 
 	}
 
-	/**
-	 * 
-	 * @return
-	 */
-	public IProject[] getCopiesProjects() {
-		LinkedList<IProject> copiesProjects = new LinkedList<IProject>();
-		for (String nameCopy : listNameCopies) {
-			copiesProjects.add(root.getProject(nameCopy));
-		}
-		return copiesProjects.toArray(new IProject[copiesProjects.size()]);
+	public IProject getCopyProject(String nameProject) {
+		return root.getProject(nameProject
+				.concat(Description.PART_NAME_COPY_PROJECT));
 	}
 
 	/**
 	 * Delete all copies projects
 	 */
 	public void deleteAllCopiesProjects() {
-		if (listNameCopies.size() > 0) {
-			for (String name : listNameCopies) {
-				IProject project = root.getProject(name);
-				deleteCopy(project);
-			}
-			setListNameCopies(new LinkedList<String>());
+		for (String name : listNameCopies) {
+			IProject project = root.getProject(name);
+			deleteCopy(project);
 		}
+		listNameCopies.clear();
 	}
 
 	/**
@@ -112,8 +104,10 @@ public class ManagerCopyProjects {
 	 * @param listNameCopies
 	 *            the listNameCopies to set
 	 */
-	public void setListNameCopies(LinkedList<String> listNameCopies) {
-		this.listNameCopies = listNameCopies;
+	public void setListNameCopies(String nameCopy) {
+		listNameCopies.add(nameCopy);
+		setChanged();
+		notifyObservers();
 	}
 
 	private boolean existCopyProject(IProject project) {

@@ -1,27 +1,59 @@
 package domain.controller;
 
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
-import org.eclipse.jdt.core.dom.ASTNode;
+import domain.projects.ManagerProjects;
 
-import domain.management.ManagerProjects;
-
-public class ProjectController {
+public class ProjectController extends Observable {
 	private ManagerProjects managerProjects;
 
 	public ProjectController(GroundStringController groundStringController) {
 		managerProjects = new ManagerProjects(groundStringController);
 	}
 
-	public void analyseProject() {
-		managerProjects.analyseProjects();
+	public void analyseProject(String nameProject) {
+		managerProjects.analyseProject(nameProject);
+	}
+
+	public void createCopiesProjects() {
+		managerProjects.createCopiesProjects();
 	}
 
 	public boolean hasTestClasses(String nameProject) {
 		return managerProjects.hasTestClasses(nameProject);
 	}
 
-	public List<Class<?>> getTestClasses(ASTNode node) {
-		return managerProjects.getTestClasses(node);
+	public List<String> getProjectNames() {
+		return managerProjects.getProjectNames();
+	}
+
+	public List<Class<?>> getTestClasses() {
+		return managerProjects.getTestClasses();
+	}
+
+	public String getProjectNameSelected() {
+		return managerProjects.getProjectNameSelected();
+	}
+
+	public void setProjectNameSelected(String projectName) {
+		managerProjects.setProjectNameSelected(projectName);
+	}
+
+	public void addObserverManagerProjects(Observer o) {
+		managerProjects.addObserver(o);
+	}
+
+	public void deleteObserverManagerProjects(Observer o) {
+		managerProjects.deleteObserver(o);
+	}
+
+	public void addObserverCopyProject(Observer o) {
+		managerProjects.addObserverCopyProject(o);
+	}
+
+	public void deleteObserverCopyProject(Observer o) {
+		managerProjects.deleteObserverCopyProject(o);
 	}
 }

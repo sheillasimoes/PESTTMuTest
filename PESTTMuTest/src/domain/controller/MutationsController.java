@@ -1,27 +1,20 @@
 package domain.controller;
 
 import java.util.List;
-import java.util.Set;
 
 import org.eclipse.jdt.core.dom.ASTNode;
 
-import domain.management.ManagerMutations;
-import domain.mutation.DataResultProcessMutation;
-import domain.mutation.DataRunningProcessMutation;
+import domain.mutation.ManagerMutations;
 import domain.mutation.Mutation;
-import domain.mutation.MutationTestResult;
+import domain.mutation.testingProcess.MutationTestResult;
 
 public class MutationsController {
 	private ManagerMutations managerMutations;
-	private DataRunningProcessMutation dataProcessMutation;
-	private DataResultProcessMutation dataResultMutation;
+	private MutationTestResult mutationTestResult;
 
 	public MutationsController(GroundStringController groundStringController) {
 		managerMutations = new ManagerMutations();
-		dataProcessMutation = new DataRunningProcessMutation(
-				groundStringController);
-		dataResultMutation = new DataResultProcessMutation();
-
+		mutationTestResult = new MutationTestResult();
 	}
 
 	public List<Mutation> getMutantsToDisplay(ASTNode node,
@@ -37,24 +30,11 @@ public class MutationsController {
 		managerMutations.undoMutant(mutation);
 	}
 
-	public Set<String> getSetNamesProjects() {
-		return dataProcessMutation.getSetNamesProjects();
+	public void addResult(Mutation mutation, List<String> data) {
+		mutationTestResult.addResult(mutation, data);
 	}
 
-	public List<ASTNode> getGroundStringFromProject(String nameProject) {
-		return dataProcessMutation.getGroundStringFromProject(nameProject);
+	public void deleteTestResult() {
+		mutationTestResult.deleteTestResult();
 	}
-
-	public List<MutationTestResult> getMutationTestResults() {
-		return dataResultMutation.getResults();
-	}
-
-	public void addMutationTestResults(MutationTestResult testResult) {
-		dataResultMutation.addResult(testResult);
-	}
-
-	public void clearResultMutation() {
-		dataResultMutation.clearResults();
-	}
-
 }

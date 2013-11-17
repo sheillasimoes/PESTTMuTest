@@ -5,7 +5,7 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.resources.IResourceDeltaVisitor;
 
-import domain.management.ManagerProjects;
+import domain.projects.ManagerProjects;
 
 public class DeltaInformation implements IResourceDeltaVisitor {
 	private ManagerProjects managerProjects;

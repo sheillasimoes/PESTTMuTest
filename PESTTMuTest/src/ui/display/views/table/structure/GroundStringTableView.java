@@ -32,7 +32,8 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPartSite;
 import org.eclipse.ui.PlatformUI;
 
-import domain.mutation.Mutation;
+import domain.groundString.ManagerGroundString;
+import domain.projects.ManagerProjects;
 import ui.constants.TableViewers;
 
 /**
@@ -52,7 +53,7 @@ public class GroundStringTableView extends AbstractTableViewer implements
 		this.parent = parent;
 		this.site = site;
 		Activator.getDefault().addObserverGroundString(this);
-
+		Activator.getDefault().addObserverManagerProjects(this);
 	}
 
 	public TableViewer create() {
@@ -95,7 +96,6 @@ public class GroundStringTableView extends AbstractTableViewer implements
 						Activator.getDefault().verifyChangesOperators();
 						IStructuredSelection selection = (IStructuredSelection) groundStringTableViewer
 								.getSelection();
-
 						ASTNode node = (ASTNode) selection.getFirstElement();
 						Activator.getDefault().setSelectedGroundString(node);
 
@@ -107,16 +107,17 @@ public class GroundStringTableView extends AbstractTableViewer implements
 
 	@Override
 	public void update(Observable arg0, Object arg1) {
-		List<ASTNode> list = Activator.getDefault().getListGroundString();
-
-		if (list.size() == 0 && groundStringTableViewer.getElementAt(0) != null) {
-			Object allElements = groundStringTableViewer.getInput();
-			groundStringTableViewer.remove(allElements);
-
-		} else if (list.size() > 0) {
-			groundStringTableViewer.setInput(list);
+		if (arg0 instanceof ManagerProjects) {
+			if (groundStringTableViewer.getElementAt(0) != null)
+				groundStringTableViewer.remove(groundStringTableViewer
+						.getInput());
+			if (Activator.getDefault().getProjectNameSelected() != null)
+				Activator.getDefault().analyseProject();
+		} else if (arg0 instanceof ManagerGroundString
+				&& Activator.getDefault().getProjectNameSelected() != null) {
+			groundStringTableViewer.setInput(Activator.getDefault()
+					.getListGroundString());
 			editTableStyle(groundStringTableViewer);
-
 		}
 
 	}
@@ -156,25 +157,11 @@ public class GroundStringTableView extends AbstractTableViewer implements
 			}
 
 		});
-
-		// third column is for the projet name
-		col = createColumnsHeaders(groundStringTableViewer, columnNames[2],
-				columnWidths[2]);
-
-		col.setLabelProvider(new StyledCellLabelProvider() {
-			@Override
-			public void update(ViewerCell cell) {
-				ASTNode node = (ASTNode) cell.getElement();
-				cell.setText(Activator.getDefault().getProjectName(node));
-				super.update(cell);
-			}
-
-		});
-
 	}
 
 	public void dispose() {
 		Activator.getDefault().deleteObserverGroundString(this);
+		Activator.getDefault().deleteObserverManagerProjects(this);
 		groundStringTableViewer.getControl().dispose();
 	}
 }
