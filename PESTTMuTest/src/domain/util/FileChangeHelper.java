@@ -11,10 +11,10 @@ import org.eclipse.text.edits.MalformedTreeException;
 
 public class FileChangeHelper {
 
-	public void changeFile(ICompilationUnit workingCopy, ASTRewrite rewrite,
-			CompilationUnit cUnit) {
-		changeICompilationUnit(workingCopy, rewrite, cUnit);
-	}
+	// public void changeFile(ICompilationUnit workingCopy, ASTRewrite rewrite,
+	// CompilationUnit cUnit) {
+	// changeICompilationUnit(workingCopy, rewrite, cUnit);
+	// }
 
 	public static void changeICompilationUnit(ICompilationUnit workingCopy,
 			ASTRewrite rewrite, CompilationUnit cUnit) {

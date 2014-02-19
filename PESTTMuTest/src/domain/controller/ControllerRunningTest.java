@@ -11,8 +11,8 @@ public class ControllerRunningTest {
 		managerRunningTests = new ManagerRunningTests();
 	}
 
-	public void runTest(Class<?> classes) {
-		managerRunningTests.runTest(classes);
+	public void runTest(Class<?> clazz) {
+		managerRunningTests.runTest(clazz);
 	}
 
 	public int getCount() {
@@ -23,7 +23,7 @@ public class ControllerRunningTest {
 		managerRunningTests.clearData();
 	}
 
-	public List<String> getTestsFailure() {
-		return managerRunningTests.getTestsFailure();
+	public List<String> getTestsFailed() {
+		return managerRunningTests.getTestsFailed();
 	}
 }

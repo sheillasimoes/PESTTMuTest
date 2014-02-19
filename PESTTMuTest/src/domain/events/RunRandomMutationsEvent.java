@@ -32,44 +32,49 @@ public class RunRandomMutationsEvent {
 				// ground string
 				List<ASTNode> projectGS = groundStringController
 						.getListGroundString();
-				// test classes
-				List<Class<?>> testClasses = projectController.getTestClasses();
-				mutationsController.deleteTestResult();
+				// verifica se foram encontradas GS para aplicar mutações
+				if (projectGS.size() > 0) {
+					// test classes
+					List<Class<?>> testClasses = projectController
+							.getTestClasses();
+					mutationsController.deleteTestResult();
+					controllerRunningTest.clearData();
+					for (ASTNode node : projectGS) {
+						// mutation operators
+						List<IMutationOperators> mutationOperators = groundStringController
+								.getOperatorsApplicable(node);
 
-				for (ASTNode node : projectGS) {
-					// mutation operators
-					List<IMutationOperators> mutationOperators = groundStringController
-							.getOperatorsApplicable(node);
+						for (IMutationOperators operator : mutationOperators) {
+							// mutations
+							List<Mutation> mutations = operator
+									.getMutations(node);
+							boolean flag = false;
+							do {
+								Random random = new Random();
+								int i = random.nextInt(mutations.size());
+								// verifica se é gerado um mutante válido
+								if (mutationsController.applyMutant(mutations
+										.get(i))) {
 
-					for (IMutationOperators operator : mutationOperators) {
-						// mutations
-						List<Mutation> mutations = operator.getMutations(node);
-						boolean flag = false;
-						do {
-							Random random = new Random();
-							int i = random.nextInt(mutations.size());
-							if (mutationsController.applyMutant(mutations
-									.get(i))) {
-
-								for (Class<?> testClass : testClasses) {
-									controllerRunningTest.runTest(testClass);
+									for (Class<?> testClass : testClasses) {
+										controllerRunningTest
+												.runTest(testClass);
+									}
+									mutationsController.undoMutant(mutations
+											.get(i));
+									// add result
+									mutationsController.addResult(mutations
+											.get(i), controllerRunningTest
+											.getTestsFailed());
+									controllerRunningTest.clearData();
+									flag = true;
 								}
-								// add result
-								mutationsController
-										.addResult(mutations.get(i),
-												controllerRunningTest
-														.getTestsFailure());
-								mutationsController
-										.undoMutant(mutations.get(i));
-								controllerRunningTest.clearData();
-								flag = true;
-							}
-						} while (!flag);
+							} while (!flag);
+						}
 					}
 				}
-				System.out.println("count " + controllerRunningTest.getCount());
 			}
-		}
 
+		}
 	}
 }

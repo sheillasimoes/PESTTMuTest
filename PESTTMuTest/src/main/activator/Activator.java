@@ -1,15 +1,17 @@
 package main.activator;
 
 import java.util.List;
-import java.util.Observer;
 
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
+import domain.controller.GroundStringController;
+import domain.controller.MutationOperatorsController;
+import domain.controller.MutationsController;
+import domain.controller.ProjectController;
 import domain.mutation.Mutation;
-import domain.mutation.operators.IMutationOperators;
 import domain.util.InfoProjectHelper;
 import ui.display.views.tree.structure.TreeMutationOperators;
 
@@ -90,92 +92,16 @@ public class Activator extends AbstractUIPlugin {
 		pesttMuTest.startProcessTest();
 	}
 
-	public List<String> getProjectNames() {
-		return pesttMuTest.getProjectNames();
+	public void analyseProject() {
+		pesttMuTest.analyseProject();
 	}
 
 	public void runAllMutations() {
 		pesttMuTest.runAllMutations();
 	}
 
-	public void analyseProject() {
-		pesttMuTest.analyseProject();
-	}
-
-	public void setProjectSelected(String projectName) {
-		pesttMuTest.setProjectSelected(projectName);
-	}
-
 	public void runRandomMutations() {
 		pesttMuTest.runRandomMutations();
-	}
-
-	public String getProjectNameSelected() {
-		return pesttMuTest.getProjectNameSelected();
-	}
-
-	public String getProjectName(ASTNode node) {
-		return pesttMuTest.getProjectName(node);
-	}
-
-	public String getFullyQualifiedName(ASTNode node) {
-		return InfoProjectHelper.getFullyQualifiedName(node);
-	}
-
-	public void addObserverGroundStringController(Observer o) {
-		pesttMuTest.addObserverGroundStringController(o);
-	}
-
-	public void deleteObserverGroundStringController(Observer o) {
-		pesttMuTest.deleteObserverGroundStringController(o);
-	}
-
-	public void addObserverOperatorsController(Observer o) {
-		pesttMuTest.addObserverOperatorsController(o);
-	}
-
-	public void deleteObserverOperatorsController(Observer o) {
-		pesttMuTest.deleteObserverOperatorsController(o);
-	}
-
-	public void addObserverGroundString(Observer o) {
-		pesttMuTest.addObserverGroundString(o);
-	}
-
-	public void deleteObserverGroundString(Observer o) {
-		pesttMuTest.deleteObserverGroundString(o);
-	}
-
-	public void addObserverMutationOperators(Observer o) {
-		pesttMuTest.addObserverMutationOperators(o);
-	}
-
-	public void deleteObserverMutationOperators(Observer o) {
-		pesttMuTest.deleteObserverMutationOperators(o);
-	}
-
-	public List<ASTNode> getListGroundString() {
-		return pesttMuTest.getListGroundString();
-	}
-
-	public void setSelectedGroundString(ASTNode node) {
-		pesttMuTest.setSelectedGroundString(node);
-	}
-
-	public ASTNode getSelectedGroundString() {
-		return pesttMuTest.getSelectedGroundString();
-	}
-
-	public List<IMutationOperators> getOperatorsApplicable() {
-		return pesttMuTest.getOperatorsApplicable();
-	}
-
-	public void setSelectedIMutOperator(IMutationOperators operator) {
-		pesttMuTest.setSelectedIMutOperator(operator);
-	}
-
-	public IMutationOperators getSelectedIMutOperator() {
-		return pesttMuTest.getSelectedIMutOperator();
 	}
 
 	public void verifyChangesOperators() {
@@ -186,20 +112,36 @@ public class Activator extends AbstractUIPlugin {
 		return pesttMuTest.getMutantsToDisplay();
 	}
 
-	public void addObserverManagerProjects(Observer o) {
-		pesttMuTest.addObserverManagerProjects(o);
+	/**
+	 * @return the operatorsController
+	 */
+	public MutationOperatorsController getOperatorsController() {
+		return pesttMuTest.getOperatorsController();
 	}
 
-	public void deleteObserverManagerProjects(Observer o) {
-		pesttMuTest.deleteObserverManagerProjects(o);
+	/**
+	 * @return the mutationsController
+	 */
+	public MutationsController getMutationsController() {
+		return pesttMuTest.getMutationsController();
 	}
 
-	public void addObserverCopyProject(Observer o) {
-		pesttMuTest.addObserverCopyProject(o);
+	/**
+	 * @return the groundStringController
+	 */
+	public GroundStringController getGroundStringController() {
+		return pesttMuTest.getGroundStringController();
 	}
 
-	public void deleteObserverCopyProject(Observer o) {
-		pesttMuTest.deleteObserverCopyProject(o);
+	/**
+	 * @return the projectController
+	 */
+	public ProjectController getProjectController() {
+		return pesttMuTest.getProjectController();
+	}
+
+	public String getFullyQualifiedName(ASTNode node) {
+		return InfoProjectHelper.getFullyQualifiedName(node);
 	}
 
 }

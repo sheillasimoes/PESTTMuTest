@@ -43,6 +43,15 @@
             name="Mutation Analysis"
             restorable="true">
       </view>
+      <view
+            allowMultiple="true"
+            category="PESTTMuTest.Category"
+            class="ui.display.views.MutationScore"
+            icon="icons/results.gif"
+            id="PESTTMuTest.MutationScore"
+            name="Mutation Score"
+            restorable="true">
+      </view>
    </extension>
    <extension
          point="org.eclipse.ui.commands">
@@ -114,7 +123,7 @@
                icon="icons/RunAs.gif"
                label="start of process mutation testing"
                style="push"
-               tooltip="Run Mutation Operators">
+               tooltip="Start Process">
             <visibleWhen
                   checkEnabled="false">
                <with
@@ -200,9 +209,9 @@
          <command
                commandId="PESTTMuTest.AllMutants"
                icon="icons/allMutants.gif"
-               label="All Mutants"
+               label="See all mutants"
                style="push"
-               tooltip="All Mutants">
+               tooltip="See all mutants">
             <visibleWhen
                   checkEnabled="false">
                <with
@@ -216,9 +225,9 @@
          <command
                commandId="PESTTMuTest.mutantsNotKilled"
                icon="icons/mutantsNotKilled.gif"
-               label="mutants not killed"
+               label="See live mutants"
                style="push"
-               tooltip="mutants not killed">
+               tooltip="See live mutants">
             <visibleWhen
                   checkEnabled="false">
                <with
@@ -253,6 +262,14 @@
             class="ui.handler.RunRandomMutationsHandler"
             commandId="PESTTMuTest.RunRandomMutations">
       </handler>
+      <handler
+            class="ui.handler.SeeAllMutantsHandler"
+            commandId="PESTTMuTest.AllMutants">
+      </handler>
+      <handler
+            class="ui.handler.SeeLiveMutantsHandler"
+            commandId="PESTTMuTest.mutantsNotKilled">
+      </handler>
    </extension>
    <extension
          point="org.eclipse.ui.perspectiveExtensions">
@@ -279,9 +296,23 @@
                visible="true">
          </view>
          <view
+               closeable="true"
                id="PESTTMuTest.MutationAnalysis"
                minimized="false"
+               moveable="true"
                relationship="bottom"
+               showTitle="true"
+               standalone="false"
+               visible="true">
+         </view>
+         <view
+               closeable="true"
+               id="PESTTMuTest.MutationScore"
+               minimized="false"
+               moveable="true"
+               relationship="bottom"
+               showTitle="true"
+               standalone="false"
                visible="true">
          </view>
       </perspectiveExtension>

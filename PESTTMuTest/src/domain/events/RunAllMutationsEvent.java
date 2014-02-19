@@ -31,36 +31,42 @@ public class RunAllMutationsEvent {
 				// ground string
 				List<ASTNode> projectGS = groundStringController
 						.getListGroundString();
-				// test classes
-				List<Class<?>> testClasses = projectController.getTestClasses();
-				mutationsController.deleteTestResult();
+				// verifica se foram encontradas GS para aplicar mutações
+				if (projectGS.size() > 0) {
+					// test classes
+					List<Class<?>> testClasses = projectController
+							.getTestClasses();
+					mutationsController.deleteTestResult();
+					controllerRunningTest.clearData();
+					for (ASTNode node : projectGS) {
+						// mutation operators
+						List<IMutationOperators> mutationOperators = groundStringController
+								.getOperatorsApplicable(node);
 
-				for (ASTNode node : projectGS) {
-					// mutation operators
-					List<IMutationOperators> mutationOperators = groundStringController
-							.getOperatorsApplicable(node);
+						for (IMutationOperators operator : mutationOperators) {
+							// mutations
+							List<Mutation> mutations = operator
+									.getMutations(node);
 
-					for (IMutationOperators operator : mutationOperators) {
-						// mutations
-						List<Mutation> mutations = operator.getMutations(node);
-
-						for (Mutation mutation : mutations) {
-							if (mutationsController.applyMutant(mutation)) {
-								for (Class<?> testClass : testClasses) {
-									controllerRunningTest.runTest(testClass);
+							for (Mutation mutation : mutations) {
+								if (mutationsController.applyMutant(mutation)) {
+									for (Class<?> testClass : testClasses) {
+										controllerRunningTest
+												.runTest(testClass);
+									}
+									mutationsController.undoMutant(mutation);
+									// add result
+									mutationsController.addResult(mutation,
+											controllerRunningTest
+													.getTestsFailed());
+									controllerRunningTest.clearData();
 								}
-								// add result
-								mutationsController
-										.addResult(mutation,
-												controllerRunningTest
-														.getTestsFailure());
-								mutationsController.undoMutant(mutation);
-								controllerRunningTest.clearData();
 							}
 						}
 					}
+					System.out.println("count "
+							+ controllerRunningTest.getCount());
 				}
-				System.out.println("count " + controllerRunningTest.getCount());
 			}
 		}
 	}

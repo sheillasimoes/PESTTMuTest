@@ -1,13 +1,15 @@
 package main.activator;
 
 import java.util.List;
-import java.util.Observer;
 
 import org.eclipse.jdt.core.dom.ASTNode;
 
+import domain.controller.GroundStringController;
+import domain.controller.MutationOperatorsController;
+import domain.controller.MutationsController;
 import domain.controller.ProcessMutationTestController;
+import domain.controller.ProjectController;
 import domain.mutation.Mutation;
-import domain.mutation.operators.IMutationOperators;
 import ui.display.views.tree.structure.TreeMutationOperators;
 
 public class PESTTMuTest {
@@ -45,48 +47,36 @@ public class PESTTMuTest {
 		return processMutationTestController.getMutantsToDisplay();
 	}
 
-	public List<ASTNode> getListGroundString() {
-		return processMutationTestController.getListGroundString();
+	/**
+	 * @return the operatorsController
+	 */
+	public MutationOperatorsController getOperatorsController() {
+		return processMutationTestController.getOperatorsController();
 	}
 
-	public List<IMutationOperators> getOperatorsApplicable() {
-		return processMutationTestController.getOperatorsApplicable();
+	/**
+	 * @return the mutationsController
+	 */
+	public MutationsController getMutationsController() {
+		return processMutationTestController.getMutationsController();
 	}
 
-	public List<String> getProjectNames() {
-		return processMutationTestController.getProjectNames();
+	/**
+	 * @return the groundStringController
+	 */
+	public GroundStringController getGroundStringController() {
+		return processMutationTestController.getGroundStringController();
 	}
 
-	public String getProjectName(ASTNode node) {
-		return processMutationTestController.getProjectName(node);
+	/**
+	 * @return the projectController
+	 */
+	public ProjectController getProjectController() {
+		return processMutationTestController.getProjectController();
 	}
 
 	public String getFullyQualifiedName(ASTNode node) {
 		return processMutationTestController.getFullyQualifiedName(node);
-	}
-
-	public ASTNode getSelectedGroundString() {
-		return processMutationTestController.getSelectedGroundString();
-	}
-
-	public void setSelectedGroundString(ASTNode node) {
-		processMutationTestController.setSelectedGroundString(node);
-	}
-
-	public IMutationOperators getSelectedIMutOperator() {
-		return processMutationTestController.getSelectedIMutOperator();
-	}
-
-	public void setSelectedIMutOperator(IMutationOperators operator) {
-		processMutationTestController.setSelectedIMutOperator(operator);
-	}
-
-	public String getProjectNameSelected() {
-		return processMutationTestController.getProjectNameSelected();
-	}
-
-	public void setProjectSelected(String projectName) {
-		processMutationTestController.setProjectSelected(projectName);
 	}
 
 	public TreeMutationOperators getTreeViewer() {
@@ -95,54 +85,6 @@ public class PESTTMuTest {
 
 	public void setTreeViewer(TreeMutationOperators treeViewer) {
 		this.treeViewer = treeViewer;
-	}
-
-	public void addObserverGroundStringController(Observer o) {
-		processMutationTestController.addObserverGroundStringController(o);
-	}
-
-	public void deleteObserverGroundStringController(Observer o) {
-		processMutationTestController.deleteObserverGroundStringController(o);
-	}
-
-	public void addObserverOperatorsController(Observer o) {
-		processMutationTestController.addObserverOperatorsController(o);
-	}
-
-	public void deleteObserverOperatorsController(Observer o) {
-		processMutationTestController.deleteObserverOperatorsController(o);
-	}
-
-	public void addObserverGroundString(Observer o) {
-		processMutationTestController.addObserverGroundString(o);
-	}
-
-	public void deleteObserverGroundString(Observer o) {
-		processMutationTestController.deleteObserverGroundString(o);
-	}
-
-	public void addObserverMutationOperators(Observer o) {
-		processMutationTestController.addObserverMutationOperators(o);
-	}
-
-	public void deleteObserverMutationOperators(Observer o) {
-		processMutationTestController.deleteObserverMutationOperators(o);
-	}
-
-	public void addObserverManagerProjects(Observer o) {
-		processMutationTestController.addObserverManagerProjects(o);
-	}
-
-	public void deleteObserverManagerProjects(Observer o) {
-		processMutationTestController.deleteObserverManagerProjects(o);
-	}
-
-	public void addObserverCopyProject(Observer o) {
-		processMutationTestController.addObserverCopyProject(o);
-	}
-
-	public void deleteObserverCopyProject(Observer o) {
-		processMutationTestController.deleteObserverCopyProject(o);
 	}
 
 }

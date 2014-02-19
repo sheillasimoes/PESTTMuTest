@@ -23,7 +23,6 @@ public class ViewMutationOperators extends ViewPart {
 	@Override
 	public void setFocus() {
 		// does nothing.
-
 	}
 
 }

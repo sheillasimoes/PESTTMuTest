@@ -7,7 +7,6 @@ import ui.constants.TableViewers;
 import ui.display.views.table.structure.TableViewerFactory;
 
 public class ViewMutations extends ViewPart {
-
 	@Override
 	public void createPartControl(Composite parent) {
 		TableViewerFactory.INSTANCE.createTableViewer(parent, getSite(),

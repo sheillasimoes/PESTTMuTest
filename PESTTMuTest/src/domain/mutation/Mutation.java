@@ -45,6 +45,13 @@ public class Mutation {
 		return originalData;
 	}
 
+	/**
+	 * @return the mutationOperator
+	 */
+	public IMutationOperators getMutationOperator() {
+		return mutationOperator;
+	}
+
 	public void applyMutationOperator() {
 		mutationOperator.applyOperator(this);
 		mutant = node.toString();

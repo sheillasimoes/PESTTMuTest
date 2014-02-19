@@ -44,7 +44,11 @@ public abstract class AbstractTableViewer {
 			tableViewer = new TableViewer(parent, SWT.NONE | SWT.H_SCROLL
 					| SWT.V_SCROLL | SWT.BORDER);
 			break;
-		case ANALYSEMUTANTS:
+		case ANALYSEMUTANTSTABLE:
+			tableViewer = new TableViewer(parent, SWT.CHECK | SWT.H_SCROLL
+					| SWT.V_SCROLL | SWT.BORDER | SWT.FULL_SELECTION);
+			break;
+		case TESTCLASSESFAILEDTABLE:
 			tableViewer = new TableViewer(parent, SWT.NONE | SWT.H_SCROLL
 					| SWT.V_SCROLL | SWT.BORDER | SWT.FULL_SELECTION);
 			break;

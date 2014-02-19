@@ -28,7 +28,7 @@ public class ManagerRunningTests {
 		listener.clearData();
 	}
 
-	public List<String> getTestsFailure() {
-		return listener.getTestsFailure();
+	public List<String> getTestsFailed() {
+		return listener.getTestsFailed();
 	}
 }

@@ -129,7 +129,10 @@ public class ManagerProjects extends Observable {
 
 	private boolean validateStateCopies() {
 		// validate state of copies and projects
-		if (isProjectsChanged()) {
+		if (copyProjects.getListNameCopies().size() == 0) {
+			setProjectsChanged(false);
+			return true;
+		} else if (isProjectsChanged()) {
 			copyProjects.deleteAllCopiesProjects();
 			testClassesProjects.deleteListTestClasses();
 			setProjectsChanged(false);
