@@ -18,7 +18,7 @@ public enum TableViewers {
 	public static final String COLUMN_PROJECT_NAME = "Project";
 	public static final String COLUMN_FULLY_QUALIFIED_NAME = "Fully qualified name";
 	public static final String COLUMN_STATUS = "Status";
-	public static final String COLUMN_NAME_TEST_CLASSES = "Test Classes Failed - method (test classe)";
+	public static final String COLUMN_NAME_TEST_CLASSES = "Test Classes Failed - test classe (test case)";
 
 	/* the width of columns */
 	public static final int COLUMN_WIDTH = 414;

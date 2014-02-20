@@ -46,7 +46,7 @@
       <view
             allowMultiple="true"
             category="PESTTMuTest.Category"
-            class="ui.display.views.MutationScore"
+            class="ui.display.views.ViewMutationScore"
             icon="icons/results.gif"
             id="PESTTMuTest.MutationScore"
             name="Mutation Score"
@@ -111,6 +111,12 @@
              description="mutants not killed"
              id="PESTTMuTest.mutantsNotKilled"
              name="mutants not killed">
+       </command>
+       <command
+             categoryId="PESTTMuTest.CategoryViewMutationAnalysis"
+             description="calculate mutation score"
+             id="PESTTMuTest.calculateMutationScore"
+             name="calculate mutation score">
        </command>
    </extension>
    <extension
@@ -238,6 +244,23 @@
                </with>
             </visibleWhen>
          </command>
+         <command
+               commandId="PESTTMuTest.calculateMutationScore"
+               helpContextId="Calculate mutation score"
+               icon="icons/mutationScore.gif"
+               label="Calculate mutation score"
+               style="push"
+               tooltip="Calculate mutation score">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="activeWorkbenchWindow.activePerspective">
+                  <equals
+                        value="PESTTMuTest.Perspective">
+                  </equals>
+               </with>
+            </visibleWhen>
+         </command>
       </menuContribution>
    </extension>
    <extension
@@ -269,6 +292,10 @@
       <handler
             class="ui.handler.SeeLiveMutantsHandler"
             commandId="PESTTMuTest.mutantsNotKilled">
+      </handler>
+      <handler
+            class="ui.handler.CalculateMutationScoreHandler"
+            commandId="PESTTMuTest.calculateMutationScore">
       </handler>
    </extension>
    <extension

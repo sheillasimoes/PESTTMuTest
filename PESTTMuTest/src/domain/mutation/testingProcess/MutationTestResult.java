@@ -1,35 +1,38 @@
 package domain.mutation.testingProcess;
 
 import java.util.HashMap;
-import java.util.LinkedList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Observable;
 import java.util.Set;
 
+import domain.constants.Description;
 import domain.mutation.Mutation;
 
 public class MutationTestResult extends Observable {
+	private double mutationScore;
 	private int numberTotalMutants;
 	private int numberEquivalentMutants;
 	private int numberKilledMutants;
 	private Map<Mutation, List<String>> result;
-	private List<Mutation> liveMutants;
+	private Set<Mutation> liveMutants;
 
 	public MutationTestResult() {
 		result = new HashMap<Mutation, List<String>>();
-		liveMutants = new LinkedList<Mutation>();
+		liveMutants = new HashSet<Mutation>();
 	}
 
-	public void addResult(Mutation mutation, List<String> data) {
-		if (data.size() > 0) {
+	public void addResult(Mutation mutation, List<String> data, int liveMutant) {
+		if (liveMutant == 0) {
 			liveMutants.add(mutation);
-		} else
+		} else {
 			numberKilledMutants++;
+		}
 		this.result.put(mutation, data);
 		numberTotalMutants++;
 		setChanged();
-		notifyObservers();
+		notifyObservers(Description.MUTATION_RESULT);
 	}
 
 	public Set<Mutation> getMutantsTestResults() {
@@ -39,7 +42,7 @@ public class MutationTestResult extends Observable {
 	/**
 	 * @return the liveMutants
 	 */
-	public List<Mutation> getLiveMutants() {
+	public Set<Mutation> getLiveMutants() {
 		return liveMutants;
 	}
 
@@ -59,8 +62,18 @@ public class MutationTestResult extends Observable {
 		return numberKilledMutants;
 	}
 
+	public int getNumberLiveMutants() {
+		return liveMutants.size();
+	}
+
+	public void calculateMutationScore() {
+		mutationScore = (numberKilledMutants / (numberTotalMutants - numberEquivalentMutants)) * 100;
+		setChanged();
+		notifyObservers(Description.CALCULATE_MUTATION_SCORE);
+	}
+
 	public double getMutationScore() {
-		return 0.0;
+		return mutationScore;
 	}
 
 	public void incrementEquivalentMutants() {
@@ -78,10 +91,11 @@ public class MutationTestResult extends Observable {
 	public void deleteTestResult() {
 		result.clear();
 		liveMutants.clear();
+		mutationScore = 0.0;
 		numberEquivalentMutants = 0;
 		numberKilledMutants = 0;
 		numberTotalMutants = 0;
 		setChanged();
-		notifyObservers();
+		notifyObservers(Description.MUTATION_RESULT);
 	}
 }

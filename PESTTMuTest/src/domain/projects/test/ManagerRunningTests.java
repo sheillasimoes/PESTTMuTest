@@ -20,15 +20,15 @@ public class ManagerRunningTests {
 		junit.run(clazz);
 	}
 
-	public int getCount() {
-		return listener.getCount();
-	}
-
-	public void clearData() {
-		listener.clearData();
+	public int passed() {
+		return listener.passed();
 	}
 
 	public List<String> getTestsFailed() {
 		return listener.getTestsFailed();
+	}
+
+	public void clearData() {
+		listener.clearData();
 	}
 }

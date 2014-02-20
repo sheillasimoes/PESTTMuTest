@@ -1,6 +1,7 @@
 package main.activator;
 
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.jdt.core.dom.ASTNode;
 
@@ -47,6 +48,14 @@ public class PESTTMuTest {
 		return processMutationTestController.getMutantsToDisplay();
 	}
 
+	public void changeTypeViewResult(String typeView) {
+		processMutationTestController.changeTypeViewResult(typeView);
+	}
+
+	public Set<Mutation> changeViewResult() {
+		return processMutationTestController.changeViewResult();
+	}
+
 	/**
 	 * @return the operatorsController
 	 */
@@ -73,6 +82,13 @@ public class PESTTMuTest {
 	 */
 	public ProjectController getProjectController() {
 		return processMutationTestController.getProjectController();
+	}
+
+	/**
+	 * @return the processMutationTestController
+	 */
+	public ProcessMutationTestController getProcessMutationTestController() {
+		return processMutationTestController;
 	}
 
 	public String getFullyQualifiedName(ASTNode node) {

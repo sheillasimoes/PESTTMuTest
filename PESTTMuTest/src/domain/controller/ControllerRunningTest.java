@@ -15,15 +15,15 @@ public class ControllerRunningTest {
 		managerRunningTests.runTest(clazz);
 	}
 
-	public int getCount() {
-		return managerRunningTests.getCount();
+	public List<String> getTestsFailed() {
+		return managerRunningTests.getTestsFailed();
+	}
+
+	public int passed() {
+		return managerRunningTests.passed();
 	}
 
 	public void clearData() {
 		managerRunningTests.clearData();
-	}
-
-	public List<String> getTestsFailed() {
-		return managerRunningTests.getTestsFailed();
 	}
 }

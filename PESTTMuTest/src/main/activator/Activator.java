@@ -1,6 +1,7 @@
 package main.activator;
 
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -10,6 +11,7 @@ import org.osgi.framework.BundleContext;
 import domain.controller.GroundStringController;
 import domain.controller.MutationOperatorsController;
 import domain.controller.MutationsController;
+import domain.controller.ProcessMutationTestController;
 import domain.controller.ProjectController;
 import domain.mutation.Mutation;
 import domain.util.InfoProjectHelper;
@@ -112,6 +114,14 @@ public class Activator extends AbstractUIPlugin {
 		return pesttMuTest.getMutantsToDisplay();
 	}
 
+	public void changeTypeViewResult(String typeView) {
+		pesttMuTest.changeTypeViewResult(typeView);
+	}
+
+	public Set<Mutation> changeViewResult() {
+		return pesttMuTest.changeViewResult();
+	}
+
 	/**
 	 * @return the operatorsController
 	 */
@@ -138,6 +148,13 @@ public class Activator extends AbstractUIPlugin {
 	 */
 	public ProjectController getProjectController() {
 		return pesttMuTest.getProjectController();
+	}
+
+	/**
+	 * @return the processMutationTestController
+	 */
+	public ProcessMutationTestController getProcessMutationTestController() {
+		return pesttMuTest.getProcessMutationTestController();
 	}
 
 	public String getFullyQualifiedName(ASTNode node) {

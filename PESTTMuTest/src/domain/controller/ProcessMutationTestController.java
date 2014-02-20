@@ -1,9 +1,12 @@
 package domain.controller;
 
 import java.util.List;
+import java.util.Observable;
+import java.util.Set;
 
 import org.eclipse.jdt.core.dom.ASTNode;
 
+import domain.constants.Description;
 import domain.constants.Messages;
 import ui.dialog.ProcessMessage;
 import domain.events.RunAllMutationsEvent;
@@ -12,12 +15,13 @@ import domain.events.StartProcessMutationTestEvent;
 import domain.mutation.Mutation;
 import domain.util.InfoProjectHelper;
 
-public class ProcessMutationTestController {
+public class ProcessMutationTestController extends Observable {
 	private MutationOperatorsController operatorsController;
 	private MutationsController mutationsController;
 	private GroundStringController groundStringController;
 	private ProjectController projectController;
 	private ControllerRunningTest controllerRunningTest;
+	private String typeOfView;
 
 	public ProcessMutationTestController() {
 		operatorsController = new MutationOperatorsController();
@@ -35,6 +39,7 @@ public class ProcessMutationTestController {
 	}
 
 	public void runRandomMutations() {
+
 		new RunRandomMutationsEvent().execute(
 				projectController.getProjectNameSelected(),
 				mutationsController, projectController, groundStringController,
@@ -95,6 +100,28 @@ public class ProcessMutationTestController {
 	 */
 	public ProjectController getProjectController() {
 		return projectController;
+	}
+
+	public void changeTypeViewResult(String typeView) {
+		this.typeOfView = typeView;
+		mutationsController.setSelectedMutation(null);
+		setChanged();
+		notifyObservers();
+	}
+
+	public Set<Mutation> changeViewResult() {
+		mutationsController.setSelectedMutation(null);
+		if (typeOfView.equals(Description.TYPE_VIEW_ALL_MUTANTS)) {
+			return mutationsController.getMutantsTestResults();
+		} else {
+			Set<Mutation> result = mutationsController.getLiveMutants();
+			if (result.size() == 0) {
+				ProcessMessage.INSTANCE.showInformationMessage("Info",
+						Messages.NO_LIVE_MUTANTS);
+				return result;
+			} else
+				return result;
+		}
 	}
 
 	public String getFullyQualifiedName(ASTNode node) {

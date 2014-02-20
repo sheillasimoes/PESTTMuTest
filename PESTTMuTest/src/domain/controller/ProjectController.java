@@ -1,12 +1,11 @@
 package domain.controller;
 
 import java.util.List;
-import java.util.Observable;
 import java.util.Observer;
 
 import domain.projects.ManagerProjects;
 
-public class ProjectController extends Observable {
+public class ProjectController {
 	private ManagerProjects managerProjects;
 
 	public ProjectController(GroundStringController groundStringController) {

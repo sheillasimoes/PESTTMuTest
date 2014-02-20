@@ -21,8 +21,10 @@ public class RunAllMutationsEvent {
 			ControllerRunningTest controllerRunningTest) {
 		if (projectName == null) {
 			ProcessMessage.INSTANCE.showInformationMessage("Info",
-					Messages.NOT_SELECT_PROJECT);
+					Messages.NOT_SELECT_PROJECT_NAME);
 		} else {
+			mutationsController.setSelectedMutation(null);
+			mutationsController.deleteTestResult();
 			// verifica se o projeto selecionado tem classes de teste
 			if (!projectController.hasTestClasses(projectName)) {
 				ProcessMessage.INSTANCE.showInformationMessage("Info",
@@ -58,14 +60,14 @@ public class RunAllMutationsEvent {
 									// add result
 									mutationsController.addResult(mutation,
 											controllerRunningTest
-													.getTestsFailed());
+													.getTestsFailed(),
+											controllerRunningTest.passed());
 									controllerRunningTest.clearData();
 								}
 							}
 						}
 					}
-					System.out.println("count "
-							+ controllerRunningTest.getCount());
+
 				}
 			}
 		}

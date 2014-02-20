@@ -22,7 +22,10 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.ui.IWorkbenchPartSite;
 
+import domain.constants.Description;
+import domain.controller.ProcessMutationTestController;
 import domain.mutation.Mutation;
+import domain.mutation.testingProcess.MutationTestResult;
 import ui.constants.Images;
 import ui.constants.TableViewers;
 
@@ -38,6 +41,9 @@ public class AnalyseMutantsTableViewer extends AbstractTableViewer implements
 		this.site = site;
 		Activator.getDefault().getMutationsController()
 				.addObserverMutationTestResult(this);
+		Activator.getDefault().getProcessMutationTestController()
+				.addObserver(this);
+		;
 	}
 
 	public TableViewer create() {
@@ -73,14 +79,31 @@ public class AnalyseMutantsTableViewer extends AbstractTableViewer implements
 
 	@Override
 	public void update(Observable o, Object arg) {
+
 		Set<Mutation> setMutation = Activator.getDefault()
 				.getMutationsController().getMutantsTestResults();
-		if (setMutation.size() == 0
-				&& analyseMutantsTableViewer.getElementAt(0) != null) {
-			analyseMutantsTableViewer.remove(analyseMutantsTableViewer
-					.getInput());
-		} else {
-			analyseMutantsTableViewer.setInput(setMutation);
+		if (o instanceof MutationTestResult
+				&& arg.toString().equals(Description.MUTATION_RESULT)) {
+			if (setMutation.size() == 0
+					&& analyseMutantsTableViewer.getElementAt(0) != null) {
+				analyseMutantsTableViewer.remove(analyseMutantsTableViewer
+						.getInput());
+			} else {
+				analyseMutantsTableViewer.setInput(setMutation);
+			}
+		} else if (o instanceof ProcessMutationTestController) {
+			Set<Mutation> newViewResult = Activator.getDefault()
+					.changeViewResult();
+			if (setMutation.size() > 0 && newViewResult.size() > 0) {
+				if (analyseMutantsTableViewer.getElementAt(0) != null) {
+					// remove older information
+					analyseMutantsTableViewer.remove(analyseMutantsTableViewer
+							.getInput());
+
+				}
+				// put new information
+				analyseMutantsTableViewer.setInput(newViewResult);
+			}
 		}
 	}
 

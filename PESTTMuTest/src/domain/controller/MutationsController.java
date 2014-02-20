@@ -34,15 +34,15 @@ public class MutationsController extends Observable {
 		managerMutations.undoMutant(mutation);
 	}
 
-	public void addResult(Mutation mutation, List<String> data) {
-		mutationTestResult.addResult(mutation, data);
+	public void addResult(Mutation mutation, List<String> data, int liveMutant) {
+		mutationTestResult.addResult(mutation, data, liveMutant);
 	}
 
 	public Set<Mutation> getMutantsTestResults() {
 		return mutationTestResult.getMutantsTestResults();
 	}
 
-	public List<Mutation> getLiveMutants() {
+	public Set<Mutation> getLiveMutants() {
 		return mutationTestResult.getLiveMutants();
 	}
 
@@ -68,6 +68,14 @@ public class MutationsController extends Observable {
 
 	public int getNumberKilledMutants() {
 		return mutationTestResult.getNumberKilledMutants();
+	}
+
+	public int getNumberLiveMutants() {
+		return mutationTestResult.getNumberLiveMutants();
+	}
+
+	public void calculateMutationScore() {
+		mutationTestResult.calculateMutationScore();
 	}
 
 	public double getMutationScore() {
