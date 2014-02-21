@@ -50,12 +50,12 @@ public class MutationsController extends Observable {
 		return mutationTestResult.getFailedTests(mutation);
 	}
 
-	public void incrementEquivalentMutants() {
-		mutationTestResult.incrementEquivalentMutants();
+	public void incrementEquivalentMutants(Mutation mutation) {
+		mutationTestResult.incrementEquivalentMutants(mutation);
 	}
 
-	public void decrementEquivalentMutants() {
-		mutationTestResult.decrementEquivalentMutants();
+	public void decrementEquivalentMutants(Mutation mutation) {
+		mutationTestResult.decrementEquivalentMutants(mutation);
 	}
 
 	public int getNumberTotalMutants() {

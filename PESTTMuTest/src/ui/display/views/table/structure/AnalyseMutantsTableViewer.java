@@ -214,14 +214,20 @@ public class AnalyseMutantsTableViewer extends AbstractTableViewer implements
 									.getTable().getItems()) {
 								if (item == event.item) {
 									if (item.getChecked()) {
-										Activator.getDefault()
+										Activator
+												.getDefault()
 												.getMutationsController()
-												.incrementEquivalentMutants();
+												.incrementEquivalentMutants(
+														(Mutation) item
+																.getData());
 
 									} else {
-										Activator.getDefault()
+										Activator
+												.getDefault()
 												.getMutationsController()
-												.decrementEquivalentMutants();
+												.decrementEquivalentMutants(
+														(Mutation) item
+																.getData());
 									}
 
 								}

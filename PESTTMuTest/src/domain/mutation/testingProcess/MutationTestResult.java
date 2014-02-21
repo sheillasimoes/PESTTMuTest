@@ -76,12 +76,16 @@ public class MutationTestResult extends Observable {
 		return mutationScore;
 	}
 
-	public void incrementEquivalentMutants() {
-		numberEquivalentMutants++;
+	public void incrementEquivalentMutants(Mutation mutation) {
+		if (liveMutants.contains(mutation)) {
+			numberEquivalentMutants++;
+		}
 	}
 
-	public void decrementEquivalentMutants() {
-		numberEquivalentMutants--;
+	public void decrementEquivalentMutants(Mutation mutation) {
+		if (liveMutants.contains(mutation)) {
+			numberEquivalentMutants--;
+		}
 	}
 
 	public boolean isLiveMutant(Mutation mutation) {
