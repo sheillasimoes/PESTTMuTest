@@ -67,9 +67,11 @@ public class MutationTestResult extends Observable {
 	}
 
 	public void calculateMutationScore() {
-		mutationScore = (numberKilledMutants / (numberTotalMutants - numberEquivalentMutants)) * 100;
-		setChanged();
-		notifyObservers(Description.CALCULATE_MUTATION_SCORE);
+		if (result.size() > 0) {
+			mutationScore = (numberKilledMutants / (numberTotalMutants - numberEquivalentMutants)) * 100;
+			setChanged();
+			notifyObservers(Description.CALCULATE_MUTATION_SCORE);
+		}
 	}
 
 	public double getMutationScore() {

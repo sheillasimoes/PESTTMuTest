@@ -11,7 +11,8 @@ public enum TableViewers {
 	MUTANTSTABLE, GROUNDSTRINGTABLE, MUTATIONOPAPPLTABLE, ANALYSEMUTANTSTABLE, TESTCLASSESFAILEDTABLE, PROJECTTABLE;
 
 	/* the name of column */
-	public static final String COLUMN_MUTANT_STATE = "State";
+	public static final String COLUMN_EQUIVALENT_MUTANT = "Equivalent Mutant";
+	public static final String COLUMN_MUTANT_STATE = "Status";
 	public static final String COLUMN_MUTANT = "Mutant";
 	public static final String COLUMN_MUTATION_OP_APPL = "Mutation Operator Applicable";
 	public static final String COLUMN_GROUND_STRING = "Ground String";

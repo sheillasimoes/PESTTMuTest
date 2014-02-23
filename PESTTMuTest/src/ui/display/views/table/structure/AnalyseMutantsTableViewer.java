@@ -91,7 +91,8 @@ public class AnalyseMutantsTableViewer extends AbstractTableViewer implements
 			} else {
 				analyseMutantsTableViewer.setInput(setMutation);
 			}
-		} else if (o instanceof ProcessMutationTestController) {
+		} else if (o instanceof ProcessMutationTestController
+				&& setMutation.size() > 0) {
 			Set<Mutation> newViewResult = Activator.getDefault()
 					.changeViewResult();
 			if (setMutation.size() > 0 && newViewResult.size() > 0) {
@@ -108,19 +109,31 @@ public class AnalyseMutantsTableViewer extends AbstractTableViewer implements
 	}
 
 	private void createColumnsToAnalyseMutants() {
-		String[] columnNames = new String[] { TableViewers.COLUMN_MUTANT,
-				TableViewers.COLUMN_MUTANT_STATE,
+		String[] columnNames = new String[] {
+				TableViewers.COLUMN_EQUIVALENT_MUTANT,
+				TableViewers.COLUMN_MUTANT, TableViewers.COLUMN_MUTANT_STATE,
 				TableViewers.COLUMN_MUTATION_OP_APPL,
 				TableViewers.COLUMN_GROUND_STRING,
 				TableViewers.COLUMN_FULLY_QUALIFIED_NAME }; // the names of
 		// columns.
-		int[] columnWidths = new int[] { 200, 40, 200, 200, 200 }; // the width
-																	// of
-		// columns.
+		int[] columnWidths = new int[] { 110, 200, 50, 200, 200, 200 }; // the
+																		// width
+																		// of
+																		// columns.
 
-		// first column is for the mutant.
+		// first column is for the check equivalent mutant.
 		TableViewerColumn col = createColumnsHeaders(analyseMutantsTableViewer,
 				columnNames[0], columnWidths[0]);
+		col.setLabelProvider(new StyledCellLabelProvider() {
+
+			@Override
+			public void update(ViewerCell cell) {
+			}
+		});
+
+		// second column is for the mutant.
+		col = createColumnsHeaders(analyseMutantsTableViewer, columnNames[1],
+				columnWidths[1]);
 
 		col.setLabelProvider(new StyledCellLabelProvider() {
 			@Override
@@ -131,9 +144,9 @@ public class AnalyseMutantsTableViewer extends AbstractTableViewer implements
 
 		});
 
-		// second column is for the mutant state.
-		col = createColumnsHeaders(analyseMutantsTableViewer, columnNames[1],
-				columnWidths[1]);
+		// third column is for the mutant state.
+		col = createColumnsHeaders(analyseMutantsTableViewer, columnNames[2],
+				columnWidths[2]);
 
 		col.setLabelProvider(new StyledCellLabelProvider() {
 			@Override
@@ -151,9 +164,9 @@ public class AnalyseMutantsTableViewer extends AbstractTableViewer implements
 
 		});
 
-		// third column is for the mutation operator Applicable
-		col = createColumnsHeaders(analyseMutantsTableViewer, columnNames[2],
-				columnWidths[2]);
+		// fourth column is for the mutation operator Applicable
+		col = createColumnsHeaders(analyseMutantsTableViewer, columnNames[3],
+				columnWidths[3]);
 
 		col.setLabelProvider(new StyledCellLabelProvider() {
 			@Override
@@ -165,9 +178,9 @@ public class AnalyseMutantsTableViewer extends AbstractTableViewer implements
 
 		});
 
-		// fourth column is for the ground string.
-		col = createColumnsHeaders(analyseMutantsTableViewer, columnNames[3],
-				columnWidths[3]);
+		// fifth column is for the ground string.
+		col = createColumnsHeaders(analyseMutantsTableViewer, columnNames[4],
+				columnWidths[4]);
 
 		col.setLabelProvider(new StyledCellLabelProvider() {
 			@Override
@@ -179,9 +192,9 @@ public class AnalyseMutantsTableViewer extends AbstractTableViewer implements
 
 		});
 
-		// fifth column is for the fully qualified name
-		col = createColumnsHeaders(analyseMutantsTableViewer, columnNames[4],
-				columnWidths[4]);
+		// sixth column is for the fully qualified name
+		col = createColumnsHeaders(analyseMutantsTableViewer, columnNames[5],
+				columnWidths[5]);
 
 		col.setLabelProvider(new StyledCellLabelProvider() {
 			@Override

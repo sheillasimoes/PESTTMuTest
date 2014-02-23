@@ -43,15 +43,6 @@
             name="Mutation Analysis"
             restorable="true">
       </view>
-      <view
-            allowMultiple="true"
-            category="PESTTMuTest.Category"
-            class="ui.display.views.ViewMutationScore"
-            icon="icons/results.gif"
-            id="PESTTMuTest.MutationScore"
-            name="Mutation Score"
-            restorable="true">
-      </view>
    </extension>
    <extension
          point="org.eclipse.ui.commands">
@@ -325,16 +316,6 @@
          <view
                closeable="true"
                id="PESTTMuTest.MutationAnalysis"
-               minimized="false"
-               moveable="true"
-               relationship="bottom"
-               showTitle="true"
-               standalone="false"
-               visible="true">
-         </view>
-         <view
-               closeable="true"
-               id="PESTTMuTest.MutationScore"
                minimized="false"
                moveable="true"
                relationship="bottom"
