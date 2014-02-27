@@ -116,7 +116,7 @@ public class AnalyseMutantsTableViewer extends AbstractTableViewer implements
 				TableViewers.COLUMN_GROUND_STRING,
 				TableViewers.COLUMN_FULLY_QUALIFIED_NAME }; // the names of
 		// columns.
-		int[] columnWidths = new int[] { 110, 200, 50, 200, 200, 200 }; // the
+		int[] columnWidths = new int[] { 75, 200, 65, 200, 200, 200 }; // the
 																		// width
 																		// of
 																		// columns.
