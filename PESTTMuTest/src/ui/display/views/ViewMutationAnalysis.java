@@ -159,7 +159,7 @@ public class ViewMutationAnalysis extends ViewPart implements Observer {
 			labelKilledMutants.setText("0");
 			labelLiveMutants.setText("0");
 			labelEquivMutants.setText("0");
-			labelMutationScore.setText("0");
+			labelMutationScore.setText("0 %");
 		}
 
 	}

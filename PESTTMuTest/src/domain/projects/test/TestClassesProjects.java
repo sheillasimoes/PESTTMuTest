@@ -69,10 +69,11 @@ public class TestClassesProjects {
 		List<Class<?>> listClass = new ArrayList<Class<?>>();
 		// checks for test classes in the project
 		if (hasTestClasses()) {
+			URLClassLoader newClassLoader = getClassLoader(project);
 			for (String name : listTestClasses) {
 				Class<?> classFile = null;
 				try {
-					classFile = getClassLoader(project).loadClass(name);
+					classFile = newClassLoader.loadClass(name);
 					listClass.add(classFile);
 				} catch (ClassNotFoundException e) {
 					// TODO Auto-generated catch block
