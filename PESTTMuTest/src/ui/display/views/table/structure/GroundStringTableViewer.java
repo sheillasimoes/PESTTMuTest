@@ -8,7 +8,6 @@ import java.util.Observer;
 
 import main.activator.Activator;
 
-import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -21,6 +20,7 @@ import org.eclipse.jface.viewers.ViewerCell;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IWorkbenchPartSite;
 
+import domain.groundString.GroundString;
 import domain.groundString.ManagerGroundString;
 import domain.projects.ManagerProjects;
 import ui.constants.TableViewers;
@@ -86,9 +86,10 @@ public class GroundStringTableViewer extends AbstractTableViewer implements
 						Activator.getDefault().verifyChangesOperators();
 						IStructuredSelection selection = (IStructuredSelection) groundStringTableViewer
 								.getSelection();
-						ASTNode node = (ASTNode) selection.getFirstElement();
+						GroundString groundString = (GroundString) selection
+								.getFirstElement();
 						Activator.getDefault().getGroundStringController()
-								.setSelectedGroundString(node);
+								.setSelectedGroundString(groundString);
 
 					}
 				});
@@ -142,8 +143,9 @@ public class GroundStringTableViewer extends AbstractTableViewer implements
 		col.setLabelProvider(new StyledCellLabelProvider() {
 			@Override
 			public void update(ViewerCell cell) {
-				ASTNode node = (ASTNode) cell.getElement();
-				cell.setText(Activator.getDefault().getFullyQualifiedName(node));
+				GroundString groundString = (GroundString) cell.getElement();
+				cell.setText(Activator.getDefault().getFullyQualifiedName(
+						groundString.getGroundString()));
 				super.update(cell);
 			}
 

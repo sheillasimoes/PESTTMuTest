@@ -7,8 +7,9 @@ import java.util.List;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.Assignment;
 import org.eclipse.jdt.core.dom.Assignment.Operator;
+import org.eclipse.jdt.core.dom.Name;
+import org.eclipse.jdt.core.dom.NullLiteral;
 import org.eclipse.jdt.core.dom.NumberLiteral;
-import org.eclipse.jdt.core.dom.SimpleName;
 
 import domain.constants.EnumAssignmentOperator;
 import domain.mutation.Mutation;
@@ -30,20 +31,38 @@ public class AssignmentOperatorReplacement implements IMutationOperators {
 		for (EnumAssignmentOperator opr : EnumAssignmentOperator.values()) {
 			if (!opr.getAssignmentOperator().equals(
 					assignmentNode.getOperator())) {
+				/*
+				 * verifica as divisoes por zero as mutacoes validas p as
+				 * classes String e Boolean e p o tipo primitivo boolean
+				 */
 				if ((opr.name().equals(
 						EnumAssignmentOperator.DIVIDE_ASSIGN.name())
 						&& assignmentNode.getRightHandSide() instanceof NumberLiteral && ((NumberLiteral) assignmentNode
 							.getRightHandSide()).getToken().equals("0"))
-						|| (assignmentNode.getRightHandSide() instanceof SimpleName
-								&& assignmentNode.getRightHandSide()
-										.resolveTypeBinding().isClass() && ((assignmentNode
-								.getRightHandSide().resolveTypeBinding()
+						|| (assignmentNode.getLeftHandSide() instanceof Name && ((assignmentNode
+								.getLeftHandSide().resolveTypeBinding()
+								.isPrimitive()
+								&& assignmentNode.getLeftHandSide()
+										.resolveTypeBinding().getName()
+										.equals("boolean")
+								&& !opr.name().equals(
+										EnumAssignmentOperator.ASSIGN.name())
+								&& !opr.name().equals(
+										EnumAssignmentOperator.BIT_AND_ASSIGN
+												.name())
+								&& !opr.name().equals(
+										EnumAssignmentOperator.BIT_OR_ASSIGN
+												.name()) && !opr.name().equals(
+								EnumAssignmentOperator.BIT_XOR_ASSIGN.name())) || (assignmentNode
+								.getLeftHandSide().resolveTypeBinding()
+								.isClass() && ((assignmentNode
+								.getLeftHandSide().resolveTypeBinding()
 								.getQualifiedName().equals("java.lang.String")
 								&& !opr.name().equals(
 										EnumAssignmentOperator.PLUS_ASSIGN
 												.name()) && !opr.name().equals(
 								EnumAssignmentOperator.ASSIGN.name())) || (assignmentNode
-								.getRightHandSide().resolveTypeBinding()
+								.getLeftHandSide().resolveTypeBinding()
 								.getQualifiedName().equals("java.lang.Boolean")
 								&& !opr.name().equals(
 										EnumAssignmentOperator.ASSIGN.name())
@@ -53,7 +72,7 @@ public class AssignmentOperatorReplacement implements IMutationOperators {
 								&& !opr.name().equals(
 										EnumAssignmentOperator.BIT_OR_ASSIGN
 												.name()) && !opr.name().equals(
-								EnumAssignmentOperator.BIT_XOR_ASSIGN.name()))))) {
+								EnumAssignmentOperator.BIT_XOR_ASSIGN.name()))))))) {
 					continue;
 				}
 
@@ -89,18 +108,20 @@ public class AssignmentOperatorReplacement implements IMutationOperators {
 		if (node instanceof Assignment) {
 			flag = true;
 			Assignment assignment = (Assignment) node;
-			assignment.getRightHandSide();
-			if (assignment.getRightHandSide() instanceof SimpleName
-					&& (assignment.getRightHandSide().resolveTypeBinding()
-							.isArray() || (assignment.getRightHandSide()
-							.resolveTypeBinding().isClass() && (!CLASS_EXCEPTION
-							.contains(assignment.getRightHandSide()
+			if (assignment.getRightHandSide() instanceof NullLiteral
+					|| (assignment.getLeftHandSide() instanceof Name && (assignment
+							.getLeftHandSide().resolveTypeBinding().isArray()
+							|| assignment.getLeftHandSide()
+									.resolveTypeBinding().isInterface()
+							|| assignment.getLeftHandSide()
+									.resolveTypeBinding().isEnum() || (assignment
+							.getLeftHandSide().resolveTypeBinding().isClass() && !CLASS_EXCEPTION
+							.contains(assignment.getLeftHandSide()
 									.resolveTypeBinding().getQualifiedName()))))) {
 				flag = false;
 			}
 			return flag;
 		}
-
 		return flag;
 	}
 

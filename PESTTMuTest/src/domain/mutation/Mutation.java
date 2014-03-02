@@ -6,6 +6,7 @@ package domain.mutation;
 import org.eclipse.jdt.core.dom.ASTNode;
 
 import domain.mutation.operators.IMutationOperators;
+import domain.util.ToStringASTNode;
 
 public class Mutation {
 
@@ -54,7 +55,7 @@ public class Mutation {
 
 	public void applyMutationOperator() {
 		mutationOperator.applyOperator(this);
-		mutant = node.toString();
+		mutant = ToStringASTNode.toString(node);
 	}
 
 	public void undoActionMutationOperator() {

@@ -2,14 +2,13 @@ package domain.events;
 
 import java.util.List;
 
-import org.eclipse.jdt.core.dom.ASTNode;
-
 import domain.constants.Messages;
 import ui.dialog.ProcessMessage;
 import domain.controller.ControllerRunningTest;
 import domain.controller.GroundStringController;
 import domain.controller.MutationsController;
 import domain.controller.ProjectController;
+import domain.groundString.GroundString;
 import domain.mutation.Mutation;
 import domain.mutation.operators.IMutationOperators;
 
@@ -31,7 +30,7 @@ public class RunAllMutationsEvent {
 						Messages.PROJECT_NOT_HAVE_TEST_CALSSES);
 			} else {
 				// ground string
-				List<ASTNode> projectGS = groundStringController
+				List<GroundString> projectGS = groundStringController
 						.getListGroundString();
 				// verifica se foram encontradas GS para aplicar mutações
 				if (projectGS.size() > 0) {
@@ -40,15 +39,17 @@ public class RunAllMutationsEvent {
 							.getTestClasses();
 					mutationsController.deleteTestResult();
 					controllerRunningTest.clearData();
-					for (ASTNode node : projectGS) {
+					for (GroundString gs : projectGS) {
+						int j = 0;
+						System.out.println("run all " + gs.toString());
 						// mutation operators
 						List<IMutationOperators> mutationOperators = groundStringController
-								.getOperatorsApplicable(node);
+								.getOperatorsApplicable(gs);
 
 						for (IMutationOperators operator : mutationOperators) {
 							// mutations
-							List<Mutation> mutations = operator
-									.getMutations(node);
+							List<Mutation> mutations = operator.getMutations(gs
+									.getGroundString());
 
 							for (Mutation mutation : mutations) {
 								if (mutationsController.applyMutant(mutation)) {
@@ -66,6 +67,8 @@ public class RunAllMutationsEvent {
 								}
 							}
 						}
+						System.out.println("run all " + j);
+						j++;
 					}
 
 				}

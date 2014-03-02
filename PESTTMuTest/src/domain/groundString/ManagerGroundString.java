@@ -10,12 +10,14 @@ import domain.mutation.operators.IMutationOperators;
 import domain.mutation.operators.ManagerMutationOperators;
 
 public class ManagerGroundString extends Observable {
-	private ManagerMutationOperators operatorManager = null;
-	private List<ASTNode> listGroundString = null;
+	private ManagerMutationOperators operatorManager;
+	// private List<ASTNode> listGroundString;
+	private List<GroundString> listGroundString;
 
 	public ManagerGroundString(ManagerMutationOperators operatorManager) {
 		this.operatorManager = operatorManager;
-		listGroundString = new LinkedList<>();
+		// listGroundString = new LinkedList<ASTNode>();
+		listGroundString = new LinkedList<GroundString>();
 	}
 
 	/**
@@ -23,8 +25,8 @@ public class ManagerGroundString extends Observable {
 	 * 
 	 * @return
 	 */
-	public List<ASTNode> getListGroundString() {
-		return listGroundString;
+	public List<GroundString> getListGroundString() {
+		return listGroundString;// listGroundString;
 
 	}
 
@@ -34,7 +36,7 @@ public class ManagerGroundString extends Observable {
 	 * @param node
 	 */
 	private void addGroundString(ASTNode node) {
-		listGroundString.add(node);
+		listGroundString.add(new GroundString(node));
 		setChanged();
 		notifyObservers(node);
 
@@ -44,7 +46,7 @@ public class ManagerGroundString extends Observable {
 	 * Inicializa a lista que contem GroundString
 	 */
 	public void initializeListGroundString() {
-		listGroundString = new LinkedList<ASTNode>();
+		listGroundString = new LinkedList<GroundString>();
 		setChanged();
 		notifyObservers();
 	}
@@ -59,8 +61,10 @@ public class ManagerGroundString extends Observable {
 		}
 	}
 
-	public List<IMutationOperators> getOperatorsApplicable(ASTNode node) {
-		return operatorManager.getOperatorsApplicable(node);
+	public List<IMutationOperators> getOperatorsApplicable(
+			GroundString groundString) {
+		return operatorManager.getOperatorsApplicable(groundString
+				.getGroundString());
 	}
 
 	private boolean isGroundString(ASTNode node) {

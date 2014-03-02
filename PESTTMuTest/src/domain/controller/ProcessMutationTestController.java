@@ -68,7 +68,7 @@ public class ProcessMutationTestController extends Observable {
 	}
 
 	public List<Mutation> getMutantsToDisplay() {
-		ASTNode groundString = groundStringController.getSelectedGroundString();
+		ASTNode groundString = groundStringController.getSelectedGroundString().getGroundString();
 		List<Mutation> mutations = operatorsController
 				.getMutations(groundString);
 		return mutationsController.getMutantsToDisplay(groundString, mutations);
