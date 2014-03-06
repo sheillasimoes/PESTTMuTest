@@ -41,7 +41,6 @@ public class RunAllMutationsEvent {
 					controllerRunningTest.clearData();
 					for (GroundString gs : projectGS) {
 						int j = 0;
-						System.out.println("run all " + gs.toString());
 						// mutation operators
 						List<IMutationOperators> mutationOperators = groundStringController
 								.getOperatorsApplicable(gs);
@@ -61,8 +60,7 @@ public class RunAllMutationsEvent {
 									// add result
 									mutationsController.addResult(mutation,
 											controllerRunningTest
-													.getTestsFailed(),
-											controllerRunningTest.passed());
+													.getTestsFailed());
 									controllerRunningTest.clearData();
 								}
 							}

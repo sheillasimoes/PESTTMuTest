@@ -63,12 +63,13 @@ public class ProcessMutationTestController extends Observable {
 		boolean result = operatorsController.verifyChangesOperators(elements);
 		if (!result) {
 			ProcessMessage.INSTANCE.showInformationMessage("Info",
-					Messages.NOT_SELECT_ELEMENTS_TREE);
+					Messages.CHANGE);
 		}
 	}
 
 	public List<Mutation> getMutantsToDisplay() {
-		ASTNode groundString = groundStringController.getSelectedGroundString().getGroundString();
+		ASTNode groundString = groundStringController.getSelectedGroundString()
+				.getGroundString();
 		List<Mutation> mutations = operatorsController
 				.getMutations(groundString);
 		return mutationsController.getMutantsToDisplay(groundString, mutations);

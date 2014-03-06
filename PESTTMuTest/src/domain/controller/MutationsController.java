@@ -34,8 +34,8 @@ public class MutationsController extends Observable {
 		managerMutations.undoMutant(mutation);
 	}
 
-	public void addResult(Mutation mutation, List<String> data, int liveMutant) {
-		mutationTestResult.addResult(mutation, data, liveMutant);
+	public void addResult(Mutation mutation, List<String> data) {
+		mutationTestResult.addResult(mutation, data);
 	}
 
 	public Set<Mutation> getMutantsTestResults() {

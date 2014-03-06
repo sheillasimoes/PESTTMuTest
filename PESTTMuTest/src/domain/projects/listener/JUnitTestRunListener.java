@@ -9,28 +9,40 @@ import org.junit.runner.notification.RunListener;
 
 public class JUnitTestRunListener extends RunListener {
 	private List<String> testsFailure;
-	private List<String> allTest;
+	int countIni = 0;
+	int countEnd = 0;
+
+	// private List<String> allTest;
 
 	public JUnitTestRunListener() {
 		testsFailure = new LinkedList<String>();
-		allTest = new LinkedList<String>();
 	}
 
 	@Override
 	public void testFinished(Description description) throws Exception {
-		allTest.add((description.getClassName() + " ("
-				+ description.getMethodName() + ")"));
+		countEnd++;
 	}
 
 	@Override
 	public void testFailure(Failure failure) throws Exception {
-		testsFailure.add((failure.getDescription().getClassName() + " ("
-				+ failure.getDescription().getMethodName() + ")"));
+		testsFailure.add(new StringBuilder(failure.getDescription()
+				.getClassName()
+				+ " ("
+				+ failure.getDescription().getMethodName() + ")").toString());
+		System.out.println("failed " + testsFailure.get(0));
+		System.out.println("exception exception" + failure.getException()
+				+ " \n message" + failure.getMessage());
+	}
+
+	@Override
+	public void testStarted(Description description) throws Exception {
+		countIni++;
 	}
 
 	public void clearData() {
 		testsFailure.clear();
-		allTest.clear();
+		countIni = 0;
+		countEnd = 0;
 	}
 
 	public int passed() {
@@ -38,12 +50,8 @@ public class JUnitTestRunListener extends RunListener {
 	}
 
 	public List<String> getTestsFailed() {
-		List<String> testsFailed = new LinkedList<String>();
-		for (String testName : allTest) {
-			if (!testsFailure.contains(testName)) {
-				testsFailed.add(testName);
-			}
-		}
-		return testsFailed;
+		System.out.println("test started " + countIni + "  test end "
+				+ countEnd + " test fail.. " + testsFailure.size());
+		return testsFailure;
 	}
 }

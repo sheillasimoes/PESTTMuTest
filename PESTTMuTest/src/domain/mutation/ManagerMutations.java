@@ -18,20 +18,15 @@ public class ManagerMutations {
 	private ICompilationUnit unit;
 	private ICompilationUnit workingCopy;
 	private ASTRewrite rewrite;
-	private List<Mutation> mutations;
 
 	/**
 	 * 
 	 * @param mutation
 	 * @return
 	 */
-	public boolean generatingMutant(Mutation mutation) {
+	public void generatingMutant(Mutation mutation) {
 		mutation.applyMutationOperator();
-		boolean flag = validateMutant();
-		return flag;
-	}
-
-	private boolean validateMutant() {
+		System.out.println("mutante " + mutation.toString());
 		try {
 			workingCopy = unit.getWorkingCopy(null);
 		} catch (JavaModelException e) {
@@ -41,10 +36,6 @@ public class ManagerMutations {
 
 		// apply change in CompilationUnit
 		FileChangeHelper.changeICompilationUnit(workingCopy, rewrite, cUnit);
-
-		// checks if changes are valid
-		boolean flag = FileChangeHelper.changeIsValid(workingCopy);
-		return flag;
 	}
 
 	/**
@@ -55,13 +46,14 @@ public class ManagerMutations {
 	 */
 	public List<Mutation> getMutantsToDisplay(ASTNode node,
 			List<Mutation> mutations) {
+		LinkedList<Mutation> mutationResult = new LinkedList<Mutation>();
 		initialize(node);
-
 		for (Mutation mutation : mutations) {
 			// generating mutant
-			// verifies that the mutation generating errors
-			if (generatingMutant(mutation)) {
-				this.mutations.add(mutation);
+			generatingMutant(mutation);
+			// verifies that the mutation generating errors in file change
+			if (FileChangeHelper.validateChangeInFile(workingCopy)) {
+				mutationResult.add(mutation);
 			}
 			// Destroy working copy
 			FileChangeHelper.discardWorkingCopy(workingCopy);
@@ -69,8 +61,7 @@ public class ManagerMutations {
 			// undo change in CompilationUnit
 			mutation.undoActionMutationOperator();
 		}
-
-		return this.mutations;
+		return mutationResult;
 	}
 
 	/**
@@ -83,7 +74,6 @@ public class ManagerMutations {
 		unit = (ICompilationUnit) cUnit.getJavaElement();
 		ast = cUnit.getAST();
 		rewrite = ASTRewrite.create(ast);
-		mutations = new LinkedList<Mutation>();
 
 	}
 
@@ -92,17 +82,20 @@ public class ManagerMutations {
 		boolean flag = false;
 
 		// generating mutant
-		// verifies that the mutation generating errors
-		if (generatingMutant(mutation)) {
-			FileChangeHelper.saveChange(workingCopy);
-			flag = true;
-		} else {
-			// undo change in CompilationUnit
+		generatingMutant(mutation);
+		// save change to the file
+		FileChangeHelper.saveChange(workingCopy);
+		// compile project to verifies that the mutation generating errors
+		if (FileChangeHelper.findCompilationErrors(workingCopy)) {
+			flag = false;
+			// undo change in project
 			mutation.undoActionMutationOperator();
+			FileChangeHelper.undoChangeICompilationUnit(workingCopy, rewrite,
+					cUnit);
+		} else {
+			flag = true;
 		}
-
 		FileChangeHelper.discardWorkingCopy(workingCopy);
-
 		return flag;
 	}
 

@@ -2,6 +2,7 @@ package domain.util;
 
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.dom.AST;
+import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.ASTParser;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 
@@ -24,4 +25,8 @@ public class ASTUtil {
 		return (CompilationUnit) parser.createAST(null);
 	}
 
+	public static int getLineNumber(ASTNode node) {
+		CompilationUnit unit = (CompilationUnit) node.getRoot();
+		return unit.getLineNumber(node.getStartPosition());
+	}
 }

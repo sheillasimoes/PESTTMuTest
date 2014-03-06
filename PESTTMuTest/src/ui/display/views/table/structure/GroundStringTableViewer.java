@@ -23,6 +23,7 @@ import org.eclipse.ui.IWorkbenchPartSite;
 import domain.groundString.GroundString;
 import domain.groundString.ManagerGroundString;
 import domain.projects.ManagerProjects;
+import domain.util.ASTUtil;
 import ui.constants.TableViewers;
 
 /**
@@ -116,12 +117,12 @@ public class GroundStringTableViewer extends AbstractTableViewer implements
 	}
 
 	private void createColumnsToGroundString() {
+		// the names of columns.
 		String[] columnNames = new String[] {
 				TableViewers.COLUMN_GROUND_STRING,
-				TableViewers.COLUMN_FULLY_QUALIFIED_NAME }; // the names of
-		// columns.
-		int[] columnWidths = new int[] { 200, 200 }; // the width of
-														// columns.
+				TableViewers.COLUMN_RESOURCE, TableViewers.COLUMN_LINE };
+		// the width of columns.
+		int[] columnWidths = new int[] { 200, 150, 40 };
 
 		// first column is for the ground string.
 		TableViewerColumn col = createColumnsHeaders(groundStringTableViewer,
@@ -136,7 +137,7 @@ public class GroundStringTableViewer extends AbstractTableViewer implements
 
 		});
 
-		// second column is for the fully qualified name
+		// second column is for the resource name
 		col = createColumnsHeaders(groundStringTableViewer, columnNames[1],
 				columnWidths[1]);
 
@@ -146,6 +147,21 @@ public class GroundStringTableViewer extends AbstractTableViewer implements
 				GroundString groundString = (GroundString) cell.getElement();
 				cell.setText(Activator.getDefault().getFullyQualifiedName(
 						groundString.getGroundString()));
+				super.update(cell);
+			}
+
+		});
+
+		// third column is for the location
+		col = createColumnsHeaders(groundStringTableViewer, columnNames[2],
+				columnWidths[2]);
+
+		col.setLabelProvider(new StyledCellLabelProvider() {
+			@Override
+			public void update(ViewerCell cell) {
+				GroundString groundString = (GroundString) cell.getElement();
+				cell.setText(String.valueOf(ASTUtil.getLineNumber(groundString
+						.getGroundString())));
 				super.update(cell);
 			}
 

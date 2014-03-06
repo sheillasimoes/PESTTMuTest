@@ -9,4 +9,5 @@ public class Messages {
 	public static final String NOT_SELECT_PROJECT_NAME = "É necessario selecionar o nome de um projeto.";
 	public static final String PROJECT_NOT_HAVE_TEST_CALSSES = "O projeto não tem classes de testes. É necessario criar classes de teste.";
 	public static final String NO_LIVE_MUTANTS = "There are no live mutants!.";
+	public static final String CHANGE = "Change!!";
 }

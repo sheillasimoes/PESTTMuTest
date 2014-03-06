@@ -16,24 +16,29 @@ import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.viewers.ViewerCell;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.ui.IWorkbenchPartSite;
 
+import ui.constants.Images;
+import ui.constants.TableViewers;
 import domain.constants.Description;
 import domain.controller.ProcessMutationTestController;
 import domain.mutation.Mutation;
 import domain.mutation.testingProcess.MutationTestResult;
-import ui.constants.Images;
-import ui.constants.TableViewers;
+import domain.util.ASTUtil;
+import domain.util.ToStringASTNode;
 
 public class AnalyseMutantsTableViewer extends AbstractTableViewer implements
 		Observer {
 	private Composite parent;
 	private IWorkbenchPartSite site;
 	private TableViewer analyseMutantsTableViewer;
+	private Image liveMutant;
+	private Image killedMutant;
 
 	public AnalyseMutantsTableViewer(Composite parent, IWorkbenchPartSite site) {
 		super();
@@ -43,7 +48,9 @@ public class AnalyseMutantsTableViewer extends AbstractTableViewer implements
 				.addObserverMutationTestResult(this);
 		Activator.getDefault().getProcessMutationTestController()
 				.addObserver(this);
-		;
+		liveMutant = Images.getImage((Images.LIVEMUTANT));
+		killedMutant = Images.getImage((Images.KILLEDMUTANT));
+
 	}
 
 	public TableViewer create() {
@@ -58,12 +65,12 @@ public class AnalyseMutantsTableViewer extends AbstractTableViewer implements
 						Activator.getDefault().verifyChangesOperators();
 						IStructuredSelection selection = (IStructuredSelection) analyseMutantsTableViewer
 								.getSelection();
-						Mutation mutation = Activator.getDefault()
-								.getMutationsController().getSelectedMutation();
-						if (selection.getFirstElement() != null
-								&& (mutation == null || !mutation
-										.equals((Mutation) selection
-												.getFirstElement()))) {
+						// Mutation mutation = Activator.getDefault()
+						// .getMutationsController().getSelectedMutation();
+						if (selection.getFirstElement() != null) {
+							// && (mutation == null || !mutation
+							// .equals((Mutation) selection
+							// .getFirstElement()))) {
 							Activator
 									.getDefault()
 									.getMutationsController()
@@ -91,6 +98,7 @@ public class AnalyseMutantsTableViewer extends AbstractTableViewer implements
 			} else {
 				analyseMutantsTableViewer.setInput(setMutation);
 			}
+			// filtrar os mutantes vivos ou apresentar todos os mutantes
 		} else if (o instanceof ProcessMutationTestController
 				&& setMutation.size() > 0) {
 			Set<Mutation> newViewResult = Activator.getDefault()
@@ -100,26 +108,23 @@ public class AnalyseMutantsTableViewer extends AbstractTableViewer implements
 					// remove older information
 					analyseMutantsTableViewer.remove(analyseMutantsTableViewer
 							.getInput());
-
+					// put new information
+					analyseMutantsTableViewer.setInput(newViewResult);
 				}
-				// put new information
-				analyseMutantsTableViewer.setInput(newViewResult);
 			}
 		}
 	}
 
 	private void createColumnsToAnalyseMutants() {
+		// the names of columns.
 		String[] columnNames = new String[] {
 				TableViewers.COLUMN_EQUIVALENT_MUTANT,
 				TableViewers.COLUMN_MUTANT, TableViewers.COLUMN_MUTANT_STATE,
 				TableViewers.COLUMN_MUTATION_OP_APPL,
 				TableViewers.COLUMN_GROUND_STRING,
-				TableViewers.COLUMN_FULLY_QUALIFIED_NAME }; // the names of
-		// columns.
-		int[] columnWidths = new int[] { 75, 200, 65, 200, 200, 200 }; // the
-																		// width
-																		// of
-																		// columns.
+				TableViewers.COLUMN_RESOURCE, TableViewers.COLUMN_LINE };
+		// the width of columns.
+		int[] columnWidths = new int[] { 75, 200, 65, 200, 200, 150, 40 };
 
 		// first column is for the check equivalent mutant.
 		TableViewerColumn col = createColumnsHeaders(analyseMutantsTableViewer,
@@ -154,9 +159,9 @@ public class AnalyseMutantsTableViewer extends AbstractTableViewer implements
 				Mutation mutation = (Mutation) cell.getElement();
 				if (Activator.getDefault().getMutationsController()
 						.isLiveMutant(mutation)) {
-					cell.setImage(Images.getImage((Images.LIVEMUTANT)));
+					cell.setImage(liveMutant);
 				} else {
-					cell.setImage(Images.getImage((Images.KILLEDMUTANT)));
+					cell.setImage(killedMutant);
 				}
 
 				super.update(cell);
@@ -186,7 +191,7 @@ public class AnalyseMutantsTableViewer extends AbstractTableViewer implements
 			@Override
 			public void update(ViewerCell cell) {
 				Mutation mutation = (Mutation) cell.getElement();
-				cell.setText(mutation.getASTNode().toString());
+				cell.setText(ToStringASTNode.toString(mutation.getASTNode()));
 				super.update(cell);
 			}
 
@@ -206,6 +211,21 @@ public class AnalyseMutantsTableViewer extends AbstractTableViewer implements
 			}
 
 		});
+
+		// seventh column is for the line of ground string
+		col = createColumnsHeaders(analyseMutantsTableViewer, columnNames[6],
+				columnWidths[6]);
+
+		col.setLabelProvider(new StyledCellLabelProvider() {
+			@Override
+			public void update(ViewerCell cell) {
+				Mutation mutation = (Mutation) cell.getElement();
+				cell.setText(String.valueOf(ASTUtil.getLineNumber(mutation
+						.getASTNode())));
+				super.update(cell);
+			}
+
+		});
 	}
 
 	@PreDestroy
@@ -219,10 +239,8 @@ public class AnalyseMutantsTableViewer extends AbstractTableViewer implements
 				new Listener() {
 
 					public void handleEvent(Event event) {
-
-						if (event.detail == SWT.CHECK) { // when user
-															// enable/disable
-															// mutant.
+						// when user enable/disable mutant.
+						if (event.detail == SWT.CHECK) {
 							for (TableItem item : analyseMutantsTableViewer
 									.getTable().getItems()) {
 								if (item == event.item) {

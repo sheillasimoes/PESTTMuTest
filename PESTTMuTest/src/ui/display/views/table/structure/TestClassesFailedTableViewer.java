@@ -40,6 +40,7 @@ public class TestClassesFailedTableViewer extends AbstractTableViewer implements
 	public void update(Observable o, Object arg) {
 		Mutation mutation = Activator.getDefault().getMutationsController()
 				.getSelectedMutation();
+
 		if (mutation == null && testClassesFailed.getElementAt(0) != null) {
 			testClassesFailed.remove(testClassesFailed.getInput());
 		} else if (mutation != null) {

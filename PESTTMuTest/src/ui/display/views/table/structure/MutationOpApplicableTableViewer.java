@@ -26,13 +26,14 @@ import ui.constants.TableViewers;
  * @author sheilla
  * 
  */
-public class MutationOpApplicableTableViewer extends AbstractTableViewer implements
-		Observer {
+public class MutationOpApplicableTableViewer extends AbstractTableViewer
+		implements Observer {
 	private Composite parent;
 	private IWorkbenchPartSite site;
 	private TableViewer opMutationApplTableViewer;
 
-	public MutationOpApplicableTableViewer(Composite parent, IWorkbenchPartSite site) {
+	public MutationOpApplicableTableViewer(Composite parent,
+			IWorkbenchPartSite site) {
 		this.parent = parent;
 		this.site = site;
 		Activator.getDefault().getGroundStringController().addObserver(this);

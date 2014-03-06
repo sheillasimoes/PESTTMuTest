@@ -23,6 +23,7 @@ public class DeltaInformation implements IResourceDeltaVisitor {
 							.toString())) {
 				managerProjects.setProjectsChanged(true);
 			}
+
 			break;
 		}
 		return true; // visit the children

@@ -17,11 +17,12 @@ public enum TableViewers {
 	public static final String COLUMN_MUTATION_OP_APPL = "Mutation Operator Applicable";
 	public static final String COLUMN_GROUND_STRING = "Ground String";
 	public static final String COLUMN_PROJECT_NAME = "Project";
-	public static final String COLUMN_FULLY_QUALIFIED_NAME = "Fully qualified name";
+	public static final String COLUMN_RESOURCE = "Resource";
 	public static final String COLUMN_STATUS = "Status";
-	public static final String COLUMN_NAME_TEST_CLASSES = "Test Classes Failed - test classe (test case)";
+	public static final String COLUMN_NAME_TEST_CLASSES = "Test Classes Killed Mutant - test classe (test case)";
+	public static final String COLUMN_LINE = "Line";
 
 	/* the width of columns */
-	public static final int COLUMN_WIDTH = 414;
+	public static final int COLUMN_WIDTH = 413;
 
 }

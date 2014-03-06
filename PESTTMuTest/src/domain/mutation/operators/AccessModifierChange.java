@@ -22,8 +22,9 @@ public class AccessModifierChange implements IMutationOperators {
 		List<Mutation> listMutants = new LinkedList<Mutation>();
 		boolean flagNoneModifier = false;
 
-		// original modifier
+		// save original modifier
 		Modifier modifier;
+		// nao tem modifiers
 		if (declaration.modifiers().size() == 0
 				|| haveModifierNone((Modifier) declaration.modifiers().get(0))) {
 			flagNoneModifier = true;
@@ -37,15 +38,15 @@ public class AccessModifierChange implements IMutationOperators {
 		}
 
 		for (EnumModifierKeyword modifierKeyword : EnumModifierKeyword.values()) {
-			if (!flagNoneModifier
-					&& !modifierKeyword.getModifierKeyword().equals(
-							modifier.getKeyword())) {
-				listMutants.add(new Mutation(declaration, this, modifierKeyword
-						.getModifierKeyword(), modifier.getKeyword()));
-			} else {
+			if (flagNoneModifier) {
 				listMutants.add(new Mutation(declaration, this, modifierKeyword
 						.getModifierKeyword(), null));
+			} else if (!modifierKeyword.getModifierKeyword().equals(
+					modifier.getKeyword())) {
+				listMutants.add(new Mutation(declaration, this, modifierKeyword
+						.getModifierKeyword(), modifier.getKeyword()));
 			}
+
 		}
 
 		return listMutants;

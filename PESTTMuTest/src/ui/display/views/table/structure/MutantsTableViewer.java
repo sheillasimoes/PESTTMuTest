@@ -47,7 +47,6 @@ public class MutantsTableViewer extends AbstractTableViewer implements Observer 
 
 		if (arg0 instanceof MutationOperatorsController
 				&& mutantTableViewer.getElementAt(0) != null) {
-
 			mutantTableViewer.remove(mutantTableViewer.getInput());
 		}
 

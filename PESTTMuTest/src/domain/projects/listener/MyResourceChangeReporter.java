@@ -23,7 +23,6 @@ public class MyResourceChangeReporter implements IResourceChangeListener {
 				e.printStackTrace();
 			}
 			break;
-
 		}
 	}
 }

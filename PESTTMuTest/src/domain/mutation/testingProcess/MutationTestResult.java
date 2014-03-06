@@ -2,6 +2,7 @@ package domain.mutation.testingProcess;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Observable;
@@ -23,13 +24,13 @@ public class MutationTestResult extends Observable {
 		liveMutants = new HashSet<Mutation>();
 	}
 
-	public void addResult(Mutation mutation, List<String> data, int liveMutant) {
-		if (liveMutant == 0) {
+	public void addResult(Mutation mutation, List<String> data) {
+		if (data.size() == 0) {
 			liveMutants.add(mutation);
 		} else {
 			numberKilledMutants++;
 		}
-		this.result.put(mutation, data);
+		result.put(mutation, new LinkedList<>(data));
 		numberTotalMutants++;
 		setChanged();
 		notifyObservers(Description.MUTATION_RESULT);
@@ -67,7 +68,8 @@ public class MutationTestResult extends Observable {
 	}
 
 	public void calculateMutationScore() {
-		if (result.size() > 0) {
+		if (result.size() > 0
+				&& ((result.size() - numberEquivalentMutants)) > 0) {
 			mutationScore = (numberKilledMutants / (numberTotalMutants - numberEquivalentMutants)) * 100;
 			setChanged();
 			notifyObservers(Description.CALCULATE_MUTATION_SCORE);

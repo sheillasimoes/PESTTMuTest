@@ -16,6 +16,7 @@ public class ToStringASTNode {
 			return node.toString();
 	}
 
+	@SuppressWarnings("rawtypes")
 	private static String toStringMethodDeclaration(ASTNode node) {
 		MethodDeclaration methodDeclaration = (MethodDeclaration) node;
 		StringBuilder text = new StringBuilder();
@@ -44,6 +45,7 @@ public class ToStringASTNode {
 		return text.toString();
 	}
 
+	@SuppressWarnings("rawtypes")
 	private static String toStringFieldDeclaration(ASTNode node) {
 		FieldDeclaration fieldDeclaration = (FieldDeclaration) node;
 		StringBuilder text = new StringBuilder();

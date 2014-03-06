@@ -57,9 +57,9 @@ public class RunRandomMutationsEvent {
 								Random random = new Random();
 								int i = random.nextInt(mutations.size());
 								// verifica se é gerado um mutante válido
-								if (mutationsController.applyMutant(mutations
-										.get(i))) {
-
+								if (!listCount.contains(Integer.valueOf(i))
+										&& mutationsController
+												.applyMutant(mutations.get(i))) {
 									for (Class<?> testClass : testClasses) {
 										controllerRunningTest
 												.runTest(testClass);
@@ -69,8 +69,7 @@ public class RunRandomMutationsEvent {
 									// add result
 									mutationsController.addResult(mutations
 											.get(i), controllerRunningTest
-											.getTestsFailed(),
-											controllerRunningTest.passed());
+											.getTestsFailed());
 									controllerRunningTest.clearData();
 									flag = true;
 								}
@@ -84,6 +83,7 @@ public class RunRandomMutationsEvent {
 							} while (!flag
 									&& listCount.size() < mutations.size());
 						}
+						break;
 					}
 				}
 			}
