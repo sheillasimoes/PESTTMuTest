@@ -4,6 +4,7 @@ import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.ASTParser;
+import org.eclipse.jdt.core.dom.BodyDeclaration;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 
 public class ASTUtil {
@@ -27,6 +28,11 @@ public class ASTUtil {
 
 	public static int getLineNumber(ASTNode node) {
 		CompilationUnit unit = (CompilationUnit) node.getRoot();
-		return unit.getLineNumber(node.getStartPosition());
+		if (node instanceof BodyDeclaration
+				&& ((BodyDeclaration) node).getJavadoc() != null) {
+			return unit.getLineNumber(node.getStartPosition()
+					+ ((BodyDeclaration) node).getJavadoc().getLength()) + 1;
+		} else
+			return unit.getLineNumber(node.getStartPosition());
 	}
 }

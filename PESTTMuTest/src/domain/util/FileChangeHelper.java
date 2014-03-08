@@ -64,12 +64,10 @@ public class FileChangeHelper {
 			markers = project.findMarkers(
 					IJavaModelMarker.JAVA_MODEL_PROBLEM_MARKER, true,
 					IResource.DEPTH_INFINITE);
-			System.out.println(" size markers " + markers.length);
 			for (IMarker marker : markers) {
 				Integer severityType = (Integer) marker
 						.getAttribute(IMarker.SEVERITY);
 				if (severityType.intValue() == IMarker.SEVERITY_ERROR) {
-					System.out.println("error " + marker.getType());
 					return true;
 				}
 			}

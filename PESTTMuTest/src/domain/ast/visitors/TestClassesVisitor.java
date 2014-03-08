@@ -1,7 +1,10 @@
 package domain.ast.visitors;
 
+import java.util.List;
+
 import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.MarkerAnnotation;
+import org.eclipse.jdt.core.dom.Modifier;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
 
 import domain.constants.Description;
@@ -29,6 +32,7 @@ public class TestClassesVisitor extends ASTVisitor {
 	public boolean visit(TypeDeclaration node) {
 		if (!node.isInterface()
 				&& node.getSuperclassType() != null
+				&& !isAbstractClass(node)
 				&& node.getSuperclassType().resolveBinding().getQualifiedName()
 						.equals(Description.TYPE_CLASS_EXTENDS_TEST)) {
 			flag = true;
@@ -50,5 +54,15 @@ public class TestClassesVisitor extends ASTVisitor {
 	 */
 	public boolean isFlag() {
 		return flag;
+	}
+
+	@SuppressWarnings("rawtypes")
+	private boolean isAbstractClass(TypeDeclaration node) {
+		List modifiers = node.modifiers();
+		for (int i = 0; i < modifiers.size(); i++) {
+			if (((Modifier) modifiers.get(i)).isAbstract())
+				return true;
+		}
+		return false;
 	}
 }

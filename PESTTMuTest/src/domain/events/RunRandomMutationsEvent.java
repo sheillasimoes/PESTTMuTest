@@ -40,7 +40,6 @@ public class RunRandomMutationsEvent {
 					List<Class<?>> testClasses = projectController
 							.getTestClasses();
 					mutationsController.deleteTestResult();
-					controllerRunningTest.clearData();
 					for (GroundString gs : projectGS) {
 
 						// mutation operators
@@ -51,39 +50,53 @@ public class RunRandomMutationsEvent {
 							// mutations
 							List<Mutation> mutations = operator.getMutations(gs
 									.getGroundString());
+							// get info about ASTNode from apply mutation
+							mutationsController.initialize(mutations.get(0));
 							boolean flag = false;
 							ArrayList<Integer> listCount = new ArrayList<Integer>();
+							Random random = new Random();
+							int i;
 							do {
-								Random random = new Random();
-								int i = random.nextInt(mutations.size());
-								// verifica se é gerado um mutante válido
-								if (!listCount.contains(Integer.valueOf(i))
-										&& mutationsController
-												.applyMutant(mutations.get(i))) {
-									for (Class<?> testClass : testClasses) {
-										controllerRunningTest
-												.runTest(testClass);
-									}
-									mutationsController.undoMutant(mutations
-											.get(i));
-									// add result
-									mutationsController.addResult(mutations
-											.get(i), controllerRunningTest
-											.getTestsFailed());
-									controllerRunningTest.clearData();
-									flag = true;
-								}
-								/*
-								 * verificacao para nao entrar em ciclo infinito
-								 * caso nao existam mutacoes validas
-								 */
+								i = random.nextInt(mutations.size());
+
 								if (!listCount.contains(Integer.valueOf(i))) {
+									/*
+									 * para nao entrar em ciclo infinito caso
+									 * nao existam mutacoes validas
+									 */
 									listCount.add(Integer.valueOf(i));
+
+									// is generated a valid mutant
+									if (mutationsController
+											.applyMutant(mutations.get(i))) {
+
+										for (Class<?> testClass : testClasses) {
+											controllerRunningTest
+													.runTest(testClass);
+										}
+										// altera ASTNode p o estado original
+										mutations.get(i)
+												.undoActionMutationOperator();
+
+										// add result
+										mutationsController.addResult(mutations
+												.get(i), controllerRunningTest
+												.getTestsFailed());
+										controllerRunningTest.clearData();
+										flag = true;
+									} else {
+										// altera o ASTNode p o estado original
+										mutations.get(i)
+												.undoActionMutationOperator();
+									}
 								}
+
 							} while (!flag
 									&& listCount.size() < mutations.size());
+							// altera o projeto para o estado original
+							mutationsController.undoMutant();
+
 						}
-						break;
 					}
 				}
 			}

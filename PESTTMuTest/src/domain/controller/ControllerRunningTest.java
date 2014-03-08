@@ -19,10 +19,6 @@ public class ControllerRunningTest {
 		return managerRunningTests.getTestsFailed();
 	}
 
-	public int passed() {
-		return managerRunningTests.passed();
-	}
-
 	public void clearData() {
 		managerRunningTests.clearData();
 	}

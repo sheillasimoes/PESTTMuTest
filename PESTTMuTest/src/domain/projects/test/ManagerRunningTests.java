@@ -20,10 +20,6 @@ public class ManagerRunningTests {
 		junit.run(clazz);
 	}
 
-	public int passed() {
-		return listener.passed();
-	}
-
 	public List<String> getTestsFailed() {
 		return listener.getTestsFailed();
 	}

@@ -38,9 +38,7 @@ public class RunAllMutationsEvent {
 					List<Class<?>> testClasses = projectController
 							.getTestClasses();
 					mutationsController.deleteTestResult();
-					controllerRunningTest.clearData();
 					for (GroundString gs : projectGS) {
-						int j = 0;
 						// mutation operators
 						List<IMutationOperators> mutationOperators = groundStringController
 								.getOperatorsApplicable(gs);
@@ -49,24 +47,32 @@ public class RunAllMutationsEvent {
 							// mutations
 							List<Mutation> mutations = operator.getMutations(gs
 									.getGroundString());
-
+							// get info about ASTNode from apply mutation
+							mutationsController.initialize(mutations.get(0));
 							for (Mutation mutation : mutations) {
+								// is generated a valid mutant
 								if (mutationsController.applyMutant(mutation)) {
 									for (Class<?> testClass : testClasses) {
 										controllerRunningTest
 												.runTest(testClass);
 									}
-									mutationsController.undoMutant(mutation);
+									// altera ASTNode p o estado original
+									mutation.undoActionMutationOperator();
+
 									// add result
 									mutationsController.addResult(mutation,
 											controllerRunningTest
 													.getTestsFailed());
 									controllerRunningTest.clearData();
+								} else {
+									// altera o ASTNode p o estado original
+									mutation.undoActionMutationOperator();
 								}
 							}
+							// altera o projeto para o estado original
+							mutationsController.undoMutant();
 						}
-						System.out.println("run all " + j);
-						j++;
+						break;
 					}
 
 				}

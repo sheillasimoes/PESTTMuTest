@@ -12,8 +12,6 @@ public class JUnitTestRunListener extends RunListener {
 	int countIni = 0;
 	int countEnd = 0;
 
-	// private List<String> allTest;
-
 	public JUnitTestRunListener() {
 		testsFailure = new LinkedList<String>();
 	}
@@ -25,13 +23,13 @@ public class JUnitTestRunListener extends RunListener {
 
 	@Override
 	public void testFailure(Failure failure) throws Exception {
-		testsFailure.add(new StringBuilder(failure.getDescription()
-				.getClassName()
-				+ " ("
-				+ failure.getDescription().getMethodName() + ")").toString());
-		System.out.println("failed " + testsFailure.get(0));
-		System.out.println("exception exception" + failure.getException()
-				+ " \n message" + failure.getMessage());
+		if (failure.getException() instanceof AssertionError) {
+			testsFailure.add(new StringBuilder(failure.getDescription()
+					.getClassName()
+					+ " ("
+					+ failure.getDescription().getMethodName() + ")")
+					.toString());
+		}
 	}
 
 	@Override
@@ -43,10 +41,6 @@ public class JUnitTestRunListener extends RunListener {
 		testsFailure.clear();
 		countIni = 0;
 		countEnd = 0;
-	}
-
-	public int passed() {
-		return testsFailure.size() > 0 ? 1 : 0;
 	}
 
 	public List<String> getTestsFailed() {

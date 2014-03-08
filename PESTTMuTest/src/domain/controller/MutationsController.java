@@ -21,6 +21,10 @@ public class MutationsController extends Observable {
 		mutationTestResult = new MutationTestResult();
 	}
 
+	public void initialize(Mutation node) {
+		managerMutations.initialize(node.getASTNode());
+	}
+
 	public List<Mutation> getMutantsToDisplay(ASTNode node,
 			List<Mutation> mutations) {
 		return managerMutations.getMutantsToDisplay(node, mutations);
@@ -30,8 +34,8 @@ public class MutationsController extends Observable {
 		return managerMutations.applyMutant(mutation);
 	}
 
-	public void undoMutant(Mutation mutation) {
-		managerMutations.undoMutant(mutation);
+	public void undoMutant() {
+		managerMutations.undoMutant();
 	}
 
 	public void addResult(Mutation mutation, List<String> data) {
