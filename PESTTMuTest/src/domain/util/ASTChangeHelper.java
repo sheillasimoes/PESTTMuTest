@@ -1,5 +1,7 @@
 package domain.util;
 
+import java.util.List;
+
 import org.eclipse.jdt.core.dom.Assignment;
 import org.eclipse.jdt.core.dom.BodyDeclaration;
 import org.eclipse.jdt.core.dom.Expression;
@@ -35,8 +37,9 @@ public class ASTChangeHelper {
 		int position = 0;
 		if (modifierKeyword == null) {
 			for (Object obj : node.modifiers()) {
-				if (((Modifier) obj).getKeyword().equals(
-						Modifier.ModifierKeyword.STATIC_KEYWORD)) {
+				if (obj instanceof Modifier
+						&& ((Modifier) obj).getKeyword().equals(
+								Modifier.ModifierKeyword.STATIC_KEYWORD)) {
 					node.modifiers().remove(position);
 					break;
 				}
@@ -70,17 +73,28 @@ public class ASTChangeHelper {
 			Modifier.ModifierKeyword originalModifierKeyword) {
 
 		if (originalModifierKeyword == null) {
-			node.modifiers().add(0, node.getAST().newModifier(modifierKeyword));
+			node.modifiers().add(getIndexModifier(node.modifiers()),
+					node.getAST().newModifier(modifierKeyword));
 
 		} else if (modifierKeyword == null) {
-			node.modifiers().remove(0);
+			node.modifiers().remove(getIndexModifier(node.modifiers()));
 
 		} else {
-
-			Modifier m = (Modifier) node.modifiers().get(0);
+			Modifier m = (Modifier) node.modifiers().get(
+					getIndexModifier(node.modifiers()));
 			m.setKeyword(modifierKeyword);
 		}
 
 	}
 
+	private static int getIndexModifier(List listModifier) {
+		int i = 0;
+		for (Object obj : listModifier) {
+			if (obj instanceof Modifier) {
+				return i;
+			}
+			i++;
+		}
+		return i;
+	}
 }

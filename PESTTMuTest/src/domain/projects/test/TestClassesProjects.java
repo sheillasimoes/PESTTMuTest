@@ -27,21 +27,27 @@ public class TestClassesProjects {
 
 	private void findTestCases(CompilationUnit unit) {
 		testClassesVisitor.setFlag(false);
+		testClassesVisitor.setIgnoreClass(false);
 		unit.accept(testClassesVisitor);
 	}
 
 	public boolean isTestClass(CompilationUnit cUnit) {
 		// find test cases in a specific file
 		findTestCases(cUnit);
-		return testClassesVisitor.isFlag();
+		return (testClassesVisitor.isFlag() || testClassesVisitor
+				.isIgnoreClass());
 	}
 
 	public void addTestClass(ICompilationUnit unit) {
-		// get fully qualified name
-		String fullyQualifiedName = unit.findPrimaryType()
-				.getFullyQualifiedName();
-		// add new test class
-		listTestClasses.add(fullyQualifiedName);
+		// filtrar as classes de teste abstrata q devem ser ignoradas
+		if (!testClassesVisitor.isIgnoreClass()) {
+			// get fully qualified name
+			String fullyQualifiedName = unit.findPrimaryType()
+					.getFullyQualifiedName();
+			// add new test class
+			listTestClasses.add(fullyQualifiedName);
+		}
+
 	}
 
 	private URLClassLoader getClassLoader(IJavaProject project) {

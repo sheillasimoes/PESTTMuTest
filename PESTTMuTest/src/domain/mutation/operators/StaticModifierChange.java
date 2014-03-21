@@ -49,8 +49,9 @@ public class StaticModifierChange implements IMutationOperators {
 	@SuppressWarnings("rawtypes")
 	private boolean containsStatic(List modifiers) {
 		for (Object obj : modifiers) {
-			if (((Modifier) obj).getKeyword().equals(
-					Modifier.ModifierKeyword.STATIC_KEYWORD)) {
+			if (obj instanceof Modifier
+					&& ((Modifier) obj).getKeyword().equals(
+							Modifier.ModifierKeyword.STATIC_KEYWORD)) {
 				return true;
 			}
 		}

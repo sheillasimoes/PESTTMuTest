@@ -22,4 +22,20 @@ public class ControllerRunningTest {
 	public void clearData() {
 		managerRunningTests.clearData();
 	}
+
+	/**
+	 * @return the countTime
+	 */
+	public long getCountTime() {
+		return managerRunningTests.getCountTime();
+	}
+
+	/**
+	 * @param countTime
+	 *            the countTime to set
+	 */
+	public void setCountTime(long countTime) {
+		managerRunningTests.setCountTime(countTime);
+		;
+	}
 }

@@ -11,6 +11,7 @@ import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 
+import domain.ast.visitors.LocalInitVisitor;
 import domain.ast.visitors.SourceCodeVisitor;
 import domain.projects.test.TestClassesProjects;
 import domain.util.ASTUtil;
@@ -18,6 +19,7 @@ import domain.util.ASTUtil;
 public class ExploreProject {
 	private SourceCodeVisitor sourceCodeVisitor;
 	private TestClassesProjects testClassesProjects;
+	private LocalInitVisitor initVisitor;
 
 	public ExploreProject(SourceCodeVisitor sourceCodeVisitor,
 			TestClassesProjects testClassesProjects) {
@@ -73,6 +75,8 @@ public class ExploreProject {
 				CompilationUnit parse = ASTUtil.parse(unit);
 				// validate if unit is a test class
 				if (!testClassesProjects.isTestClass(parse)) {
+					initVisitor=new LocalInitVisitor(); 
+					parse.accept(initVisitor);
 					parse.accept(sourceCodeVisitor);
 				} else {
 					testClassesProjects.addTestClass(unit);

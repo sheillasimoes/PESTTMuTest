@@ -12,6 +12,9 @@ import org.eclipse.jdt.core.dom.Modifier;
 import domain.constants.EnumModifierKeyword;
 import domain.mutation.Mutation;
 import domain.util.ASTChangeHelper;
+import domain.util.ASTUtil;
+import domain.util.InfoProjectHelper;
+import domain.util.ToStringASTNode;
 
 public class AccessModifierChange implements IMutationOperators {
 
@@ -23,48 +26,80 @@ public class AccessModifierChange implements IMutationOperators {
 		boolean flagNoneModifier = false;
 
 		// save original modifier
-		Modifier modifier;
-		// nao tem modifiers
-		if (declaration.modifiers().size() == 0
-				|| haveModifierNone((Modifier) declaration.modifiers().get(0))) {
-			flagNoneModifier = true;
-			modifier = null;
+		Modifier modifier = null;
+		System.out.println(InfoProjectHelper.getFullyQualifiedName(node) + " "
+				+ ToStringASTNode.toString(node) + " "
+				+ ASTUtil.getLineNumber(node));
+		if (ToStringASTNode.toString(node).contains(
+				"@Deprecated public static final char INDEXED_DELIM=")) {
+			// nao tem modifiers
+			if (declaration.modifiers().size() == 0
+					|| haveModifierNone(declaration.modifiers())) {
+				flagNoneModifier = true;
+				modifier = null;
 
-		} else {
-			modifier = (Modifier) declaration.modifiers().get(0);
-			// create mutantion with none modifier
-			listMutants.add(new Mutation(declaration, this, null, modifier
-					.getKeyword()));
-		}
-
-		for (EnumModifierKeyword modifierKeyword : EnumModifierKeyword.values()) {
-			if (flagNoneModifier) {
-				listMutants.add(new Mutation(declaration, this, modifierKeyword
-						.getModifierKeyword(), null));
-			} else if (!modifierKeyword.getModifierKeyword().equals(
-					modifier.getKeyword())) {
-				listMutants.add(new Mutation(declaration, this, modifierKeyword
-						.getModifierKeyword(), modifier.getKeyword()));
+			} else {
+				modifier = getFirstModifier(declaration.modifiers());
+				// create mutantion with none modifier
+				listMutants.add(new Mutation(declaration, this, null, modifier
+						.getKeyword()));
 			}
 
-		}
+			for (EnumModifierKeyword modifierKeyword : EnumModifierKeyword
+					.values()) {
+				if (flagNoneModifier) {
+					listMutants.add(new Mutation(declaration, this,
+							modifierKeyword.getModifierKeyword(), null));
+				} else if (!modifierKeyword.getModifierKeyword().equals(
+						modifier.getKeyword())) {
+					listMutants.add(new Mutation(declaration, this,
+							modifierKeyword.getModifierKeyword(), modifier
+									.getKeyword()));
+				}
 
+			}
+		}
 		return listMutants;
 	}
 
-	private boolean haveModifierNone(Modifier modifier) {
-		boolean flag = false;
-		if (!modifier.getKeyword().equals(
-				EnumModifierKeyword.PRIVATE_KEYWORD.getModifierKeyword())
-				&& !modifier.getKeyword()
-						.equals(EnumModifierKeyword.PUBLIC_KEYWORD
+	private boolean haveModifierNone(List listModifier) {
+		boolean hasAnnotation = false;
+		int i = 0;
+		do {
+			if (listModifier.get(i) instanceof Modifier) {
+				if (!((Modifier) listModifier.get(i)).getKeyword().equals(
+						EnumModifierKeyword.PRIVATE_KEYWORD
 								.getModifierKeyword())
-				&& !modifier.getKeyword().equals(
-						EnumModifierKeyword.PROTECTED_KEYWORD
-								.getModifierKeyword())) {
-			flag = true;
-		}
-		return flag;
+						&& !((Modifier) listModifier.get(i)).getKeyword()
+								.equals(EnumModifierKeyword.PUBLIC_KEYWORD
+										.getModifierKeyword())
+						&& !((Modifier) listModifier.get(i)).getKeyword()
+								.equals(EnumModifierKeyword.PROTECTED_KEYWORD
+										.getModifierKeyword())) {
+					return true;
+				} else
+					return false;
+			} else {
+				hasAnnotation = true;
+			}
+			i++;
+		} while (i < listModifier.size());
+
+		return hasAnnotation;
+	}
+
+	private Modifier getFirstModifier(List listModifier) {
+		Modifier modifier = null;
+		boolean flag = false;
+		int i = 0;
+		do {
+			if (listModifier.get(i) instanceof Modifier) {
+				flag = true;
+				modifier = (Modifier) listModifier.get(i);
+			}
+			i++;
+		} while (!flag && i < listModifier.size());
+		return modifier;
 	}
 
 	@Override

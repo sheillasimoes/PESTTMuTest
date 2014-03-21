@@ -106,8 +106,8 @@ public class ManagerCopyProjects extends Observable {
 	 */
 	public void setListNameCopies(String nameCopy) {
 		listNameCopies.add(nameCopy);
-		setChanged();
-		notifyObservers();
+		// setChanged();
+		// notifyObservers();
 	}
 
 	private boolean existCopyProject(IProject project) {

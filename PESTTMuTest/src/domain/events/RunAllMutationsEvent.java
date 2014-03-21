@@ -72,9 +72,7 @@ public class RunAllMutationsEvent {
 							// altera o projeto para o estado original
 							mutationsController.undoMutant();
 						}
-						break;
 					}
-
 				}
 			}
 		}

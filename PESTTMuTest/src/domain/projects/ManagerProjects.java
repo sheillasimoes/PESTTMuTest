@@ -27,6 +27,7 @@ public class ManagerProjects extends Observable {
 	private TestClassesProjects testClassesProjects;
 	private boolean projectsChanged;
 	private String projectNameSelected;
+	private long timeAnalyseProject;
 
 	public ManagerProjects(GroundStringController groundStringController) {
 		sourceCodeVisitor = new SourceCodeVisitor(groundStringController);
@@ -60,8 +61,12 @@ public class ManagerProjects extends Observable {
 			ProcessMessage.INSTANCE.showInformationMessage("Info",
 					Messages.PROJECT_CHANGE);
 		} else {
+			testClassesProjects.deleteListTestClasses();
+			long startTime = System.currentTimeMillis();
 			exploreProject.analyseProject(copyProjects
 					.getCopyProject(projectNameSelected));
+			long stopTime = System.currentTimeMillis();
+			setTimeAnalyseProject((stopTime - startTime));
 		}
 	}
 
@@ -164,5 +169,20 @@ public class ManagerProjects extends Observable {
 		}
 		return flag;
 
+	}
+
+	/**
+	 * @return the timeAnalyseProject
+	 */
+	public long getTimeAnalyseProject() {
+		return timeAnalyseProject;
+	}
+
+	/**
+	 * @param timeAnalyseProject
+	 *            the timeAnalyseProject to set
+	 */
+	public void setTimeAnalyseProject(long timeAnalyseProject) {
+		this.timeAnalyseProject = timeAnalyseProject;
 	}
 }

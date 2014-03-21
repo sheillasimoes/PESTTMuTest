@@ -11,12 +11,10 @@ import domain.mutation.operators.ManagerMutationOperators;
 
 public class ManagerGroundString extends Observable {
 	private ManagerMutationOperators operatorManager;
-	// private List<ASTNode> listGroundString;
 	private List<GroundString> listGroundString;
 
 	public ManagerGroundString(ManagerMutationOperators operatorManager) {
 		this.operatorManager = operatorManager;
-		// listGroundString = new LinkedList<ASTNode>();
 		listGroundString = new LinkedList<GroundString>();
 	}
 
@@ -37,8 +35,8 @@ public class ManagerGroundString extends Observable {
 	 */
 	private void addGroundString(ASTNode node) {
 		listGroundString.add(new GroundString(node));
-		setChanged();
-		notifyObservers(node);
+		// setChanged();
+		// notifyObservers(node);
 
 	}
 
@@ -47,8 +45,8 @@ public class ManagerGroundString extends Observable {
 	 */
 	public void initializeListGroundString() {
 		listGroundString = new LinkedList<GroundString>();
-		setChanged();
-		notifyObservers();
+		// setChanged();
+		// notifyObservers();
 	}
 
 	/**
