@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.eclipse.jdt.core.dom.ASTNode;
+import org.eclipse.jdt.core.dom.ArrayAccess;
 import org.eclipse.jdt.core.dom.Assignment;
 import org.eclipse.jdt.core.dom.Assignment.Operator;
 import org.eclipse.jdt.core.dom.ClassInstanceCreation;
@@ -102,23 +103,27 @@ public class AssignmentOperatorReplacement implements IMutationOperators {
 					|| bindingLeft.isEnum()
 					|| bindingLeft.isTypeVariable()
 					|| (bindingLeft.isClass() && !CLASS_EXCEPTION
-							.contains(bindingLeft.getQualifiedName())) 
-					|| !isDefined(node)) {
+							.contains(bindingLeft.getQualifiedName()))
+					|| (!isDefined(node))) {
 				flag = false;
 			}
 			return flag;
 		}
 		return flag;
 	}
-	
+
 	private boolean isDefined(ASTNode node) {
 		Object o = node.getProperty("PESTT_VAR_INIT");
-		return o != null && ((boolean) o);
+		return o == null ? true : ((boolean) o);
 	}
 
 	private boolean isFinal(Expression expression) {
 		String modifiers = "";
-		if (expression instanceof FieldAccess) {
+		if (expression instanceof ArrayAccess) {
+			Name name = getName(expression);
+			modifiers = name == null ? "" : Modifier.toString(name
+					.resolveBinding().getModifiers());
+		} else if (expression instanceof FieldAccess) {
 			modifiers = Modifier.toString(((FieldAccess) expression)
 					.resolveFieldBinding().getModifiers());
 		} else if (expression instanceof SuperFieldAccess) {
@@ -173,6 +178,14 @@ public class AssignmentOperatorReplacement implements IMutationOperators {
 			return true;
 		} else
 			return false;
+	}
+
+	private Name getName(Expression expression) {
+		if (expression instanceof ArrayAccess) {
+			getName(((ArrayAccess) expression).getArray());
+		} else if (expression instanceof Name)
+			return (Name) expression;
+		return null;
 	}
 
 	@Override

@@ -65,7 +65,6 @@ public class TestGenerateRandomMutants {
 		// start time to generate allmutants
 		long startTime = System.currentTimeMillis();
 		for (GroundString gs : projectGS) {
-
 			// mutation operators
 			List<IMutationOperators> mutationOperators = groundStringController
 					.getOperatorsApplicable(gs);

@@ -10,7 +10,7 @@ import org.eclipse.jdt.core.dom.ASTNode;
 import domain.mutation.Mutation;
 
 /**
- * @author sheilla
+ * 
  * 
  */
 public interface IMutationOperators {

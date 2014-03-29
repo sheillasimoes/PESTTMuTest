@@ -163,4 +163,5 @@ public class ViewMutationAnalysis extends ViewPart implements Observer {
 		}
 
 	}
+
 }

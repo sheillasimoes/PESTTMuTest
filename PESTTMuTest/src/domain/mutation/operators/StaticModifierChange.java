@@ -17,13 +17,12 @@ public class StaticModifierChange implements IMutationOperators {
 		FieldDeclaration declaration = (FieldDeclaration) node;
 		/* List com todas as mutacoes geradas */
 		List<Mutation> listMutants = new LinkedList<Mutation>();
-
-		if (containsStatic(declaration.modifiers()))
-			listMutants.add(new Mutation(node, this, null,
+		int pos = getPosStaticModifier(declaration.modifiers());
+		if (isStaticMofifier(declaration.modifiers(), pos))
+			listMutants.add(new Mutation(node, this, pos,
 					Modifier.ModifierKeyword.STATIC_KEYWORD));
 		else
-			listMutants.add(new Mutation(node, this,
-					Modifier.ModifierKeyword.STATIC_KEYWORD, null));
+			listMutants.add(new Mutation(node, this, pos, null));
 		return listMutants;
 	}
 
@@ -36,24 +35,40 @@ public class StaticModifierChange implements IMutationOperators {
 	public void applyOperator(Mutation mutation) {
 		ASTChangeHelper.alterStaticModifier(
 				(FieldDeclaration) mutation.getASTNode(),
-				(Modifier.ModifierKeyword) mutation.getData());
+				(int) mutation.getData(),
+				(Modifier.ModifierKeyword) mutation.getOriginalData());
 	}
 
 	@Override
 	public void undoActionOperator(Mutation mutation) {
 		ASTChangeHelper.alterStaticModifier(
 				(FieldDeclaration) mutation.getASTNode(),
+				(int) mutation.getData(),
 				(Modifier.ModifierKeyword) mutation.getOriginalData());
 	}
 
 	@SuppressWarnings("rawtypes")
-	private boolean containsStatic(List modifiers) {
+	private int getPosStaticModifier(List modifiers) {
+		int i = 0;
 		for (Object obj : modifiers) {
 			if (obj instanceof Modifier
-					&& ((Modifier) obj).getKeyword().equals(
-							Modifier.ModifierKeyword.STATIC_KEYWORD)) {
-				return true;
+					&& (((Modifier) obj).getKeyword().equals(
+							Modifier.ModifierKeyword.STATIC_KEYWORD) || ((Modifier) obj)
+							.getKeyword().equals(
+									Modifier.ModifierKeyword.FINAL_KEYWORD))) {
+				return i;
 			}
+			i++;
+		}
+		return i;
+	}
+
+	@SuppressWarnings("rawtypes")
+	private boolean isStaticMofifier(List modifiers, int pos) {
+		if (pos < modifiers.size()
+				&& ((Modifier) modifiers.get(pos)).getKeyword().equals(
+						Modifier.ModifierKeyword.STATIC_KEYWORD)) {
+			return true;
 		}
 		return false;
 	}

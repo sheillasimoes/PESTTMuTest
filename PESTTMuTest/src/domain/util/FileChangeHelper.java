@@ -5,12 +5,12 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jdt.core.IBuffer;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IJavaModelMarker;
 import org.eclipse.jdt.core.IOpenable;
 import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.jdt.core.compiler.IProblem;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.rewrite.ASTRewrite;
 import org.eclipse.text.edits.MalformedTreeException;
@@ -37,29 +37,15 @@ public class FileChangeHelper {
 		}
 	}
 
-	public static boolean validateChangeInFile(ICompilationUnit workingCopy) {
-		CompilationUnit parse = ASTUtil.parse(workingCopy);
-		boolean flag = true;
-		IProblem[] problems = parse.getProblems();
-		if (problems.length == 0) {
-			return flag;
-		} else {
-			for (IProblem problem : problems) {
-				if (problem.isError()) {
-					flag = false;
-					return flag;
-				}
-			}
-		}
-		return flag;
-	}
-
-	public static boolean findCompilationErrors(ICompilationUnit unit) {
+	public static boolean findCompilationErrors(ICompilationUnit unit,
+			IProgressMonitor progressMonitor) {
 		IMarker[] markers = null;
 		IProject project = InfoProjectHelper.getProject(unit);
 		try {
 			// build project
-			project.build(IncrementalProjectBuilder.INCREMENTAL_BUILD, null);
+			project.build(IncrementalProjectBuilder.INCREMENTAL_BUILD,
+					progressMonitor);
+			// System.out.println("passou...");
 			// find compilation errors
 			markers = project.findMarkers(
 					IJavaModelMarker.JAVA_MODEL_PROBLEM_MARKER, true,
@@ -108,14 +94,14 @@ public class FileChangeHelper {
 			ASTRewrite rewrite, CompilationUnit cUnit) {
 		changeICompilationUnit(workingCopy, rewrite, cUnit);
 		saveChange(workingCopy);
-		try {
-			// build project
-			InfoProjectHelper.getProject(workingCopy).build(
-					IncrementalProjectBuilder.INCREMENTAL_BUILD, null);
-		} catch (CoreException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		// try {
+		// // build project
+		// InfoProjectHelper.getProject(workingCopy).build(
+		// IncrementalProjectBuilder.AUTO_BUILD, null);
+		// } catch (CoreException e) {
+		// // TODO Auto-generated catch block
+		// e.printStackTrace();
+		// }
 		discardWorkingCopy(workingCopy);
 
 	}

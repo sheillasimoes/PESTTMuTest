@@ -9,8 +9,6 @@ import org.eclipse.jdt.core.dom.Modifier;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
 
 import domain.constants.Description;
-import domain.util.ASTUtil;
-import domain.util.InfoProjectHelper;
 
 public class TestClassesVisitor extends ASTVisitor {
 	private boolean flag;

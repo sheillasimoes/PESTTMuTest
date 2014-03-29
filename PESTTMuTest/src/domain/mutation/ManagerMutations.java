@@ -3,6 +3,8 @@ package domain.mutation;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.dom.AST;
@@ -18,6 +20,7 @@ public class ManagerMutations {
 	private ICompilationUnit unit;
 	private ICompilationUnit workingCopy;
 	private ASTRewrite rewrite;
+	private IProgressMonitor progressMonitor;
 
 	/**
 	 * Initialize informations about node
@@ -84,7 +87,7 @@ public class ManagerMutations {
 		FileChangeHelper.saveChange(workingCopy);
 
 		// compile project to verifies that the mutation generating errors
-		return FileChangeHelper.findCompilationErrors(workingCopy) ? false
-				: true;
+		return FileChangeHelper.findCompilationErrors(workingCopy,
+				progressMonitor) ? false : true;
 	}
 }

@@ -9,8 +9,8 @@ import org.eclipse.jdt.core.dom.ASTNode;
 import ui.constants.DesignationMutationOperators;
 import ui.constants.GroupDesignationMutationOperators;
 import ui.display.views.tree.structure.AbstractTree;
-import domain.factories.MutationOperatorsFactory;
 import domain.mutation.Mutation;
+import domain.mutation.operators.factories.MutationOperatorsFactory;
 
 public class ManagerMutationOperators extends Observable {
 	private Object[] selectedOperator;

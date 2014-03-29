@@ -32,69 +32,43 @@ public class ASTChangeHelper {
 	}
 
 	@SuppressWarnings("unchecked")
-	public static void alterStaticModifier(FieldDeclaration node,
+	public static void alterStaticModifier(FieldDeclaration node, int pos,
 			Modifier.ModifierKeyword modifierKeyword) {
-		int position = 0;
-		if (modifierKeyword == null) {
-			for (Object obj : node.modifiers()) {
-				if (obj instanceof Modifier
-						&& ((Modifier) obj).getKeyword().equals(
-								Modifier.ModifierKeyword.STATIC_KEYWORD)) {
-					node.modifiers().remove(position);
-					break;
-				}
-				position++;
-			}
-
+		if (containsStatic(node.modifiers(), pos)
+				&& (modifierKeyword == null || modifierKeyword != null)) {
+			node.modifiers().remove(pos);
 		} else {
-			int i = node.modifiers().size() - 1;
-			if (node.modifiers().size() == 1
-					&& node.modifiers().get(i)
-							.equals(Modifier.ModifierKeyword.FINAL_KEYWORD)) {
-				position = 0;
-			} else if ((node.modifiers().size() == 1 && !node.modifiers()
-					.get(i).equals(Modifier.ModifierKeyword.FINAL_KEYWORD))
-					|| (node.modifiers().size() > 1 && node.modifiers().get(i)
-							.equals(Modifier.ModifierKeyword.FINAL_KEYWORD))) {
-				position = 1;
-			} else if (node.modifiers().size() > 1
-					&& !node.modifiers().get(i)
-							.equals(Modifier.ModifierKeyword.FINAL_KEYWORD)) {
-				position = 2;
-			}
-			node.modifiers().add(position,
-					node.getAST().newModifier(modifierKeyword));
+			node.modifiers().add(
+					pos,
+					node.getAST().newModifier(
+							Modifier.ModifierKeyword.STATIC_KEYWORD));
 		}
+
 	}
 
 	@SuppressWarnings("unchecked")
 	public static void alterModifierKeyword(BodyDeclaration node,
 			Modifier.ModifierKeyword modifierKeyword,
-			Modifier.ModifierKeyword originalModifierKeyword) {
-
+			Modifier.ModifierKeyword originalModifierKeyword, int pos) {
 		if (originalModifierKeyword == null) {
-			node.modifiers().add(getIndexModifier(node.modifiers()),
+			node.modifiers().add(pos,
 					node.getAST().newModifier(modifierKeyword));
 
 		} else if (modifierKeyword == null) {
-			node.modifiers().remove(getIndexModifier(node.modifiers()));
+			node.modifiers().remove(pos);
 
 		} else {
-			Modifier m = (Modifier) node.modifiers().get(
-					getIndexModifier(node.modifiers()));
+			Modifier m = (Modifier) node.modifiers().get(pos);
 			m.setKeyword(modifierKeyword);
 		}
-
 	}
 
-	private static int getIndexModifier(List listModifier) {
-		int i = 0;
-		for (Object obj : listModifier) {
-			if (obj instanceof Modifier) {
-				return i;
-			}
-			i++;
-		}
-		return i;
+	@SuppressWarnings("rawtypes")
+	private static boolean containsStatic(List modifiers, int pos) {
+		if (pos < modifiers.size()
+				&& ((Modifier) modifiers.get(pos)).getKeyword().equals(
+						Modifier.ModifierKeyword.STATIC_KEYWORD))
+			return true;
+		return false;
 	}
 }
