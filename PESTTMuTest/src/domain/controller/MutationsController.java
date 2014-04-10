@@ -5,6 +5,7 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.Set;
 
+import org.eclipse.core.resources.IMarker;
 import org.eclipse.jdt.core.dom.ASTNode;
 
 import domain.mutation.ManagerMutations;
@@ -21,13 +22,14 @@ public class MutationsController extends Observable {
 		mutationTestResult = new MutationTestResult();
 	}
 
-	public void initialize(Mutation node) {
-		managerMutations.initialize(node.getASTNode());
+	public void initialize(ASTNode node, IMarker[] markers) {
+		managerMutations.initialize(node, markers);
 	}
 
 	public List<Mutation> getMutantsToDisplay(ASTNode node,
-			List<Mutation> mutations) {
-		return managerMutations.getMutantsToDisplay(node, mutations);
+			List<Mutation> mutations, IMarker[] markers) {
+		initialize(node, markers);
+		return managerMutations.getMutantsToDisplay(mutations);
 	}
 
 	public boolean applyMutant(Mutation mutation) {

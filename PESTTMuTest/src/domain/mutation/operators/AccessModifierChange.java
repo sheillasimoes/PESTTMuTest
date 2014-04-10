@@ -6,10 +6,12 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.jdt.core.dom.ASTNode;
+import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.BodyDeclaration;
 import org.eclipse.jdt.core.dom.FieldDeclaration;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.Modifier;
+import org.eclipse.jdt.core.dom.SimpleName;
 
 import domain.constants.EnumModifierKeyword;
 import domain.mutation.Mutation;
@@ -82,11 +84,26 @@ public class AccessModifierChange implements IMutationOperators {
 	@Override
 	public boolean isOperatorApplicable(ASTNode node) {
 		boolean flag = false;
-		if ((node instanceof MethodDeclaration && !((MethodDeclaration) node)
-				.isConstructor()) || node instanceof FieldDeclaration) {
+		if ((node instanceof MethodDeclaration
+				&& !((MethodDeclaration) node).isConstructor() && !isOverriding(((MethodDeclaration) node)
+					.modifiers())) || node instanceof FieldDeclaration) {
 			flag = true;
 		}
 		return flag;
+	}
+
+	@SuppressWarnings("rawtypes")
+	private boolean isOverriding(List modifiers) {
+
+		for (Object obj : modifiers) {
+			if (obj instanceof Annotation
+					&& ((SimpleName) ((Annotation) obj).getTypeName())
+							.getIdentifier().equals("Override"))
+				return true;
+			else if (obj instanceof Modifier)
+				return false;
+		}
+		return false;
 	}
 
 	@SuppressWarnings("unchecked")

@@ -6,17 +6,18 @@ package domain.mutation;
 import org.eclipse.jdt.core.dom.ASTNode;
 
 import domain.mutation.operators.IMutationOperators;
+import domain.util.ASTUtil;
 import domain.util.ToStringASTNode;
 
 public class Mutation {
 
-	// Nó onde será aplicada a mutacao
+	// Node where it will be applied to mutation
 	private ASTNode node;
 
-	// objeto que aplicara a mutacao
+	// object that applied the mutation
 	private IMutationOperators mutationOperator;
 
-	// Que mutacao deve ser aplicada
+	// That mutation should be applied
 	private Object data;
 
 	// data before application operator mutation
@@ -25,6 +26,10 @@ public class Mutation {
 	//
 	private String mutant;
 
+	private String nodeToString;
+
+	private int lineNumber;
+
 	public Mutation(ASTNode node, IMutationOperators mutationOperator,
 			Object data, Object originalData) {
 		this.node = node;
@@ -32,6 +37,8 @@ public class Mutation {
 		this.data = data;
 		this.originalData = originalData;
 		mutant = "";
+		nodeToString = ToStringASTNode.toString(node);
+		lineNumber = ASTUtil.getLineNumber(node);
 	}
 
 	public Object getData() {
@@ -60,6 +67,20 @@ public class Mutation {
 
 	public void undoActionMutationOperator() {
 		mutationOperator.undoActionOperator(this);
+	}
+
+	/**
+	 * @return the nodeToString
+	 */
+	public String getNodeToString() {
+		return nodeToString;
+	}
+
+	/**
+	 * @return the lineNumber
+	 */
+	public int getLineNumber() {
+		return lineNumber;
 	}
 
 	@Override

@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import org.eclipse.jdt.core.ICompilationUnit;
+import org.eclipse.jdt.core.dom.CompilationUnit;
+
 import domain.constants.Messages;
 import ui.dialog.ProcessMessage;
 import domain.controller.ControllerRunningTest;
@@ -13,6 +16,7 @@ import domain.controller.ProjectController;
 import domain.groundString.GroundString;
 import domain.mutation.Mutation;
 import domain.mutation.operators.IMutationOperators;
+import domain.util.ToStringASTNode;
 
 public class RunRandomMutationsEvent {
 	public void execute(String projectName,
@@ -34,13 +38,19 @@ public class RunRandomMutationsEvent {
 				// ground string
 				List<GroundString> projectGS = groundStringController
 						.getListGroundString();
-				// verifica se foram encontradas GS para aplicar mutações
-				if (projectGS.size() > 0) {
-					// test classes
-					List<Class<?>> testClasses = projectController
-							.getTestClasses();
-					mutationsController.deleteTestResult();
-					for (GroundString gs : projectGS) {
+
+				mutationsController.deleteTestResult();
+				System.out.println("count gs " + projectGS.size());
+				for (GroundString gs : projectGS) {
+					if (((ICompilationUnit) ((CompilationUnit) gs
+							.getGroundString().getRoot()).getJavaElement())
+							.getElementName().equals(
+									"PatternOptionBuilder.java")// "HelpFormatter.java")
+							&& ToStringASTNode.toString(gs.getGroundString())
+									.equals("required=false")) {// "pos=findWrapPos(text,width,0)")){
+						// get info about ASTNode from apply mutation
+						mutationsController.initialize(gs.getGroundString(),
+								projectController.getMarkers());
 
 						// mutation operators
 						List<IMutationOperators> mutationOperators = groundStringController
@@ -50,8 +60,7 @@ public class RunRandomMutationsEvent {
 							// mutations
 							List<Mutation> mutations = operator.getMutations(gs
 									.getGroundString());
-							// get info about ASTNode from apply mutation
-							mutationsController.initialize(mutations.get(0));
+
 							boolean flag = false;
 							ArrayList<Integer> listCount = new ArrayList<Integer>();
 							Random random = new Random();
@@ -70,37 +79,32 @@ public class RunRandomMutationsEvent {
 									if (mutationsController
 											.applyMutant(mutations.get(i))) {
 
-										for (Class<?> testClass : testClasses) {
+										for (Class<?> testClass : projectController
+												.getTestClasses()) {
 											controllerRunningTest
 													.runTest(testClass);
 										}
-										// altera ASTNode p o estado original
-										mutations.get(i)
-												.undoActionMutationOperator();
-
 										// add result
 										mutationsController.addResult(mutations
 												.get(i), controllerRunningTest
 												.getTestsFailed());
 										controllerRunningTest.clearData();
 										flag = true;
-									} else {
-										// altera o ASTNode p o estado original
-										mutations.get(i)
-												.undoActionMutationOperator();
 									}
+									// altera o ASTNode p o estado original
+									mutations.get(i)
+											.undoActionMutationOperator();
 								}
 
 							} while (!flag
 									&& listCount.size() < mutations.size());
-							// altera o projeto para o estado original
-							mutationsController.undoMutant();
 
 						}
+						// altera o projeto para o estado original
+						mutationsController.undoMutant();
 					}
 				}
 			}
-
 		}
 	}
 }

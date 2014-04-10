@@ -71,7 +71,6 @@ public class ExploreProject {
 	private void createAST(IPackageFragment mypackage) {
 		try {
 			for (ICompilationUnit unit : mypackage.getCompilationUnits()) {
-				// if (unit.getElementName().equals("PropertyUtils.java")) {
 				// create the AST for the ICompilationUnits
 				CompilationUnit parse = ASTUtil.parse(unit);
 				// validate if unit is a test class
@@ -82,7 +81,6 @@ public class ExploreProject {
 				} else {
 					testClassesProjects.addTestClass(unit);
 				}
-				// }
 			}
 		} catch (JavaModelException e) {
 			// TODO Auto-generated catch block

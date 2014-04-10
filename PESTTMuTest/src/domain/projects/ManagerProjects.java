@@ -5,9 +5,12 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
+import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.jdt.core.IJavaModelMarker;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 
@@ -27,6 +30,8 @@ public class ManagerProjects extends Observable {
 	private TestClassesProjects testClassesProjects;
 	private boolean projectsChanged;
 	private String projectNameSelected;
+	// Markers with init information of compilation errors from project selected
+	private IMarker[] markers;
 	private long timeAnalyseProject;
 
 	public ManagerProjects(GroundStringController groundStringController) {
@@ -67,6 +72,7 @@ public class ManagerProjects extends Observable {
 					.getCopyProject(projectNameSelected));
 			long stopTime = System.currentTimeMillis();
 			setTimeAnalyseProject((stopTime - startTime));
+			setMarkers(projectNameSelected);
 		}
 	}
 
@@ -122,6 +128,29 @@ public class ManagerProjects extends Observable {
 	 */
 	public void setProjectsChanged(boolean projectsChanged) {
 		this.projectsChanged = projectsChanged;
+	}
+
+	/**
+	 * @return the markers
+	 */
+	public IMarker[] getMarkers() {
+		return markers;
+	}
+
+	/**
+	 * @param markers
+	 *            the markers to set
+	 */
+	public void setMarkers(String projectNameSelected) {
+		try {
+			this.markers = copyProjects.getCopyProject(projectNameSelected)
+					.findMarkers(IJavaModelMarker.JAVA_MODEL_PROBLEM_MARKER,
+							true, IResource.DEPTH_INFINITE);
+		} catch (CoreException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 	}
 
 	public void addObserverCopyProject(Observer o) {

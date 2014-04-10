@@ -14,6 +14,7 @@ import domain.mutation.Mutation;
  * 
  */
 public interface IMutationOperators {
+
 	public List<Mutation> getMutations(ASTNode node);
 
 	public boolean isOperatorApplicable(ASTNode node);

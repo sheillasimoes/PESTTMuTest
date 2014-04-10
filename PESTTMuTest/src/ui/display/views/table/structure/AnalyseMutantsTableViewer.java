@@ -191,7 +191,7 @@ public class AnalyseMutantsTableViewer extends AbstractTableViewer implements
 			@Override
 			public void update(ViewerCell cell) {
 				Mutation mutation = (Mutation) cell.getElement();
-				cell.setText(ToStringASTNode.toString(mutation.getASTNode()));
+				cell.setText(mutation.getNodeToString());
 				super.update(cell);
 			}
 
@@ -220,8 +220,7 @@ public class AnalyseMutantsTableViewer extends AbstractTableViewer implements
 			@Override
 			public void update(ViewerCell cell) {
 				Mutation mutation = (Mutation) cell.getElement();
-				cell.setText(String.valueOf(ASTUtil.getLineNumber(mutation
-						.getASTNode())));
+				cell.setText(Integer.toString(mutation.getLineNumber()));
 				super.update(cell);
 			}
 

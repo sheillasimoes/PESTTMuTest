@@ -3,6 +3,8 @@ package domain.controller;
 import java.util.List;
 import java.util.Observer;
 
+import org.eclipse.core.resources.IMarker;
+
 import domain.projects.ManagerProjects;
 
 public class ProjectController {
@@ -38,6 +40,10 @@ public class ProjectController {
 
 	public void setProjectNameSelected(String projectName) {
 		managerProjects.setProjectNameSelected(projectName);
+	}
+
+	public IMarker[] getMarkers() {
+		return managerProjects.getMarkers();
 	}
 
 	public void addObserverManagerProjects(Observer o) {

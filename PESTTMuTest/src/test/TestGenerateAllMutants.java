@@ -17,7 +17,6 @@ import domain.mutation.Mutation;
 import domain.mutation.operators.IMutationOperators;
 import domain.util.ASTUtil;
 import domain.util.InfoProjectHelper;
-import domain.util.ToStringASTNode;
 
 public class TestGenerateAllMutants {
 	public void execute(Object[] elements,
@@ -62,32 +61,29 @@ public class TestGenerateAllMutants {
 		// start time to generate allmutants
 		long startTime = System.currentTimeMillis();
 		for (GroundString gs : projectGS) {
+
 			// mutation operators
 			List<IMutationOperators> mutationOperators = groundStringController
 					.getOperatorsApplicable(gs);
 
 			for (IMutationOperators operator : mutationOperators) {
+				long startTimeGeneratMutant = System.currentTimeMillis();
 				// mutations
 				List<Mutation> mutations = operator.getMutations(gs
 						.getGroundString());
 				int mutantGenerate = 0;
-				long startTimeGeneratMutant = System.currentTimeMillis();
-				// get info about ASTNode from apply mutation
-				mutationsController.initialize(mutations.get(0));
+
 				for (Mutation mutation : mutations) {
+
 					// is generated a valid mutant
 					if (mutationsController.applyMutant(mutation)) {
-						// altera ASTNode p o estado original
-						mutation.undoActionMutationOperator();
 						countMutants++;
 						mutantGenerate++;
-					} else {
-						// altera o ASTNode p o estado original
-						mutation.undoActionMutationOperator();
 					}
+					// altera o ASTNode p o estado original
+					mutation.undoActionMutationOperator();
+
 				}
-				// altera o projeto para o estado original
-				mutationsController.undoMutant();
 				long stopTimeGeneratMutant = System.currentTimeMillis();
 				// write file
 				gravarArq
@@ -99,6 +95,8 @@ public class TestGenerateAllMutants {
 								mutantGenerate,
 								(stopTimeGeneratMutant - startTimeGeneratMutant));
 			}
+			// altera o projeto para o estado original
+			mutationsController.undoMutant();
 		}
 		long stopTime = System.currentTimeMillis();
 		gravarArq.printf(

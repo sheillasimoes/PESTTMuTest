@@ -59,7 +59,7 @@ public class TestGenerateRandomMutants {
 		List<GroundString> projectGS = groundStringController
 				.getListGroundString();
 		// write file
-		gravarArq.printf("Projct %s %nTotal ground string %d%n",
+		gravarArq.printf("Project %s %nTotal ground string %d%n",
 				projectController.getProjectNames().get(0), projectGS.size());
 		int countMutants = 0;
 		// start time to generate allmutants
@@ -68,63 +68,58 @@ public class TestGenerateRandomMutants {
 			// mutation operators
 			List<IMutationOperators> mutationOperators = groundStringController
 					.getOperatorsApplicable(gs);
+			// get info about ASTNode from apply mutation
+			mutationsController.initialize(gs.getGroundString(),
+					projectController.getMarkers());
 
 			for (IMutationOperators operator : mutationOperators) {
 				// mutations
 				List<Mutation> mutations = operator.getMutations(gs
 						.getGroundString());
-				// get info about ASTNode from apply mutation
-				if (mutations.size() > 0) {
-					mutationsController.initialize(mutations.get(0));
-					boolean flag = false;
-					ArrayList<Integer> listCount = new ArrayList<Integer>();
-					Random random = new Random();
-					int i;
-					int mutantGenerate = 0;
-					long startTimeGeneratMutant = System.currentTimeMillis();
-					do {
-						i = random.nextInt(mutations.size());
 
-						if (!listCount.contains(Integer.valueOf(i))) {
-							/*
-							 * para nao entrar em ciclo infinito caso nao
-							 * existam mutacoes validas
-							 */
-							listCount.add(Integer.valueOf(i));
+				boolean flag = false;
+				ArrayList<Integer> listCount = new ArrayList<Integer>();
+				Random random = new Random();
+				int i;
+				int mutantGenerate = 0;
+				long startTimeGeneratMutant = System.currentTimeMillis();
+				do {
+					i = random.nextInt(mutations.size());
 
-							// is generated a valid mutant
-							if (mutationsController.applyMutant(mutations
-									.get(i))) {
-								// altera ASTNode p estado original
-								mutations.get(i).undoActionMutationOperator();
-								countMutants++;
-								mutantGenerate++;
-								flag = true;
-							} else {
-								// altera o ASTNode p o estado original
-								mutations.get(i).undoActionMutationOperator();
-							}
+					if (!listCount.contains(Integer.valueOf(i))) {
+						/*
+						 * para nao entrar em ciclo infinito caso nao existam
+						 * mutacoes validas
+						 */
+						listCount.add(Integer.valueOf(i));
+
+						// is generated a valid mutant
+						if (mutationsController.applyMutant(mutations.get(i))) {
+							countMutants++;
+							mutantGenerate++;
+							flag = true;
 						}
+						// altera o ASTNode p o estado original
+						mutations.get(i).undoActionMutationOperator();
+					}
 
-					} while (!flag && listCount.size() < mutations.size());
-					// altera o projeto para o estado original
-					mutationsController.undoMutant();
-					long stopTimeGeneratMutant = System.currentTimeMillis();
-					// write file
-					gravarArq
-							.printf("GS %s %s %d, Mutation operator %s, number mutant %d, generation time %d %n",
-									InfoProjectHelper.getFullyQualifiedName(gs
-											.getGroundString()),
-									ToStringASTNode.toString(gs
-											.getGroundString()),
-									ASTUtil.getLineNumber(gs.getGroundString()),
-									operator.toString(),
-									mutantGenerate,
-									(stopTimeGeneratMutant - startTimeGeneratMutant));
-				}
+				} while (!flag && listCount.size() < mutations.size());
+
+				long stopTimeGeneratMutant = System.currentTimeMillis();
+				// write file
+				gravarArq
+						.printf("GS %s %s %d, Mutation operator %s, number mutant %d, generation time %d %n",
+								InfoProjectHelper.getFullyQualifiedName(gs
+										.getGroundString()),
+								ToStringASTNode.toString(gs.getGroundString()),
+								ASTUtil.getLineNumber(gs.getGroundString()),
+								operator.toString(),
+								mutantGenerate,
+								(stopTimeGeneratMutant - startTimeGeneratMutant));
 
 			}
-
+			// altera o projeto para o estado original
+			mutationsController.undoMutant();
 		}
 		long stopTime = System.currentTimeMillis();
 		gravarArq.printf(

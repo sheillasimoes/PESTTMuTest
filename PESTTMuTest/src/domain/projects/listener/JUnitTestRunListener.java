@@ -9,17 +9,9 @@ import org.junit.runner.notification.RunListener;
 public class JUnitTestRunListener extends RunListener {
 	private List<String> testsFailure;
 
-	// int countIni = 0;
-	// int countEnd = 0;
-
 	public JUnitTestRunListener() {
 		testsFailure = new LinkedList<String>();
 	}
-
-	// @Override
-	// public void testFinished(Description description) throws Exception {
-	// countEnd++;
-	// }
 
 	@Override
 	public void testFailure(Failure failure) throws Exception {
@@ -32,15 +24,8 @@ public class JUnitTestRunListener extends RunListener {
 		}
 	}
 
-	// @Override
-	// public void testStarted(Description description) throws Exception {
-	// countIni++;
-	// }
-
 	public void clearData() {
 		testsFailure.clear();
-		// countIni = 0;
-		// countEnd = 0;
 	}
 
 	public List<String> getTestsFailed() {

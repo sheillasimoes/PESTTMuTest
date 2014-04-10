@@ -2,6 +2,9 @@ package domain.events;
 
 import java.util.List;
 
+import org.eclipse.jdt.core.ICompilationUnit;
+import org.eclipse.jdt.core.dom.CompilationUnit;
+
 import domain.constants.Messages;
 import ui.dialog.ProcessMessage;
 import domain.controller.ControllerRunningTest;
@@ -11,6 +14,7 @@ import domain.controller.ProjectController;
 import domain.groundString.GroundString;
 import domain.mutation.Mutation;
 import domain.mutation.operators.IMutationOperators;
+import domain.util.ToStringASTNode;
 
 public class RunAllMutationsEvent {
 	public void execute(String projectName,
@@ -32,13 +36,18 @@ public class RunAllMutationsEvent {
 				// ground string
 				List<GroundString> projectGS = groundStringController
 						.getListGroundString();
-				// verifica se foram encontradas GS para aplicar mutações
-				if (projectGS.size() > 0) {
-					// test classes
-					List<Class<?>> testClasses = projectController
-							.getTestClasses();
-					mutationsController.deleteTestResult();
-					for (GroundString gs : projectGS) {
+				mutationsController.deleteTestResult();
+				for (GroundString gs : projectGS) {
+					if (((ICompilationUnit) ((CompilationUnit) gs
+							.getGroundString().getRoot()).getJavaElement())
+							.getElementName().equals(
+									"PatternOptionBuilder.java")
+							&& ToStringASTNode.toString(gs.getGroundString())
+									.equals("required=false")) {
+						// get info about ASTNode from apply mutation
+						mutationsController.initialize(gs.getGroundString(),
+								projectController.getMarkers());
+
 						// mutation operators
 						List<IMutationOperators> mutationOperators = groundStringController
 								.getOperatorsApplicable(gs);
@@ -47,31 +56,28 @@ public class RunAllMutationsEvent {
 							// mutations
 							List<Mutation> mutations = operator.getMutations(gs
 									.getGroundString());
-							// get info about ASTNode from apply mutation
-							mutationsController.initialize(mutations.get(0));
 							for (Mutation mutation : mutations) {
 								// is generated a valid mutant
 								if (mutationsController.applyMutant(mutation)) {
-									for (Class<?> testClass : testClasses) {
+									for (Class<?> testClass : projectController
+											.getTestClasses()) {
 										controllerRunningTest
 												.runTest(testClass);
 									}
-									// altera ASTNode p o estado original
-									mutation.undoActionMutationOperator();
 
 									// add result
 									mutationsController.addResult(mutation,
 											controllerRunningTest
 													.getTestsFailed());
 									controllerRunningTest.clearData();
-								} else {
-									// altera o ASTNode p o estado original
-									mutation.undoActionMutationOperator();
 								}
+								// altera o ASTNode p o estado original
+								mutation.undoActionMutationOperator();
 							}
-							// altera o projeto para o estado original
-							mutationsController.undoMutant();
+
 						}
+						// altera o projeto para o estado original
+						mutationsController.undoMutant();
 					}
 				}
 			}

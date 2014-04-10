@@ -35,8 +35,8 @@ public class ManagerGroundString extends Observable {
 	 */
 	private void addGroundString(ASTNode node) {
 		listGroundString.add(new GroundString(node));
-		// setChanged();
-		// notifyObservers(node);
+		setChanged();
+		notifyObservers(node);
 
 	}
 
@@ -45,8 +45,8 @@ public class ManagerGroundString extends Observable {
 	 */
 	public void initializeListGroundString() {
 		listGroundString = new LinkedList<GroundString>();
-		// setChanged();
-		// notifyObservers();
+		setChanged();
+		notifyObservers();
 	}
 
 	/**

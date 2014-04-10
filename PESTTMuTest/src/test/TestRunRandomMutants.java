@@ -47,7 +47,8 @@ public class TestRunRandomMutants {
 					List<Mutation> mutations = operator.getMutations(gs
 							.getGroundString());
 					// get info about ASTNode from apply mutation
-					mutationsController.initialize(mutations.get(0));
+					mutationsController.initialize(gs.getGroundString(),
+							projectController.getMarkers());
 					boolean flag = false;
 					ArrayList<Integer> listCount = new ArrayList<Integer>();
 					Random random = new Random();

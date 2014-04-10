@@ -52,10 +52,8 @@ public class StaticModifierChange implements IMutationOperators {
 		int i = 0;
 		for (Object obj : modifiers) {
 			if (obj instanceof Modifier
-					&& (((Modifier) obj).getKeyword().equals(
-							Modifier.ModifierKeyword.STATIC_KEYWORD) || ((Modifier) obj)
-							.getKeyword().equals(
-									Modifier.ModifierKeyword.FINAL_KEYWORD))) {
+					&& (((Modifier) obj).isStatic() || ((Modifier) obj)
+							.isFinal())) {
 				return i;
 			}
 			i++;
@@ -66,8 +64,7 @@ public class StaticModifierChange implements IMutationOperators {
 	@SuppressWarnings("rawtypes")
 	private boolean isStaticMofifier(List modifiers, int pos) {
 		if (pos < modifiers.size()
-				&& ((Modifier) modifiers.get(pos)).getKeyword().equals(
-						Modifier.ModifierKeyword.STATIC_KEYWORD)) {
+				&& ((Modifier) modifiers.get(pos)).isStatic()) {
 			return true;
 		}
 		return false;

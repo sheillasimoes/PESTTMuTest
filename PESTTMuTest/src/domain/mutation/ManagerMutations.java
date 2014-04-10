@@ -3,11 +3,10 @@ package domain.mutation;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.rewrite.ASTRewrite;
@@ -15,11 +14,11 @@ import org.eclipse.jdt.core.dom.rewrite.ASTRewrite;
 import domain.util.FileChangeHelper;
 
 public class ManagerMutations {
-	private AST ast;
 	private CompilationUnit cUnit;
 	private ICompilationUnit unit;
 	private ICompilationUnit workingCopy;
 	private ASTRewrite rewrite;
+	private IMarker[] markers;
 	private IProgressMonitor progressMonitor;
 
 	/**
@@ -27,11 +26,11 @@ public class ManagerMutations {
 	 * 
 	 * @param node
 	 */
-	public void initialize(ASTNode node) {
+	public void initialize(ASTNode node, IMarker[] markers) {
 		cUnit = (CompilationUnit) node.getRoot();
 		unit = (ICompilationUnit) cUnit.getJavaElement();
-		ast = cUnit.getAST();
-		rewrite = ASTRewrite.create(ast);
+		// rewrite = ASTRewrite.create(ast);
+		this.markers = markers;
 		try {
 			workingCopy = unit.getWorkingCopy(null);
 		} catch (JavaModelException e) {
@@ -46,10 +45,8 @@ public class ManagerMutations {
 	 * @param mutations
 	 * @return
 	 */
-	public List<Mutation> getMutantsToDisplay(ASTNode node,
-			List<Mutation> mutations) {
+	public List<Mutation> getMutantsToDisplay(List<Mutation> mutations) {
 		LinkedList<Mutation> mutationResult = new LinkedList<Mutation>();
-		initialize(node);
 		for (Mutation mutation : mutations) {
 			// generating mutant
 			if (generatingMutant(mutation)) {
@@ -88,6 +85,7 @@ public class ManagerMutations {
 
 		// compile project to verifies that the mutation generating errors
 		return FileChangeHelper.findCompilationErrors(workingCopy,
-				progressMonitor) ? false : true;
+				progressMonitor, markers) ? false : true;
+		// return true;
 	}
 }

@@ -66,8 +66,7 @@ public class ASTChangeHelper {
 	@SuppressWarnings("rawtypes")
 	private static boolean containsStatic(List modifiers, int pos) {
 		if (pos < modifiers.size()
-				&& ((Modifier) modifiers.get(pos)).getKeyword().equals(
-						Modifier.ModifierKeyword.STATIC_KEYWORD))
+				&& ((Modifier) modifiers.get(pos)).isStatic())
 			return true;
 		return false;
 	}

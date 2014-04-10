@@ -17,11 +17,6 @@ import org.eclipse.text.edits.MalformedTreeException;
 
 public class FileChangeHelper {
 
-	// public void changeFile(ICompilationUnit workingCopy, ASTRewrite rewrite,
-	// CompilationUnit cUnit) {
-	// changeICompilationUnit(workingCopy, rewrite, cUnit);
-	// }
-
 	public static void changeICompilationUnit(ICompilationUnit workingCopy,
 			ASTRewrite rewrite, CompilationUnit cUnit) {
 
@@ -38,25 +33,28 @@ public class FileChangeHelper {
 	}
 
 	public static boolean findCompilationErrors(ICompilationUnit unit,
-			IProgressMonitor progressMonitor) {
+			IProgressMonitor progressMonitor, IMarker[] markersIni) {
 		IMarker[] markers = null;
 		IProject project = InfoProjectHelper.getProject(unit);
+
 		try {
 			// build project
 			project.build(IncrementalProjectBuilder.INCREMENTAL_BUILD,
 					progressMonitor);
-			// System.out.println("passou...");
 			// find compilation errors
 			markers = project.findMarkers(
 					IJavaModelMarker.JAVA_MODEL_PROBLEM_MARKER, true,
 					IResource.DEPTH_INFINITE);
-			for (IMarker marker : markers) {
-				Integer severityType = (Integer) marker
-						.getAttribute(IMarker.SEVERITY);
-				if (severityType.intValue() == IMarker.SEVERITY_ERROR) {
-					return true;
+			if (markersIni.length == markers.length) {
+				return false;
+			} else
+				for (IMarker marker : markers) {
+					Integer severityType = (Integer) marker
+							.getAttribute(IMarker.SEVERITY);
+					if (severityType.intValue() == IMarker.SEVERITY_ERROR) {
+						return true;
+					}
 				}
-			}
 		} catch (CoreException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -94,14 +92,6 @@ public class FileChangeHelper {
 			ASTRewrite rewrite, CompilationUnit cUnit) {
 		changeICompilationUnit(workingCopy, rewrite, cUnit);
 		saveChange(workingCopy);
-		// try {
-		// // build project
-		// InfoProjectHelper.getProject(workingCopy).build(
-		// IncrementalProjectBuilder.AUTO_BUILD, null);
-		// } catch (CoreException e) {
-		// // TODO Auto-generated catch block
-		// e.printStackTrace();
-		// }
 		discardWorkingCopy(workingCopy);
 
 	}

@@ -14,16 +14,12 @@ public class TestClassesVisitor extends ASTVisitor {
 	private boolean flag;
 	private boolean ignoreClass;
 
-	public TestClassesVisitor() {
-		flag = false;
-	}
-
 	@Override
 	public boolean visit(MarkerAnnotation node) {
 		if (node.toString().equals(Description.MARKER_ANNOTATION_TEST) && !flag) {
 			flag = true;
 			return false;
-		} else if (flag) {
+		} else if (flag || ignoreClass) {
 			return false;
 		}
 

@@ -19,47 +19,41 @@ public class TestRunAllMutants {
 		// ground string
 		List<GroundString> projectGS = groundStringController
 				.getListGroundString();
-		// verifica se foram encontradas GS para aplicar mutações
-		if (projectGS.size() > 0) {
-			// test classes
-			List<Class<?>> testClasses = projectController.getTestClasses();
-			int countMutants = 0;
-			// limpa o contador do tempo
-			controllerRunningTest.setCountTime(0);
-			for (GroundString gs : projectGS) {
-				// mutation operators
-				List<IMutationOperators> mutationOperators = groundStringController
-						.getOperatorsApplicable(gs);
+		// test classes
+		List<Class<?>> testClasses = projectController.getTestClasses();
+		int countMutants = 0;
+		// limpa o contador do tempo
+		controllerRunningTest.setCountTime(0);
+		for (GroundString gs : projectGS) {
+			// get info about ASTNode from apply mutation
+			mutationsController.initialize(gs.getGroundString(),
+					projectController.getMarkers());
 
-				for (IMutationOperators operator : mutationOperators) {
-					// mutations
-					List<Mutation> mutations = operator.getMutations(gs
-							.getGroundString());
-					// get info about ASTNode from apply mutation
-					mutationsController.initialize(mutations.get(0));
-					for (Mutation mutation : mutations) {
-						// is generated a valid mutant
-						if (mutationsController.applyMutant(mutation)) {
-							for (Class<?> testClass : testClasses) {
-								controllerRunningTest.runTest(testClass);
-							}
-							// altera ASTNode p o estado original
-							mutation.undoActionMutationOperator();
-							countMutants++;
-						} else {
-							// altera o ASTNode p o estado original
-							mutation.undoActionMutationOperator();
-						}
+			// mutation operators
+			List<IMutationOperators> mutationOperators = groundStringController
+					.getOperatorsApplicable(gs);
+
+			for (IMutationOperators operator : mutationOperators) {
+				// mutations
+				List<Mutation> mutations = operator.getMutations(gs
+						.getGroundString());
+
+				for (Mutation mutation : mutations) {
+					// is generated a valid mutant
+					if (mutationsController.applyMutant(mutation)) {
+						for (Class<?> testClass : testClasses)
+							controllerRunningTest.runTest(testClass);
+						countMutants++;
 					}
-					// altera o projeto para o estado original
-					mutationsController.undoMutant();
+					// altera o ASTNode p o estado original
+					mutation.undoActionMutationOperator();
 				}
 			}
-			System.out.println("total ground String " + projectGS.size()
-					+ "total mutants " + countMutants + " time "
-					+ controllerRunningTest.getCountTime());
+			// altera o projeto para o estado original
+			mutationsController.undoMutant();
 		}
-
+		System.out.println("total ground String " + projectGS.size()
+				+ "total mutants " + countMutants + " time "
+				+ controllerRunningTest.getCountTime());
 	}
-
 }
