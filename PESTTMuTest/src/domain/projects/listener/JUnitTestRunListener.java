@@ -22,6 +22,7 @@ public class JUnitTestRunListener extends RunListener {
 					+ failure.getDescription().getMethodName() + ")")
 					.toString());
 		}
+		super.testFailure(failure);
 	}
 
 	public void clearData() {

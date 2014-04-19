@@ -145,10 +145,14 @@ public class ViewMutationAnalysis extends ViewPart implements Observer {
 						.getNumberEquivalentMutants()));
 
 				// add mutation score
-				labelMutationScore.setText(Double.toString(Activator
+				labelMutationScore.setText(String.format("%.2f", Activator
 						.getDefault().getMutationsController()
 						.getMutationScore())
 						+ " %");
+				// Double.toString(Activator
+				// .getDefault().getMutationsController()
+				// .getMutationScore())
+				// + " %");
 
 			}
 		} else if (Activator.getDefault().getMutationsController()
@@ -163,5 +167,4 @@ public class ViewMutationAnalysis extends ViewPart implements Observer {
 		}
 
 	}
-
 }

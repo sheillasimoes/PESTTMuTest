@@ -29,8 +29,6 @@ import domain.constants.Description;
 import domain.controller.ProcessMutationTestController;
 import domain.mutation.Mutation;
 import domain.mutation.testingProcess.MutationTestResult;
-import domain.util.ASTUtil;
-import domain.util.ToStringASTNode;
 
 public class AnalyseMutantsTableViewer extends AbstractTableViewer implements
 		Observer {

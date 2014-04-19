@@ -55,7 +55,10 @@ public class ManagerProjects extends Observable {
 
 			for (IProject project : allProjects) {
 				if (validateProject(project)) {
+					long startTime = System.currentTimeMillis();
 					copyProjects.createCopyProject(project);
+					long stopTime = System.currentTimeMillis();
+					setTimeAnalyseProject((stopTime - startTime));
 				}
 			}
 		}
@@ -71,7 +74,7 @@ public class ManagerProjects extends Observable {
 			exploreProject.analyseProject(copyProjects
 					.getCopyProject(projectNameSelected));
 			long stopTime = System.currentTimeMillis();
-			setTimeAnalyseProject((stopTime - startTime));
+			timeAnalyseProject += (stopTime - startTime);
 			setMarkers(projectNameSelected);
 		}
 	}

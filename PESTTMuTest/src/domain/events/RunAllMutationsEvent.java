@@ -2,9 +2,6 @@ package domain.events;
 
 import java.util.List;
 
-import org.eclipse.jdt.core.ICompilationUnit;
-import org.eclipse.jdt.core.dom.CompilationUnit;
-
 import domain.constants.Messages;
 import ui.dialog.ProcessMessage;
 import domain.controller.ControllerRunningTest;
@@ -14,7 +11,6 @@ import domain.controller.ProjectController;
 import domain.groundString.GroundString;
 import domain.mutation.Mutation;
 import domain.mutation.operators.IMutationOperators;
-import domain.util.ToStringASTNode;
 
 public class RunAllMutationsEvent {
 	public void execute(String projectName,
@@ -33,54 +29,64 @@ public class RunAllMutationsEvent {
 				ProcessMessage.INSTANCE.showInformationMessage("Info",
 						Messages.PROJECT_NOT_HAVE_TEST_CALSSES);
 			} else {
+
 				// ground string
 				List<GroundString> projectGS = groundStringController
 						.getListGroundString();
 				mutationsController.deleteTestResult();
 				for (GroundString gs : projectGS) {
-					if (((ICompilationUnit) ((CompilationUnit) gs
-							.getGroundString().getRoot()).getJavaElement())
-							.getElementName().equals(
-									"PatternOptionBuilder.java")
-							&& ToStringASTNode.toString(gs.getGroundString())
-									.equals("required=false")) {
-						// get info about ASTNode from apply mutation
-						mutationsController.initialize(gs.getGroundString(),
-								projectController.getMarkers());
+					// if (((ICompilationUnit) ((CompilationUnit) gs
+					// .getGroundString().getRoot()).getJavaElement())
+					// .getElementName().equals("HelpFormatter.java")
+					// && ToStringASTNode.toString(gs.getGroundString())
+					// .equals("pos=findWrapPos(text,width,0)")) {
+					// get info about ASTNode from apply mutation
+					mutationsController.initialize(gs.getGroundString(),
+							projectController.getMarkers());
 
-						// mutation operators
-						List<IMutationOperators> mutationOperators = groundStringController
-								.getOperatorsApplicable(gs);
+					// mutation operators
+					List<IMutationOperators> mutationOperators = groundStringController
+							.getOperatorsApplicable(gs);
 
-						for (IMutationOperators operator : mutationOperators) {
-							// mutations
-							List<Mutation> mutations = operator.getMutations(gs
-									.getGroundString());
-							for (Mutation mutation : mutations) {
-								// is generated a valid mutant
-								if (mutationsController.applyMutant(mutation)) {
-									for (Class<?> testClass : projectController
-											.getTestClasses()) {
-										controllerRunningTest
-												.runTest(testClass);
-									}
+					for (IMutationOperators operator : mutationOperators) {
+						// mutations
+						List<Mutation> mutations = operator.getMutations(gs
+								.getGroundString());
+						for (Mutation mutation : mutations) {
+							// is generated a valid mutant
+							if (mutationsController.applyMutant(mutation)) {
 
-									// add result
-									mutationsController.addResult(mutation,
-											controllerRunningTest
-													.getTestsFailed());
-									controllerRunningTest.clearData();
+								List<Class<?>> clazz = projectController
+										.getTestClasses();
+								// int i = 1;
+								for (Class<?> testClass : clazz) {
+									// System.out.println("indice " + i + "Name"
+									// + testClass.getName());
+									// long startTime =
+									// System.currentTimeMillis();
+									controllerRunningTest.runTest(testClass);
+									// long stopTimeGeneratMutant = System
+									// .currentTimeMillis();
+									// System.out
+									// .println("tempo: "
+									// + (stopTimeGeneratMutant - startTime));
+									// i++;
 								}
-								// altera o ASTNode p o estado original
-								mutation.undoActionMutationOperator();
-							}
 
+								// add result
+								mutationsController.addResult(mutation,
+										controllerRunningTest.getTestsFailed());
+								controllerRunningTest.clearData();
+							}
+							// altera o ASTNode p o estado original
+							mutation.undoActionMutationOperator();
 						}
-						// altera o projeto para o estado original
-						mutationsController.undoMutant();
 					}
+					// altera o projeto para o estado original
+					mutationsController.undoMutant();
 				}
 			}
 		}
+		// }
 	}
 }

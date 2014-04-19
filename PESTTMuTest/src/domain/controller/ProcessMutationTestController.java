@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Set;
 
+import main.activator.Activator;
+
 import org.eclipse.jdt.core.dom.ASTNode;
 
 import domain.constants.Description;

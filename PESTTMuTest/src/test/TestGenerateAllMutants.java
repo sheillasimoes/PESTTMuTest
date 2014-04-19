@@ -25,9 +25,11 @@ public class TestGenerateAllMutants {
 			ProjectController projectController,
 			GroundStringController groundStringController,
 			ControllerRunningTest controllerRunningTest) {
-		System.out.println("Start!!!");
 		// create instance of operators
 		operatorsController.createMutationOperators(elements);
+		// for (int i = 0; i < 20; i++) {
+		System.out.println("Start!!!");
+		// projectController.deleteAllCopiesProjects();
 		// clear list of ground string
 		groundStringController.initializeListGroundString();
 		// create copy project
@@ -65,7 +67,9 @@ public class TestGenerateAllMutants {
 			// mutation operators
 			List<IMutationOperators> mutationOperators = groundStringController
 					.getOperatorsApplicable(gs);
-
+			// get info about ASTNode from apply mutation
+			mutationsController.initialize(gs.getGroundString(),
+					projectController.getMarkers());
 			for (IMutationOperators operator : mutationOperators) {
 				long startTimeGeneratMutant = System.currentTimeMillis();
 				// mutations
@@ -99,16 +103,21 @@ public class TestGenerateAllMutants {
 			mutationsController.undoMutant();
 		}
 		long stopTime = System.currentTimeMillis();
-		gravarArq.printf(
-				"Total mutants %d, time generation of mutants %d, NMPS %.2f",
-				countMutants, (stopTime - startTime),
-				(countMutants / ((stopTime - startTime) * 0.001)));
+
+		gravarArq
+				.printf("Total time create and analise project %d, Total mutants %d, time generation of mutants %d, NMPS %.2f",
+						projectController.getTimeAnalyseProject(),
+						countMutants,
+						(stopTime - startTime),
+						(countMutants / (((stopTime - startTime) + projectController
+								.getTimeAnalyseProject()) * 0.001)));
 		try {
 			fileWriter.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		System.out.println("Fim!!!");
+		System.out.println("Fim!!! ");
+		// }
 	}
 }

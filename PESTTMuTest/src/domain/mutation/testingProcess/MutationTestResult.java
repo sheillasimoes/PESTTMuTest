@@ -70,10 +70,11 @@ public class MutationTestResult extends Observable {
 	public void calculateMutationScore() {
 		if (result.size() > 0
 				&& ((result.size() - numberEquivalentMutants)) > 0) {
-			mutationScore = (numberKilledMutants / (numberTotalMutants - numberEquivalentMutants)) * 100;
+			mutationScore = ((double) numberKilledMutants / (double) (numberTotalMutants - numberEquivalentMutants))
+					* (double) 100;
 			System.out
 					.println("haga "
-							+ (numberKilledMutants / (numberTotalMutants - numberEquivalentMutants)));
+							+ (((double) numberKilledMutants / (double) (numberTotalMutants - numberEquivalentMutants)) * (double) 100));
 			setChanged();
 			notifyObservers(Description.CALCULATE_MUTATION_SCORE);
 		}

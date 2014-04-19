@@ -18,6 +18,10 @@ public class ProjectController {
 		managerProjects.analyseProject(nameProject);
 	}
 
+	public void deleteAllCopiesProjects() {
+		managerProjects.deleteAllCopiesProjects();
+	}
+
 	public void createCopiesProjects() {
 		managerProjects.createCopiesProjects();
 	}
@@ -60,5 +64,9 @@ public class ProjectController {
 
 	public void deleteObserverCopyProject(Observer o) {
 		managerProjects.deleteObserverCopyProject(o);
+	}
+
+	public long getTimeAnalyseProject() {
+		return managerProjects.getTimeAnalyseProject();
 	}
 }
