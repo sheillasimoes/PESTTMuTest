@@ -19,6 +19,7 @@ import domain.ast.visitors.TestClassesVisitor;
 public class TestClassesProjects {
 	private List<String> listTestClasses;
 	private TestClassesVisitor testClassesVisitor;
+	private boolean flag = false;
 
 	public TestClassesProjects() {
 		testClassesVisitor = new TestClassesVisitor();
@@ -28,19 +29,26 @@ public class TestClassesProjects {
 	private void findTestCases(CompilationUnit unit) {
 		testClassesVisitor.setFlag(false);
 		testClassesVisitor.setIgnoreClass(false);
+		flag = false;
 		unit.accept(testClassesVisitor);
 	}
 
 	public boolean isTestClass(CompilationUnit cUnit) {
 		// find test cases in a specific file
 		findTestCases(cUnit);
-		return (testClassesVisitor.isFlag() || testClassesVisitor
-				.isIgnoreClass());
+
+		if (!testClassesVisitor.isFlag()
+				&& !testClassesVisitor.isIgnoreClass()
+				&& ((ICompilationUnit) cUnit.getJavaElement()).getPath()
+						.toString().contains("/test/"))
+			flag = true;
+		return (testClassesVisitor.isFlag()
+				|| testClassesVisitor.isIgnoreClass() || flag);
 	}
 
 	public void addTestClass(ICompilationUnit unit) {
 		// filtrar as classes de teste abstrata q devem ser ignoradas
-		if (!testClassesVisitor.isIgnoreClass()) {
+		if (!testClassesVisitor.isIgnoreClass() && !flag) {
 			// get fully qualified name
 			String fullyQualifiedName = unit.findPrimaryType()
 					.getFullyQualifiedName();

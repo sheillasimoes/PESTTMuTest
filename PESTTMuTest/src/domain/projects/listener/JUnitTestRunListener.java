@@ -30,7 +30,6 @@ public class JUnitTestRunListener extends RunListener {
 	}
 
 	public List<String> getTestsFailed() {
-		System.out.println("test fail.. " + testsFailure.size());
 		return testsFailure;
 	}
 }

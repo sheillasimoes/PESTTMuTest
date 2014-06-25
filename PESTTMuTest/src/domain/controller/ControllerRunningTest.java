@@ -30,12 +30,4 @@ public class ControllerRunningTest {
 		return managerRunningTests.getCountTime();
 	}
 
-	/**
-	 * @param countTime
-	 *            the countTime to set
-	 */
-	public void setCountTime(long countTime) {
-		managerRunningTests.setCountTime(countTime);
-		;
-	}
 }

@@ -74,7 +74,9 @@ public class TestClassesVisitor extends ASTVisitor {
 	}
 
 	private boolean isATestClass(ITypeBinding node) {
-		if (node.getBinaryName().equals(Description.TYPE_CLASS_EXTENDS_TEST)) {
+		if (node.getBinaryName().equals(Description.TYPE_CLASS_EXTENDS_TEST)
+				|| node.getBinaryName().equals(
+						Description.TYPE_CLASS_EXTENDS_TESTSUITE)) {
 			return true;
 		} else if (node.getBinaryName().equals("java.lang.Object")) {
 			return false;

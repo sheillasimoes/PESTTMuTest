@@ -86,6 +86,6 @@ public class ManagerMutations {
 		// compile project to verifies that the mutation generating errors
 		return FileChangeHelper.findCompilationErrors(workingCopy,
 				progressMonitor, markers) ? false : true;
-		// return true;
+		
 	}
 }

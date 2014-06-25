@@ -4,16 +4,10 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Set;
 
-import main.activator.Activator;
-
 import org.eclipse.jdt.core.dom.ASTNode;
 
 import domain.constants.Description;
 import domain.constants.Messages;
-import test.TestGenerateAllMutants;
-import test.TestGenerateRandomMutants;
-import test.TestRunAllMutants;
-import test.TestRunRandomMutants;
 import ui.dialog.ProcessMessage;
 import domain.events.RunAllMutationsEvent;
 import domain.events.RunRandomMutationsEvent;

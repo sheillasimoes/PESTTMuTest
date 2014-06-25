@@ -22,24 +22,16 @@ public class RunAllMutationsEvent {
 			ProcessMessage.INSTANCE.showInformationMessage("Info",
 					Messages.NOT_SELECT_PROJECT_NAME);
 		} else {
-			mutationsController.setSelectedMutation(null);
-			mutationsController.deleteTestResult();
 			// verifica se o projeto selecionado tem classes de teste
 			if (!projectController.hasTestClasses(projectName)) {
 				ProcessMessage.INSTANCE.showInformationMessage("Info",
 						Messages.PROJECT_NOT_HAVE_TEST_CALSSES);
 			} else {
-
 				// ground string
 				List<GroundString> projectGS = groundStringController
 						.getListGroundString();
 				mutationsController.deleteTestResult();
 				for (GroundString gs : projectGS) {
-					// if (((ICompilationUnit) ((CompilationUnit) gs
-					// .getGroundString().getRoot()).getJavaElement())
-					// .getElementName().equals("HelpFormatter.java")
-					// && ToStringASTNode.toString(gs.getGroundString())
-					// .equals("pos=findWrapPos(text,width,0)")) {
 					// get info about ASTNode from apply mutation
 					mutationsController.initialize(gs.getGroundString(),
 							projectController.getMarkers());
@@ -56,22 +48,9 @@ public class RunAllMutationsEvent {
 							// is generated a valid mutant
 							if (mutationsController.applyMutant(mutation)) {
 
-								List<Class<?>> clazz = projectController
-										.getTestClasses();
-								// int i = 1;
-								for (Class<?> testClass : clazz) {
-									// System.out.println("indice " + i + "Name"
-									// + testClass.getName());
-									// long startTime =
-									// System.currentTimeMillis();
+								for (Class<?> testClass : projectController
+										.getTestClasses())
 									controllerRunningTest.runTest(testClass);
-									// long stopTimeGeneratMutant = System
-									// .currentTimeMillis();
-									// System.out
-									// .println("tempo: "
-									// + (stopTimeGeneratMutant - startTime));
-									// i++;
-								}
 
 								// add result
 								mutationsController.addResult(mutation,
@@ -87,6 +66,5 @@ public class RunAllMutationsEvent {
 				}
 			}
 		}
-		// }
 	}
 }

@@ -24,7 +24,7 @@ public class ManagerGroundString extends Observable {
 	 * @return
 	 */
 	public List<GroundString> getListGroundString() {
-		return listGroundString;// listGroundString;
+		return listGroundString;
 
 	}
 

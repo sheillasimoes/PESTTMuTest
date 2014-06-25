@@ -67,7 +67,7 @@ public class AssignmentOperatorReplacement implements IMutationOperators {
 		}
 		return listMutants;
 	}
-
+	
 	@Override
 	public void applyOperator(Mutation mutation) {
 		Assignment assignmentNode = (Assignment) mutation.getASTNode();
